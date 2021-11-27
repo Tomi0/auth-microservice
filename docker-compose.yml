@@ -37,7 +37,11 @@ services:
             -   ./:/var/www
         networks:
             - auth-network
-
+    auth-mailhog:
+        image: mailhog/mailhog
+        container_name: auth-mailhog
+        ports:
+            - "8025:8025"
 
 volumes:
     auth-db:
