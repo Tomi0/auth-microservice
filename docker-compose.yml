@@ -29,7 +29,8 @@ services:
         depends_on:
             -   auth-php
     auth-php:
-        image: php:8.0-fpm
+        build:
+            context: ./docker/php
         user: "${UID}:${GID}"
         container_name: auth-php
         working_dir: /var/www
@@ -37,6 +38,8 @@ services:
             -   ./:/var/www
         networks:
             - auth-network
+        depends_on:
+            - auth-db
     auth-mailhog:
         image: mailhog/mailhog
         container_name: auth-mailhog
