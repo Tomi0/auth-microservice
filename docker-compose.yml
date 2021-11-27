@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+    auth-db:
+        image: mysql:8.0
+        container_name: auth-db
+        volumes:
+            -   auth-db:/var/lib/mysql
+        ports:
+            -   "3306:3306"
+        networks:
+            - auth-network
+        environment:
+            MYSQL_ROOT_PASSWORD: 'secret'
+            MYSQL_DATABASE: 'auth'
+            MYSQL_USER: 'user'
+            MYSQL_PASSWORD: 'secret'
+    auth-webserver:
+        image: nginx:1.9.15
+        container_name: auth-webserver
+        working_dir: /var/www
+        volumes:
+            -   ./:/var/www
+            -   ./docker/nginx:/etc/nginx/conf.d
+        ports:
+            -   "8080:80"
+        networks:
+            - auth-network
+        depends_on:
+            -   auth-php
+    auth-php:
+        image: php:8.0-fpm
+        user: "${UID}:${GID}"
+        container_name: auth-php
+        working_dir: /var/www
+        volumes:
+            -   ./:/var/www
+        networks:
+            - auth-network
+
+
+volumes:
+    auth-db:
+        driver: local
+
+networks:
+    auth-network:
+        driver: bridge
