@@ -7,3 +7,4 @@ Route::get('/test', function () {
 });
 
 Route::post('/register', 'Authentication\User\CreateUserController');
+Route::post('/login', 'Authentication\User\LoginController');

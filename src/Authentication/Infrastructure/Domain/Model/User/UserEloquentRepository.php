@@ -26,4 +26,9 @@ class UserEloquentRepository implements UserRepository
 
         throw new UnexpectedValueException('No se ha detectado el id del usuario creado');
     }
+
+    public function ofEmailOrFail(string $email): object
+    {
+        return $this->user->where('email', '=', $email)->firstOrFail();
+    }
 }

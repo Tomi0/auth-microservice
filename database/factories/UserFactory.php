@@ -2,12 +2,14 @@
 
 namespace Database\Factories;
 
+use Authentication\Infrastructure\Domain\Model\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
 
 class UserFactory extends Factory
 {
+    protected $model = User::class;
+
     /**
      * Define the model's default state.
      *

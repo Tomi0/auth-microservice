@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use Authentication\Domain\Model\User\InvalidCredentialsException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -38,4 +41,15 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $e): \Illuminate\Http\Response|JsonResponse|Response
+    {
+        if ($e instanceof InvalidCredentialsException) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
+        return parent::render($request, $e);
+    }
+
+
 }
