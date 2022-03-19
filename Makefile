@@ -16,9 +16,9 @@ build:
 down:
 	env UID=${UID} GID=${GID} docker-compose down
 
-.PHONY: composer-exec
+.PHONY: composer-install
 composer-exec:
-	docker run --rm --interactive --tty --volume $(PWD):/app --user $(UID):$(GID) composer $(cmd)
+	$(run) composer install
 
 .PHONY: run
 run:
@@ -29,10 +29,10 @@ test:
 	$(run) ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml
 
 .PHONY: clean
-clean:
-	$(run) php artisan cache:clear
-	$(run) php artisan config:clear
-	$(run) php artisan route:clear
+cache:
+	@$(run) php artisan cache:clear
+	@$(run) php artisan config:clear
+	@$(run) php artisan route:clear
 
 migrate:
 	$(run) php artisan migrate

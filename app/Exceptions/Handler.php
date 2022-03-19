@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use Authentication\Domain\Model\User\InvalidCredentialsException;
+use AuthMicroservice\Authentication\Domain\Model\User\InvalidCredentialsException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

@@ -25,8 +25,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Authentication\\": "src/Authentication/",
-            "Shared\\": "src/Shared/",
+            "AuthMicroservice\\": "src/AuthMicroservice/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

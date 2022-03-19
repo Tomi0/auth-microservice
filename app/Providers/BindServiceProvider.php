@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use Authentication\Domain\Service\User\CheckEmailAndPasswordMatch;
-use Authentication\Domain\Service\User\GenerateJwtToken;
-use Authentication\Infrastructure\Domain\Service\User\CheckEmailAndPasswordMatchLaravel;
-use Authentication\Infrastructure\Domain\Service\User\GenerateJwtTokenLcobucciJwt;
+use AuthMicroservice\Authentication\Domain\Service\User\CheckEmailAndPasswordMatch;
+use AuthMicroservice\Authentication\Domain\Service\User\GenerateJwtToken;
+use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\CheckEmailAndPasswordMatchLaravel;
+use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\GenerateJwtTokenLcobucciJwt;
 use Illuminate\Support\ServiceProvider;
 
 class BindServiceProvider extends ServiceProvider

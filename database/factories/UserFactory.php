@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use Authentication\Infrastructure\Domain\Model\User\User;
+use AuthMicroservice\Authentication\Infrastructure\Domain\Model\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use JetBrains\PhpStorm\ArrayShape;
 

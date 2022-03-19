@@ -4,8 +4,8 @@ namespace App\UI\Http\Controllers\Authentication\User;
 
 use App\UI\Http\Controllers\Controller;
 use App\UI\Http\Validators\Authentication\User\CreateUserValidator;
-use Authentication\Application\Service\User\CreateUser;
-use Authentication\Application\Service\User\CreateUserRequest;
+use AuthMicroservice\Authentication\Application\Service\User\CreateUser;
+use AuthMicroservice\Authentication\Application\Service\User\CreateUserRequest;
 use Illuminate\Http\JsonResponse;
 
 class CreateUserController extends Controller
