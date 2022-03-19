@@ -2,20 +2,19 @@
 
 namespace AuthMicroservice\Authentication\Domain\Model\User;
 
-class UserCreated
-{
-    private string $id;
+use AuthMicroservice\Shared\Domain\Service\DomainEvent;
 
-    public function __construct(string $id)
+class UserCreated implements DomainEvent
+{
+    private User $user;
+
+    public function __construct(User $user)
     {
-        $this->id = $id;
+        $this->user = $user;
     }
 
-    /**
-     * @return string
-     */
-    public function getId(): string
+    public function user(): User
     {
-        return $this->id;
+        return $this->user;
     }
 }

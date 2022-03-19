@@ -4,42 +4,25 @@ namespace AuthMicroservice\Authentication\Application\Service\User;
 
 class CreateUserRequest
 {
-    private string $username;
     private string $email;
     private string $password;
 
     /**
-     * @param string $username
      * @param string $email
      * @param string $password
      */
-    public function __construct(string $username, string $email, string $password)
+    public function __construct(string $email, string $password)
     {
-        $this->username = $username;
         $this->email = $email;
         $this->password = $password;
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail(): string
+    public function email(): string
     {
         return $this->email;
     }
 
-    /**
-     * @return string
-     */
-    public function getPassword(): string
+    public function password(): string
     {
         return $this->password;
     }

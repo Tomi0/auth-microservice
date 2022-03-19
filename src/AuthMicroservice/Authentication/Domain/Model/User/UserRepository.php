@@ -6,12 +6,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 interface UserRepository
 {
-    public function create(array $attributes): string;
+    public function persistir(User $user): void;
 
     /**
-     * @param string $email
-     * @return object
-     * @throws ModelNotFoundException
+     * @throws UserNotFoundException
      */
-    public function ofEmailOrFail(string $email): object;
+    public function ofEmail(string $email): User;
 }

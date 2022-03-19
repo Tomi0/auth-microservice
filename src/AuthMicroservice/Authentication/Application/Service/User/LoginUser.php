@@ -3,23 +3,24 @@
 namespace AuthMicroservice\Authentication\Application\Service\User;
 
 use AuthMicroservice\Authentication\Domain\Model\User\InvalidCredentialsException;
+use AuthMicroservice\Authentication\Domain\Model\User\UserNotFoundException;
 use AuthMicroservice\Authentication\Domain\Model\User\UserRepository;
-use AuthMicroservice\Authentication\Domain\Service\User\CheckEmailAndPasswordMatch;
+use AuthMicroservice\Authentication\Domain\Service\User\CheckPasswordHash;
 use AuthMicroservice\Authentication\Domain\Service\User\GenerateJwtToken;
 
 class LoginUser
 {
     private UserRepository $userRepository;
-    private CheckEmailAndPasswordMatch $checkEmailAndPasswordMatch;
     private GenerateJwtToken $generateJwtToken;
+    private CheckPasswordHash $checkPasswordHash;
 
     public function __construct(UserRepository $userRepository,
-                                CheckEmailAndPasswordMatch $checkEmailAndPasswordMatch,
-                                GenerateJwtToken $generateJwtToken)
+                                GenerateJwtToken $generateJwtToken,
+                                CheckPasswordHash $checkPasswordHash)
     {
         $this->userRepository = $userRepository;
-        $this->checkEmailAndPasswordMatch = $checkEmailAndPasswordMatch;
         $this->generateJwtToken = $generateJwtToken;
+        $this->checkPasswordHash = $checkPasswordHash;
     }
 
     /**
@@ -27,11 +28,16 @@ class LoginUser
      */
     public function handle(LoginUserRequest $loginUserRequest): string
     {
-        if (!$this->checkEmailAndPasswordMatch->execute($loginUserRequest->getEmail(), $loginUserRequest->getPassword()))
+        try {
+            $user = $this->userRepository->ofEmail($loginUserRequest->email());
+        } catch (UserNotFoundException $e) {
             throw new InvalidCredentialsException();
+        }
 
-        $user = $this->userRepository->ofEmailOrFail($loginUserRequest->getEmail());
+        if ($this->checkPasswordHash->execute($loginUserRequest->password(), $user->password()))
+            return $this->generateJwtToken->execute($user);
 
-        return $this->generateJwtToken->execute($user);
+
+        throw new InvalidCredentialsException();
     }
 }

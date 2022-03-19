@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
-use AuthMicroservice\Authentication\Domain\Service\User\CheckEmailAndPasswordMatch;
+use AuthMicroservice\Authentication\Domain\Service\User\CheckPasswordHash;
+use AuthMicroservice\Authentication\Domain\Service\User\EncodePassword;
 use AuthMicroservice\Authentication\Domain\Service\User\GenerateJwtToken;
-use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\CheckEmailAndPasswordMatchLaravel;
+use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\CheckPasswordHashLaravel;
+use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\EncodePasswordLaravel;
 use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\GenerateJwtTokenLcobucciJwt;
+use AuthMicroservice\Shared\Domain\Service\EventDispatcher;
+use AuthMicroservice\Shared\Infrastructure\Laravel\Domain\Service\EventDispatcherLaravel;
 use Illuminate\Support\ServiceProvider;
 
 class BindServiceProvider extends ServiceProvider
@@ -17,8 +21,10 @@ class BindServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(CheckEmailAndPasswordMatch::class, CheckEmailAndPasswordMatchLaravel::class);
         $this->app->bind(GenerateJwtToken::class, GenerateJwtTokenLcobucciJwt::class);
+        $this->app->bind(EncodePassword::class, EncodePasswordLaravel::class);
+        $this->app->bind(EventDispatcher::class, EventDispatcherLaravel::class);
+        $this->app->bind(CheckPasswordHash::class, CheckPasswordHashLaravel::class);
     }
 
     /**

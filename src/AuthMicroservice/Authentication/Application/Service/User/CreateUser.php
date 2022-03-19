@@ -2,28 +2,35 @@
 
 namespace AuthMicroservice\Authentication\Application\Service\User;
 
+use AuthMicroservice\Authentication\Domain\Model\User\User;
 use AuthMicroservice\Authentication\Domain\Model\User\UserCreated;
 use AuthMicroservice\Authentication\Domain\Model\User\UserRepository;
+use AuthMicroservice\Authentication\Domain\Service\User\EncodePassword;
+use AuthMicroservice\Shared\Domain\Service\EventDispatcher;
 
 class CreateUser
 {
     private UserRepository $userRepository;
+    private EncodePassword $encodePassword;
+    private EventDispatcher $eventDispatcher;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, EncodePassword $encodePassword, EventDispatcher $eventDispatcher)
     {
         $this->userRepository = $userRepository;
+        $this->encodePassword = $encodePassword;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function handle(CreateUserRequest $createUserRequest): void
+    public function handle(CreateUserRequest $createUserRequest): User
     {
-        $attributes = [
-            'username' => $createUserRequest->getUsername(),
-            'email' => $createUserRequest->getEmail(),
-            'password' => $createUserRequest->getPassword(),
-        ];
+        $passwordHash = $this->encodePassword->execute($createUserRequest->password());
 
-        $userUuid = $this->userRepository->create($attributes);
+        $user = new User($createUserRequest->email(), $passwordHash);
 
-        event(new UserCreated($userUuid));
+        $this->userRepository->persistir($user);
+
+        $this->eventDispatcher->execute(new UserCreated($user));
+
+        return $user;
     }
 }

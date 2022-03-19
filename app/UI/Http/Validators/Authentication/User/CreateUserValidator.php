@@ -17,12 +17,10 @@ class CreateUserValidator extends FormRequest
         return true;
     }
 
-    #[ArrayShape(['username' => "string", 'email' => "string", 'password' => "string"])]
     public function rules(): array
     {
         return [
-            'username' => 'required|unique:user|min:3|max:50|string',
-            'email' => 'required|unique:user|email',
+            'email' => 'required|email',
             'password' => 'required|min:6',
         ];
     }

@@ -2,16 +2,15 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Domain\Service\User;
 
+use AuthMicroservice\Authentication\Domain\Model\User\User;
 use AuthMicroservice\Authentication\Domain\Service\User\GenerateJwtToken;
-use AuthMicroservice\Authentication\Infrastructure\Domain\Model\User\User;
-use Illuminate\Database\Eloquent\Model;
 use Lcobucci\JWT\Configuration;
 use Tests\TestCase;
 
 class GenerateJwtTokenTest extends TestCase
 {
     private GenerateJwtToken $generateJwtToken;
-    private Model $user;
+    private User $user;
 
     protected function setUp(): void
     {
@@ -23,7 +22,7 @@ class GenerateJwtTokenTest extends TestCase
 
     private function initDatosTest(): void
     {
-        $this->user = User::factory()->create();
+        $this->user = entity(User::class)->create();
     }
 
     public function testGeneratedJwtTokenIsValid(): void

@@ -2,19 +2,18 @@
 
 namespace Tests\app\UI\Http\Controllers\Authentication\User;
 
-use AuthMicroservice\Authentication\Infrastructure\Domain\Model\User\User;
-use Illuminate\Database\Eloquent\Model;
+use AuthMicroservice\Authentication\Domain\Model\User\User;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
 {
-    private Model $user;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create([
+        $this->user = entity(User::class)->create([
             'password' => Hash::make('secret'),
         ]);
     }
@@ -33,7 +32,7 @@ class LoginControllerTest extends TestCase
     public function testRouteWorks(): void
     {
         $request = $this->postJson('/auth/login', [
-            'email' => $this->user['email'],
+            'email' => $this->user->email(),
             'password' => 'secret'
         ]);
 

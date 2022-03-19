@@ -4,10 +4,10 @@ namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
 use AuthMicroservice\Authentication\Application\Service\User\CreateUser;
 use AuthMicroservice\Authentication\Application\Service\User\CreateUserRequest;
+use AuthMicroservice\Authentication\Domain\Model\User\User;
 use AuthMicroservice\Authentication\Domain\Model\User\UserCreated;
 use Exception;
 use Tests\TestCase;
-use function bcrypt;
 
 class CreateUserTest extends TestCase
 {
@@ -22,11 +22,10 @@ class CreateUserTest extends TestCase
 
     public function testUserExistsInDataBase(): void
     {
-        $request = new CreateUserRequest('test', 'test@test.test', bcrypt('test'));
+        $request = new CreateUserRequest('test@test.test', 'test');
         $this->createUser->handle($request);
 
         $this->assertDatabaseHas('user', [
-            'username' => 'test',
             'email' => 'test@test.test',
         ]);
     }
@@ -38,8 +37,25 @@ class CreateUserTest extends TestCase
     {
         $this->expectsEvents(UserCreated::class);
 
-        $request = new CreateUserRequest('test', 'test@test.test', bcrypt('test'));
+        $request = new CreateUserRequest('test@test.test', 'test');
         $this->createUser->handle($request);
+    }
+
+    public function testReturnValueIsAnUser(): void
+    {
+        $request = new CreateUserRequest('test@test.test', 'test');
+        $result = $this->createUser->handle($request);
+
+        $this->assertInstanceOf(User::class, $result);
+    }
+
+    public function testReturnExpectedUser(): void
+    {
+        $request = new CreateUserRequest('test@test.test', 'test');
+        $result = $this->createUser->handle($request);
+
+        $this->assertInstanceOf(User::class, $result);
+        $this->assertSame('test@test.test', $result->email());
     }
 
 

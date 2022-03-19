@@ -6,6 +6,11 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update
 
-RUN docker-php-ext-install pdo_mysql
+RUN apt-get -y install git \
+    libonig-dev \
+    libzip-dev \
+    zip
+
+RUN docker-php-ext-install pdo_mysql mbstring zip
 
 EXPOSE 9000

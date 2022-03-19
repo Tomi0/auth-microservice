@@ -5,14 +5,14 @@ namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 use AuthMicroservice\Authentication\Application\Service\User\LoginUser;
 use AuthMicroservice\Authentication\Application\Service\User\LoginUserRequest;
 use AuthMicroservice\Authentication\Domain\Model\User\InvalidCredentialsException;
-use AuthMicroservice\Authentication\Infrastructure\Domain\Model\User\User;
-use Illuminate\Database\Eloquent\Model;
+use AuthMicroservice\Authentication\Domain\Model\User\User;
+use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\Configuration;
 use Tests\TestCase;
 
 class LoginUserTest extends TestCase
 {
-    private Model $user;
+    private User $user;
     private LoginUser $loginUser;
 
     protected function setUp(): void
@@ -24,7 +24,9 @@ class LoginUserTest extends TestCase
 
     private function initDatosTest(): void
     {
-        $this->user = User::factory()->create();
+        $this->user = entity(User::class)->create([
+            'password' => Hash::make('password')
+        ]);
     }
 
     /**
@@ -32,7 +34,7 @@ class LoginUserTest extends TestCase
      */
     public function testReturnValueIsString(): void
     {
-        $value = $this->loginUser->handle(new LoginUserRequest($this->user['email'], 'password'));
+        $value = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password'));
 
         $this->assertIsString($value);
     }
@@ -46,7 +48,7 @@ class LoginUserTest extends TestCase
     public function testThrowInvalidCredentialsWhenWrongPassword(): void
     {
         $this->expectException(InvalidCredentialsException::class);
-        $this->loginUser->handle(new LoginUserRequest($this->user['email'], 'incorrect password'));
+        $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'incorrect password'));
     }
 
     /**
@@ -54,7 +56,7 @@ class LoginUserTest extends TestCase
      */
     public function testValidJwtToken(): void
     {
-        $result = $this->loginUser->handle(new LoginUserRequest($this->user['email'], 'password'));
+        $result = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password'));
 
         /** @var Configuration $configuration */
         $configuration = $this->app->make(Configuration::class);

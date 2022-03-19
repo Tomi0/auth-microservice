@@ -20,7 +20,7 @@ class LoginUserRequest
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function email(): string
     {
         return $this->email;
     }
@@ -28,7 +28,7 @@ class LoginUserRequest
     /**
      * @return string
      */
-    public function getPassword(): string
+    public function password(): string
     {
         return $this->password;
     }

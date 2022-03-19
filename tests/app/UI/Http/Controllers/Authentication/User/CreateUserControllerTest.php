@@ -9,7 +9,6 @@ class CreateUserControllerTest extends TestCase
     public function testRouteValidatorWorks(): void
     {
         $request = $this->postJson('/auth/register', [
-            'username' => null,
             'email' => null,
             'password' => null
         ]);
@@ -20,11 +19,10 @@ class CreateUserControllerTest extends TestCase
     public function testRouteWorks(): void
     {
         $request = $this->postJson('/auth/register', [
-            'username' => 'manolo',
             'email' => 'test@test.test',
             'password' => 'secret'
         ]);
 
-        $request->assertStatus(200);
+        $request->assertStatus(201);
     }
 }

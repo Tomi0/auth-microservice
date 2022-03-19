@@ -2,6 +2,7 @@
 
 namespace AuthMicroservice\Authentication\Infrastructure\Domain\Service\User;
 
+use AuthMicroservice\Authentication\Domain\Model\User\User;
 use AuthMicroservice\Authentication\Domain\Service\User\GenerateJwtToken;
 use DateTimeImmutable;
 use Lcobucci\JWT\Configuration;
@@ -15,13 +16,13 @@ class GenerateJwtTokenLcobucciJwt extends GenerateJwtToken
         $this->configuration = $configuration;
     }
 
-    public function execute(object $user): string
+    public function execute(User $user): string
     {
         $now = new DateTimeImmutable();
 
         return $this->configuration->builder()
             ->issuedBy('auth-microservice')
-            ->identifiedBy($user['id'])
+            ->identifiedBy($user->id())
             ->issuedAt($now)
             ->canOnlyBeUsedAfter($now)
             ->expiresAt($now->modify('+1 hour'))

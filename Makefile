@@ -17,7 +17,7 @@ down:
 	env UID=${UID} GID=${GID} docker-compose down
 
 .PHONY: composer-install
-composer-exec:
+composer-install:
 	$(run) composer install
 
 .PHONY: run
