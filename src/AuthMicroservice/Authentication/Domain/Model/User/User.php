@@ -11,6 +11,7 @@ class User implements JsonSerializable
     private UuidInterface $id;
     private string $email;
     private string $password;
+    private bool $admin;
     private DateTime $createdAt;
     private DateTime $updatedAt;
 
@@ -18,6 +19,7 @@ class User implements JsonSerializable
     {
         $this->email = $email;
         $this->password = $password;
+        $this->admin = false;
     }
 
     public function id(): UuidInterface
@@ -33,6 +35,11 @@ class User implements JsonSerializable
     public function password(): string
     {
         return $this->password;
+    }
+
+    public function admin(): bool
+    {
+        return $this->admin;
     }
 
     public function createdAt(): DateTime

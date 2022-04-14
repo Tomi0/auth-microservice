@@ -37,6 +37,7 @@ cache:
 	@$(run) php artisan cache:clear
 	@$(run) php artisan config:clear
 	@$(run) php artisan route:clear
+	$(run) rm -rf storage/framework/cache/data
 
 migrate:
 	$(run) php artisan migrate

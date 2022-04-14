@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->uuid('id')->primary();
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('admin');
             $table->timestamps();
         });
     }
