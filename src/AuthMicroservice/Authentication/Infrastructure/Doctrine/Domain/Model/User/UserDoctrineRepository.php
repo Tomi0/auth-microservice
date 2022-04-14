@@ -6,6 +6,7 @@ use AuthMicroservice\Authentication\Domain\Model\User\User;
 use AuthMicroservice\Authentication\Domain\Model\User\UserNotFoundException;
 use AuthMicroservice\Authentication\Domain\Model\User\UserRepository;
 use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\UuidInterface;
 
 class UserDoctrineRepository extends EntityRepository implements UserRepository
 {
@@ -27,6 +28,18 @@ class UserDoctrineRepository extends EntityRepository implements UserRepository
     {
         $em = $this->getEntityManager();
         $em->persist($user);
+        $em->flush();
+    }
+
+    public function ofId(UuidInterface $userId): User
+    {
+        return $this->find($userId);
+    }
+
+    public function remove(User $user): void
+    {
+        $em = $this->getEntityManager();
+        $em->remove($user);
         $em->flush();
     }
 }

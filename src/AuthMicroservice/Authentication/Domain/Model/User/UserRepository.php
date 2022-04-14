@@ -3,6 +3,7 @@
 namespace AuthMicroservice\Authentication\Domain\Model\User;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Ramsey\Uuid\UuidInterface;
 
 interface UserRepository
 {
@@ -12,4 +13,8 @@ interface UserRepository
      * @throws UserNotFoundException
      */
     public function ofEmail(string $email): User;
+
+    public function ofId(UuidInterface $userId): User;
+
+    public function remove(User $user): void;
 }
