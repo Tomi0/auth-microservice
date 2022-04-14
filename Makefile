@@ -20,6 +20,10 @@ down:
 composer-install:
 	$(run) composer install
 
+.PHONY: composer-update
+composer-update:
+	$(run) composer update
+
 .PHONY: run
 run:
 	$(run) $(cmd)
