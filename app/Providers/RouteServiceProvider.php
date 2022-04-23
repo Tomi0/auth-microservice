@@ -38,10 +38,24 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('auth')
-                ->middleware('auth')
-                ->namespace($this->namespace)
-                ->group(base_path('app/UI/Http/Routes/auth.php'));
+
+            Route::group([
+                'namespace' => $this->namespace,
+                'prefix' => 'auth',
+            ], function () {
+                require base_path('app/UI/Http/Routes/auth.php');
+            });
+
+            Route::group([
+                'namespace' => $this->namespace,
+                'prefix' => 'backoffice-admin',
+                'middleware' => [
+                    'user_logged',
+                    'user_admin'
+                ]
+            ], function () {
+                require base_path('app/UI/Http/Routes/backoffice-admin.php');
+            });
         });
     }
 
@@ -50,7 +64,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());

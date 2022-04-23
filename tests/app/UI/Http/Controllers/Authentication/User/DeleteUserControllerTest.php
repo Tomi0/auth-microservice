@@ -5,7 +5,7 @@ namespace Tests\app\UI\Http\Controllers\Authentication\User;
 use AuthMicroservice\Authentication\Domain\Model\User\User;
 use Tests\TestCase;
 
-class DeleteUserTest extends TestCase
+class DeleteUserControllerTest extends TestCase
 {
     private User $user;
     private User $userToDelete;
@@ -23,16 +23,32 @@ class DeleteUserTest extends TestCase
 
     public function testRouteNotWorkingIfUserNotLogged(): void
     {
-        $httpRequest = $this->deleteJson('/user/' . $this->userToDelete->id());
+        $httpRequest = $this->deleteJson('/backoffice-admin/user/' . $this->userToDelete->id());
 
         $this->assertSame(401, $httpRequest->getStatusCode());
     }
 
     public function testRouteWorksIfUserLogged(): void
     {
-        $httpRequest = $this->actingAs($this->user)->deleteJson('/user/' . $this->userToDelete->id());
+        $httpRequest = $this->deleteJson('/backoffice-admin/user/' . $this->userToDelete->id(), [], [
+            'Authorization' => $this->getJwtToken($this->user),
+        ]);
 
         $this->assertSame(200, $httpRequest->getStatusCode());
+    }
+
+    public function testRouteWorksIfUserLoggedIsNotAdmin(): void
+    {
+        $notAnAdmin = entity(User::class)->create([
+            'admin' => 0,
+        ]);
+
+
+        $httpRequest = $this->deleteJson('/backoffice-admin/user/' . $this->userToDelete->id(), [], [
+            'Authorization' => $this->getJwtToken($notAnAdmin),
+        ]);
+
+        $this->assertSame(403, $httpRequest->getStatusCode());
     }
 
 }

@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use AuthMicroservice\Authentication\Domain\Model\User\InvalidCredentialsException;
+use AuthMicroservice\Authentication\Domain\Model\User\UserHasNotPermissionsException;
+use AuthMicroservice\Authentication\Domain\Model\User\UserNotLoggedException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +48,12 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof InvalidCredentialsException) {
             return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+        if ($e instanceof UserHasNotPermissionsException) {
+            return response()->json(['message' => 'User has not permissions'], 403);
+        }
+        if ($e instanceof UserNotLoggedException) {
+            return response()->json(['message' => 'User not logged'], 401);
         }
 
         return parent::render($request, $e);

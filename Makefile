@@ -24,6 +24,10 @@ composer-install:
 composer-update:
 	$(run) composer update
 
+.PHONY: composer-dump-autoload
+composer-dump-autoload:
+	$(run) composer dump-autoload
+
 .PHONY: run
 run:
 	$(run) $(cmd)
