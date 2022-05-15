@@ -9,7 +9,9 @@ use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\CheckPass
 use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\EncodePasswordLaravel;
 use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\GenerateJwtTokenLcobucciJwt;
 use AuthMicroservice\Shared\Domain\Service\EventDispatcher;
+use AuthMicroservice\Shared\Domain\Service\RandomStringGenerator;
 use AuthMicroservice\Shared\Infrastructure\Laravel\Domain\Service\EventDispatcherLaravel;
+use AuthMicroservice\Shared\Infrastructure\Laravel\Domain\Service\RandomStringGeneratorLaravel;
 use Illuminate\Support\ServiceProvider;
 
 class BindServiceProvider extends ServiceProvider
@@ -25,6 +27,7 @@ class BindServiceProvider extends ServiceProvider
         $this->app->bind(EncodePassword::class, EncodePasswordLaravel::class);
         $this->app->bind(EventDispatcher::class, EventDispatcherLaravel::class);
         $this->app->bind(CheckPasswordHash::class, CheckPasswordHashLaravel::class);
+        $this->app->bind(RandomStringGenerator::class, RandomStringGeneratorLaravel::class);
     }
 
     /**
