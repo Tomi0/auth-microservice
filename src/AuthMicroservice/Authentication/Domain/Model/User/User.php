@@ -66,4 +66,9 @@ class User implements JsonSerializable
             'updated_at' => $this->updatedAt(),
         ];
     }
+
+    public function changePassword(string $passwordEncoded): void
+    {
+        $this->password = $passwordEncoded;
+    }
 }
