@@ -4,6 +4,7 @@ namespace AuthMicroservice\Authentication\Domain\Model\TokenResetPassword;
 
 use DateTime;
 use Ramsey\Uuid\UuidInterface;
+use UnexpectedValueException;
 
 class TokenResetPassword
 {
@@ -17,7 +18,7 @@ class TokenResetPassword
     {
         $actualDate = new DateTime();
         $this->email = $email;
-        $this->token = $token;
+        $this->changeToken($token);
         $this->createdAt = $actualDate;
         $this->updatedAt = $actualDate;
     }
@@ -45,5 +46,13 @@ class TokenResetPassword
     public function updatedAt(): DateTime
     {
         return $this->updatedAt;
+    }
+
+    public function changeToken(string $token): void
+    {
+        if (strlen($token) < 16)
+            throw new UnexpectedValueException('Token length can not be less than 16');
+
+        $this->token = $token;
     }
 }

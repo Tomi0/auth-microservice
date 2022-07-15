@@ -42,4 +42,23 @@ class UserDoctrineRepository extends EntityRepository implements UserRepository
         $em->remove($user);
         $em->flush();
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function search(array $filters): array
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+
+        $queryBuilder = $queryBuilder->select('u')->from(User::class, 'u');
+
+        if (isset($filters['email'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->like('u.email', ':email'))->setParameter(':email', '%' . $filters['email'] . '%');
+        }
+        if (isset($filters['admin'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->like('u.admin', ':admin'))->setParameter(':admin', $filters['admin']);
+        }
+
+        return $queryBuilder->orderBy('u.email', 'ASC')->getQuery()->getResult();
+    }
 }

@@ -4,7 +4,7 @@ namespace App\UI\Http\Validators\Authentication\TokenResetPassword;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetTokenResetPasswordValidator extends FormRequest
+class GenerateTokenResetPasswordValidator extends FormRequest
 {
     public function authorize(): bool
     {

@@ -17,4 +17,9 @@ interface UserRepository
     public function ofId(UuidInterface $userId): User;
 
     public function remove(User $user): void;
+
+    /**
+     * @return User[]
+     */
+    public function search(array $filters): array;
 }

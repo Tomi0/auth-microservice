@@ -11,4 +11,9 @@ interface TokenResetPasswordRepository
      * @throws TokenResetPasswordNotFoundException
      */
     public function ofToken(string $tokenResetPassword): TokenResetPassword;
+
+    /**
+     * @throws TokenResetPasswordNotFoundException
+     */
+    public function ofEmail(string $email): TokenResetPassword;
 }

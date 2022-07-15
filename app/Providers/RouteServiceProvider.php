@@ -56,16 +56,6 @@ class RouteServiceProvider extends ServiceProvider
             ], function () {
                 require base_path('app/UI/Http/Routes/backoffice-admin.php');
             });
-
-            Route::group([
-                'namespace' => $this->namespace,
-                'prefix' => 'backoffice-shared',
-                'middleware' => [
-                    'user_logged'
-                ]
-            ], function () {
-                require base_path('app/UI/Http/Routes/backoffice-shared.php');
-            });
         });
     }
 

@@ -3,15 +3,15 @@
 namespace AuthMicroservice\Authentication\Application\Service\TokenResetPassword;
 
 use AuthMicroservice\Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
+use AuthMicroservice\Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundException;
 use AuthMicroservice\Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
-use AuthMicroservice\Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRequested;
-use AuthMicroservice\Authentication\Domain\Model\User\UserHasNotPermissionsException;
+use AuthMicroservice\Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordGenerated;
 use AuthMicroservice\Authentication\Domain\Model\User\UserNotFoundException;
 use AuthMicroservice\Authentication\Domain\Model\User\UserRepository;
 use AuthMicroservice\Shared\Domain\Service\EventDispatcher;
 use AuthMicroservice\Shared\Domain\Service\RandomStringGenerator;
 
-class GetTokenResetPassword
+class GenerateTokenResetPassword
 {
     private TokenResetPasswordRepository $tokenResetPasswordRepository;
     private UserRepository $userRepository;
@@ -31,21 +31,20 @@ class GetTokenResetPassword
 
     /**
      * @throws UserNotFoundException
-     * @throws UserHasNotPermissionsException
      */
-    public function handle(GetTokenResetPasswordRequest $getTokenResetPasswordRequest): TokenResetPassword
+    public function handle(GenerateTokenResetPasswordRequest $generateTokenResetPasswordRequest): void
     {
-        $user = $this->userRepository->ofEmail($getTokenResetPasswordRequest->email());
+        $user = $this->userRepository->ofEmail($generateTokenResetPasswordRequest->email());
 
-        if ($getTokenResetPasswordRequest->userLogged()->id()->equals($user->id()) === false && $getTokenResetPasswordRequest->userLogged()->admin() === false)
-            throw new UserHasNotPermissionsException();
-
-        $tokenResetPassword = new TokenResetPassword($user->email(), $this->randomStringGenerator->execute());
+        try {
+            $tokenResetPassword = $this->tokenResetPasswordRepository->ofEmail($generateTokenResetPasswordRequest->email());
+            $tokenResetPassword->changeToken($this->randomStringGenerator->execute());
+        } catch (TokenResetPasswordNotFoundException) {
+            $tokenResetPassword = new TokenResetPassword($user->email(), $this->randomStringGenerator->execute());
+        }
 
         $this->tokenResetPasswordRepository->persist($tokenResetPassword);
 
-        $this->eventDispatcher->execute(new TokenResetPasswordRequested($user, $getTokenResetPasswordRequest->userLogged(), $tokenResetPassword));
-
-        return $tokenResetPassword;
+        $this->eventDispatcher->execute(new TokenResetPasswordGenerated($user, $tokenResetPassword));
     }
 }

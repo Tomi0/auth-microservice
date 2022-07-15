@@ -31,4 +31,17 @@ class TokenResetPasswordDoctrineRepository extends EntityRepository implements T
 
         return $tokenResetPassword;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function ofEmail(string $email): TokenResetPassword
+    {
+        $tokenResetPassword = $this->findOneBy(['email' => $email]);
+
+        if ($tokenResetPassword === null)
+            throw new TokenResetPasswordNotFoundException();
+
+        return $tokenResetPassword;
+    }
 }

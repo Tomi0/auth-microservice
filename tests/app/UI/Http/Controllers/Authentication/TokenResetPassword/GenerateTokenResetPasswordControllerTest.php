@@ -5,7 +5,7 @@ namespace Tests\app\UI\Http\Controllers\Authentication\TokenResetPassword;
 use AuthMicroservice\Authentication\Domain\Model\User\User;
 use Tests\TestCase;
 
-class GetTokenResetPasswordControllerTest extends TestCase
+class GenerateTokenResetPasswordControllerTest extends TestCase
 {
     private User $userToResetPassword;
 
@@ -19,16 +19,16 @@ class GetTokenResetPasswordControllerTest extends TestCase
 
     public function testRouteNotWorkingIfUserNotLogged(): void
     {
-        $httpRequest = $this->postJson('/backoffice-shared/token-reset-password', [
+        $httpRequest = $this->postJson('/auth/token-reset-password', [
             'email' => $this->userToResetPassword->email(),
         ]);
 
-        $this->assertSame(401, $httpRequest->getStatusCode());
+        $this->assertSame(200, $httpRequest->getStatusCode());
     }
 
     public function testRouteWorksIfUserLogged(): void
     {
-        $httpRequest = $this->postJson('/backoffice-shared/token-reset-password', [
+        $httpRequest = $this->postJson('/auth/token-reset-password', [
             'email' => $this->userToResetPassword->email(),
         ], [
             'Authorization' => $this->getJwtToken($this->userToResetPassword),
