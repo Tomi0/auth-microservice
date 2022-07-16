@@ -30,7 +30,7 @@ services:
             -   auth-php
     auth-php:
         build:
-            context: backend
+            context: .
             dockerfile: docker/php/Dockerfile
         user: "${UID}:${GID}"
         container_name: auth-php
@@ -41,6 +41,17 @@ services:
             - auth-network
         depends_on:
             - auth-db
+    auth-frontend:
+        build:
+            context: .
+            dockerfile: docker/node/Dockerfile
+        user: "${UID}:${GID}"
+        container_name: auth-frontend
+        working_dir: /app
+        ports:
+            - "4200:4200"
+        volumes:
+            - ./frontend:/app
 
 volumes:
     auth-db:
