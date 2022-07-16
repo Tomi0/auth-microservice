@@ -20,23 +20,23 @@ services:
         container_name: auth-webserver
         working_dir: /var/www
         volumes:
-            -   ./:/var/www
+            -   ./backend:/var/www
             -   ./docker/nginx:/etc/nginx/conf.d
         ports:
-            -   "8080:80"
+            -   "8000:80"
         networks:
             - auth-network
         depends_on:
             -   auth-php
     auth-php:
         build:
-            context: .
+            context: backend
             dockerfile: docker/php/Dockerfile
         user: "${UID}:${GID}"
         container_name: auth-php
         working_dir: /var/www
         volumes:
-            -   ./:/var/www
+            -   ./backend:/var/www
         networks:
             - auth-network
         depends_on:
