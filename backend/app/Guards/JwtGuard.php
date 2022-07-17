@@ -4,6 +4,7 @@ namespace App\Guards;
 
 use AuthMicroservice\Authentication\Domain\Model\User\InvalidJwtTokenException;
 use AuthMicroservice\Authentication\Domain\Model\User\User;
+use AuthMicroservice\Authentication\Domain\Model\User\UserNotFoundException;
 use AuthMicroservice\Authentication\Domain\Model\User\UserRepository;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ class JwtGuard implements Guard
      * @param Request $request
      * @param UserRepository $userRepository
      * @throws InvalidJwtTokenException
+     * @throws UserNotFoundException
      */
     public function __construct(Configuration $configuration, Request $request, UserRepository $userRepository)
     {

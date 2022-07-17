@@ -7,6 +7,8 @@ use AuthMicroservice\Authentication\Application\Service\User\DeleteUserRequest;
 use AuthMicroservice\Authentication\Domain\Model\User\User;
 use AuthMicroservice\Authentication\Domain\Model\User\UserDeleted;
 use AuthMicroservice\Authentication\Domain\Model\User\UserHasNotPermissionsException;
+use AuthMicroservice\Authentication\Domain\Model\User\UserNotFoundException;
+use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class DeleteUserTest extends TestCase
@@ -55,6 +57,13 @@ class DeleteUserTest extends TestCase
     {
         $this->expectsEvents(UserDeleted::class);
         $this->deleteUser->handle(new DeleteUserRequest($this->userToDelete->id(), $this->adminUser));
+    }
+
+    public function testThrowUserNotFoundException(): void
+    {
+        $this->doesntExpectEvents(UserDeleted::class);
+        $this->expectException(UserNotFoundException::class);
+        $this->deleteUser->handle(new DeleteUserRequest(Uuid::uuid4(), $this->adminUser));
     }
 
 }

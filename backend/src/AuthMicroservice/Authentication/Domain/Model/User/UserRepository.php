@@ -14,6 +14,9 @@ interface UserRepository
      */
     public function ofEmail(string $email): User;
 
+    /**
+     * @throws UserNotFoundException
+     */
     public function ofId(UuidInterface $userId): User;
 
     public function remove(User $user): void;

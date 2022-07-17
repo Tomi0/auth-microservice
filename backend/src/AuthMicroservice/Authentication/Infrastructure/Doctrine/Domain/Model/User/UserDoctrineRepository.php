@@ -31,9 +31,16 @@ class UserDoctrineRepository extends EntityRepository implements UserRepository
         $em->flush();
     }
 
+    /**
+     * @throws UserNotFoundException
+     */
     public function ofId(UuidInterface $userId): User
     {
-        return $this->find($userId);
+        $user = $this->find($userId);
+        if ($user === null) {
+            throw new UserNotFoundException();
+        }
+        return $user;
     }
 
     public function remove(User $user): void

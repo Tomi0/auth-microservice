@@ -4,6 +4,7 @@ namespace AuthMicroservice\Authentication\Application\Service\User;
 
 use AuthMicroservice\Authentication\Domain\Model\User\UserDeleted;
 use AuthMicroservice\Authentication\Domain\Model\User\UserHasNotPermissionsException;
+use AuthMicroservice\Authentication\Domain\Model\User\UserNotFoundException;
 use AuthMicroservice\Authentication\Domain\Model\User\UserRepository;
 use AuthMicroservice\Shared\Domain\Service\EventDispatcher;
 
@@ -20,6 +21,7 @@ class DeleteUser
 
     /**
      * @throws UserHasNotPermissionsException
+     * @throws UserNotFoundException
      */
     public function handle(DeleteUserRequest $deleteUserRequest): void
     {
