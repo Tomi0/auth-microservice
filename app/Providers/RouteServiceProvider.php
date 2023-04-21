@@ -38,23 +38,11 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-
             Route::group([
                 'namespace' => $this->namespace,
                 'prefix' => 'auth',
             ], function () {
                 require base_path('app/UI/Http/Routes/auth.php');
-            });
-
-            Route::group([
-                'namespace' => $this->namespace,
-                'prefix' => 'backoffice-admin',
-                'middleware' => [
-                    'user_logged',
-                    'user_admin'
-                ]
-            ], function () {
-                require base_path('app/UI/Http/Routes/backoffice-admin.php');
             });
         });
     }
