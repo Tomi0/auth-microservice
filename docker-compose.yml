@@ -15,12 +15,24 @@ services:
             MYSQL_DATABASE: 'auth'
             MYSQL_USER: 'user'
             MYSQL_PASSWORD: 'secret'
+    auth-db-testing:
+        image: mysql:8.0
+        container_name: auth-db-testing
+        ports:
+            - "3307:3306"
+        networks:
+            - auth-network
+        environment:
+            MYSQL_ROOT_PASSWORD: 'secret'
+            MYSQL_DATABASE: 'auth_testing'
+            MYSQL_USER: 'user'
+            MYSQL_PASSWORD: 'secret'
     auth-webserver:
         image: nginx:1.9.15
         container_name: auth-webserver
         working_dir: /var/www
         volumes:
-            -   ./backend:/var/www
+            -   ./:/var/www
             -   ./docker/nginx:/etc/nginx/conf.d
         ports:
             -   "8000:80"
@@ -31,27 +43,17 @@ services:
     auth-php:
         build:
             context: .
-            dockerfile: docker/php/Dockerfile
-        user: "${UID}:${GID}"
+            dockerfile: docker/php8.2/Dockerfile
+        user: "1000:1000"
         container_name: auth-php
         working_dir: /var/www
         volumes:
-            -   ./backend:/var/www
+            -   ./:/var/www
         networks:
             - auth-network
         depends_on:
             - auth-db
-    auth-frontend:
-        build:
-            context: .
-            dockerfile: docker/node/Dockerfile
-        user: "${UID}:${GID}"
-        container_name: auth-frontend
-        working_dir: /app
-        ports:
-            - "4200:4200"
-        volumes:
-            - ./frontend:/app
+            - auth-db-testing
 
 volumes:
     auth-db:
