@@ -37,14 +37,14 @@ class ChangeUserPassword
      */
     public function handle(ChangeUserPasswordRequest $changeUserPasswordRequest): void
     {
-        $tokenResetPassword = $this->tokenResetPasswordRepository->ofToken($changeUserPasswordRequest->tokenResetPassword());
+        $tokenResetPassword = $this->tokenResetPasswordRepository->ofToken($changeUserPasswordRequest->tokenResetPassword);
 
-        if ($tokenResetPassword->email() !== $changeUserPasswordRequest->userEmail())
+        if ($tokenResetPassword->email() !== $changeUserPasswordRequest->userEmail)
             throw new UserHasNotPermissionsException();
 
-        $user = $this->userRepository->ofEmail($changeUserPasswordRequest->userEmail());
+        $user = $this->userRepository->ofEmail($changeUserPasswordRequest->userEmail);
 
-        $user->changePassword($this->encodePassword->execute($changeUserPasswordRequest->password()));
+        $user->changePassword($this->encodePassword->execute($changeUserPasswordRequest->password));
 
         $this->userRepository->persistir($user);
 

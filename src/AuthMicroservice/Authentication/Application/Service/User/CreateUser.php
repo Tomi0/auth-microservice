@@ -23,9 +23,9 @@ class CreateUser
 
     public function handle(CreateUserRequest $createUserRequest): User
     {
-        $passwordHash = $this->encodePassword->execute($createUserRequest->password());
+        $passwordHash = $this->encodePassword->execute($createUserRequest->password);
 
-        $user = new User($createUserRequest->email(), $passwordHash);
+        $user = new User($createUserRequest->email, $passwordHash);
 
         $this->userRepository->persistir($user);
 

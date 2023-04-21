@@ -29,12 +29,12 @@ class LoginUser
     public function handle(LoginUserRequest $loginUserRequest): string
     {
         try {
-            $user = $this->userRepository->ofEmail($loginUserRequest->email());
+            $user = $this->userRepository->ofEmail($loginUserRequest->email);
         } catch (UserNotFoundException $e) {
             throw new InvalidCredentialsException();
         }
 
-        if ($this->checkPasswordHash->execute($loginUserRequest->password(), $user->password()))
+        if ($this->checkPasswordHash->execute($loginUserRequest->password, $user->password()))
             return $this->generateJwtToken->execute($user);
 
 
