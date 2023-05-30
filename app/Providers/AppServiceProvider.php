@@ -40,17 +40,5 @@ class AppServiceProvider extends ServiceProvider
         Factory::guessFactoryNamesUsing(function (string $modelName) {
             return 'Database\Factories\\' . class_basename($modelName) . 'Factory';
         });
-
-        $this->app->singleton(Configuration::class, function () {
-            $configuration =  Configuration::forSymmetricSigner(
-                new Sha256(),
-                InMemory::base64Encoded(config('jwt.jwt_token'))
-            );
-            $configuration->setValidationConstraints(
-                new SignedWith($configuration->signer(), $configuration->signingKey()),
-                new StrictValidAt(new SystemClock(new DateTimeZone('Europe/Madrid')))
-            );
-            return $configuration;
-        });
     }
 }

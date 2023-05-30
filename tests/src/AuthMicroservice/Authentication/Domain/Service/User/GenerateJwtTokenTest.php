@@ -2,9 +2,14 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Domain\Service\User;
 
-use Lcobucci\JWT\Configuration;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Service\User\GenerateJwtToken;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Token\Parser;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Validator;
 use Tests\TestCase;
 
 class GenerateJwtTokenTest extends TestCase
@@ -16,7 +21,6 @@ class GenerateJwtTokenTest extends TestCase
     {
         parent::setUp();
         $this->generateJwtToken = $this->app->make(GenerateJwtToken::class);
-        $this->configuration = $this->app->make(Configuration::class);
         $this->initDatosTest();
     }
 
@@ -27,14 +31,15 @@ class GenerateJwtTokenTest extends TestCase
 
     public function testGeneratedJwtTokenIsValid(): void
     {
-        $token = $this->generateJwtToken->execute($this->user);
+        $resultToken = $this->generateJwtToken->execute($this->user);
 
-        /** @var Configuration $configuration */
-        $configuration = $this->app->make(Configuration::class);
+        $parser = new Parser(new JoseEncoder());
 
-        $constraints = $configuration->validationConstraints();
+        $token = $parser->parse($resultToken);
 
-        $this->assertTrue($configuration->validator()->validate($configuration->parser()->parse($token), ...$constraints));
+        $validator = new Validator();
+
+        $this->assertTrue($validator->validate($token, new SignedWith(new Sha256(), InMemory::file(config('filesystems.disks.jwt_signing_keys.root') . '/' . config('jwt.jwt_public_key_filename')))));
     }
 
 }

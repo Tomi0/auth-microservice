@@ -8,6 +8,12 @@ use Authentication\Application\Service\User\LoginUser;
 use Authentication\Application\Service\User\LoginUserRequest;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
 use Authentication\Domain\Model\User\User;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Token\Parser;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Validator;
 use Tests\TestCase;
 
 class LoginUserTest extends TestCase
@@ -58,11 +64,12 @@ class LoginUserTest extends TestCase
     {
         $result = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password'));
 
-        /** @var Configuration $configuration */
-        $configuration = $this->app->make(Configuration::class);
+        $parser = new Parser(new JoseEncoder());
 
-        $constraints = $configuration->validationConstraints();
+        $token = $parser->parse($result);
 
-        $this->assertTrue($configuration->validator()->validate($configuration->parser()->parse($result), ...$constraints));
+        $validator = new Validator();
+
+        $this->assertTrue($validator->validate($token, new SignedWith(new Sha256(), InMemory::file(config('filesystems.disks.jwt_signing_keys.root') . '/' . config('jwt.jwt_public_key_filename')))));
     }
 }
