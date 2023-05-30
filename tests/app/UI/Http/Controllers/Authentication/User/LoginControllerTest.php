@@ -2,8 +2,8 @@
 
 namespace Tests\app\UI\Http\Controllers\Authentication\User;
 
-use AuthMicroservice\Authentication\Domain\Model\User\User;
 use Illuminate\Support\Facades\Hash;
+use Authentication\Domain\Model\User\User;
 use Tests\TestCase;
 
 class LoginControllerTest extends TestCase

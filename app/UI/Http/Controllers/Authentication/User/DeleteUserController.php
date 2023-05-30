@@ -19,7 +19,7 @@ class DeleteUserController extends Controller
     }
 
     /**
-     * @throws \AuthMicroservice\Authentication\Domain\Model\User\UserHasNotPermissionsException
+     * @throws \Authentication\Domain\Model\User\UserHasNotPermissionsException
      */
     public function __invoke(Request $request): JsonResponse
     {

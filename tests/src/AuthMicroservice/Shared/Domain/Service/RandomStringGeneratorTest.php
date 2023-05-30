@@ -2,7 +2,7 @@
 
 namespace Tests\src\AuthMicroservice\Shared\Domain\Service;
 
-use AuthMicroservice\Shared\Domain\Service\RandomStringGenerator;
+use Shared\Domain\Service\RandomStringGenerator;
 use Tests\TestCase;
 use UnexpectedValueException;
 

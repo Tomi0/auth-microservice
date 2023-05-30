@@ -2,12 +2,12 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
-use AuthMicroservice\Authentication\Application\Service\User\LoginUser;
-use AuthMicroservice\Authentication\Application\Service\User\LoginUserRequest;
-use AuthMicroservice\Authentication\Domain\Model\User\InvalidCredentialsException;
-use AuthMicroservice\Authentication\Domain\Model\User\User;
 use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\Configuration;
+use Authentication\Application\Service\User\LoginUser;
+use Authentication\Application\Service\User\LoginUserRequest;
+use Authentication\Domain\Model\User\InvalidCredentialsException;
+use Authentication\Domain\Model\User\User;
 use Tests\TestCase;
 
 class LoginUserTest extends TestCase

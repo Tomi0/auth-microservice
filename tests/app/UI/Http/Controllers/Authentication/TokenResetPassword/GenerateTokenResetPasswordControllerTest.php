@@ -2,7 +2,7 @@
 
 namespace Tests\app\UI\Http\Controllers\Authentication\TokenResetPassword;
 
-use AuthMicroservice\Authentication\Domain\Model\User\User;
+use Authentication\Domain\Model\User\User;
 use Tests\TestCase;
 
 class GenerateTokenResetPasswordControllerTest extends TestCase

@@ -2,9 +2,9 @@
 
 namespace App\UI\Http\Middleware;
 
-use AuthMicroservice\Authentication\Domain\Model\User\UserNotLoggedException;
 use Closure;
 use Illuminate\Http\Request;
+use Authentication\Domain\Model\User\UserNotLoggedException;
 
 class UserLogged
 {

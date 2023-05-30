@@ -2,13 +2,13 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\TokenResetPassword;
 
-use AuthMicroservice\Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPassword;
-use AuthMicroservice\Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPasswordRequest;
-use AuthMicroservice\Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
-use AuthMicroservice\Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordGenerated;
-use AuthMicroservice\Authentication\Domain\Model\User\User;
-use AuthMicroservice\Authentication\Domain\Model\User\UserNotFoundException;
 use Exception;
+use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPassword;
+use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPasswordRequest;
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordGenerated;
+use Authentication\Domain\Model\User\User;
+use Authentication\Domain\Model\User\UserNotFoundException;
 use Tests\TestCase;
 
 class GenerateTokenResetPasswordTest extends TestCase

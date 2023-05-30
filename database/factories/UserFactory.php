@@ -1,7 +1,7 @@
 <?php
 
-use AuthMicroservice\Authentication\Domain\Model\User\User;
 use Illuminate\Support\Facades\Hash;
+use Authentication\Domain\Model\User\User;
 
 $factory->define(User::class, function(Faker\Generator $faker) {
     return [

@@ -2,11 +2,11 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
-use AuthMicroservice\Authentication\Application\Service\User\CreateUser;
-use AuthMicroservice\Authentication\Application\Service\User\CreateUserRequest;
-use AuthMicroservice\Authentication\Domain\Model\User\User;
-use AuthMicroservice\Authentication\Domain\Model\User\UserCreated;
 use Exception;
+use Authentication\Application\Service\User\CreateUser;
+use Authentication\Application\Service\User\CreateUserRequest;
+use Authentication\Domain\Model\User\User;
+use Authentication\Domain\Model\User\UserCreated;
 use Tests\TestCase;
 
 class CreateUserTest extends TestCase

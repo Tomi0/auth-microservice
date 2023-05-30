@@ -2,9 +2,9 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Domain\Service\User;
 
-use AuthMicroservice\Authentication\Domain\Model\User\User;
-use AuthMicroservice\Authentication\Domain\Service\User\GenerateJwtToken;
 use Lcobucci\JWT\Configuration;
+use Authentication\Domain\Model\User\User;
+use Authentication\Domain\Service\User\GenerateJwtToken;
 use Tests\TestCase;
 
 class GenerateJwtTokenTest extends TestCase

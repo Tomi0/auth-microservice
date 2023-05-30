@@ -2,11 +2,11 @@
 
 namespace App\Exceptions;
 
-use AuthMicroservice\Authentication\Domain\Model\User\InvalidCredentialsException;
-use AuthMicroservice\Authentication\Domain\Model\User\UserHasNotPermissionsException;
-use AuthMicroservice\Authentication\Domain\Model\User\UserNotLoggedException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Authentication\Domain\Model\User\InvalidCredentialsException;
+use Authentication\Domain\Model\User\UserHasNotPermissionsException;
+use Authentication\Domain\Model\User\UserNotLoggedException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 

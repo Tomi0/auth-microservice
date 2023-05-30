@@ -2,17 +2,17 @@
 
 namespace App\Providers;
 
-use AuthMicroservice\Authentication\Domain\Service\User\CheckPasswordHash;
-use AuthMicroservice\Authentication\Domain\Service\User\EncodePassword;
-use AuthMicroservice\Authentication\Domain\Service\User\GenerateJwtToken;
-use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\CheckPasswordHashLaravel;
-use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\EncodePasswordLaravel;
-use AuthMicroservice\Authentication\Infrastructure\Domain\Service\User\GenerateJwtTokenLcobucciJwt;
-use AuthMicroservice\Shared\Domain\Service\EventDispatcher;
-use AuthMicroservice\Shared\Domain\Service\RandomStringGenerator;
-use AuthMicroservice\Shared\Infrastructure\Laravel\Domain\Service\EventDispatcherLaravel;
-use AuthMicroservice\Shared\Infrastructure\Laravel\Domain\Service\RandomStringGeneratorLaravel;
 use Illuminate\Support\ServiceProvider;
+use Authentication\Domain\Service\User\CheckPasswordHash;
+use Authentication\Domain\Service\User\EncodePassword;
+use Authentication\Domain\Service\User\GenerateJwtToken;
+use Authentication\Infrastructure\Domain\Service\User\CheckPasswordHashLaravel;
+use Authentication\Infrastructure\Domain\Service\User\EncodePasswordLaravel;
+use Authentication\Infrastructure\Domain\Service\User\GenerateJwtTokenLcobucciJwt;
+use Shared\Domain\Service\EventDispatcher;
+use Shared\Domain\Service\RandomStringGenerator;
+use Shared\Infrastructure\Laravel\Domain\Service\EventDispatcherLaravel;
+use Shared\Infrastructure\Laravel\Domain\Service\RandomStringGeneratorLaravel;
 
 class BindServiceProvider extends ServiceProvider
 {

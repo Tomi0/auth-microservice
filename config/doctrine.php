@@ -33,7 +33,7 @@ return [
             'connection'    => env('DB_CONNECTION', 'mysql'),
             'namespaces'    => [],
             'paths'         => [
-                base_path('src/AuthMicroservice/Authentication/Infrastructure/Doctrine/Domain/Mapping')
+                base_path('src/Authentication/Infrastructure/Doctrine/Domain/Mapping')
             ],
             'repository'    => Doctrine\ORM\EntityRepository::class,
             'proxies'       => [

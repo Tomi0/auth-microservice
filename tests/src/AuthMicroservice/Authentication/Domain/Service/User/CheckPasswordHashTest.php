@@ -2,8 +2,8 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Domain\Service\User;
 
-use AuthMicroservice\Authentication\Domain\Service\User\CheckPasswordHash;
 use Illuminate\Support\Facades\Hash;
+use Authentication\Domain\Service\User\CheckPasswordHash;
 use Tests\TestCase;
 
 class CheckPasswordHashTest extends TestCase

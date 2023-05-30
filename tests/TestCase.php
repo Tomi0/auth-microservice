@@ -2,10 +2,10 @@
 
 namespace Tests;
 
-use AuthMicroservice\Authentication\Domain\Model\User\User;
-use AuthMicroservice\Authentication\Domain\Service\User\GenerateJwtToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Authentication\Domain\Model\User\User;
+use Authentication\Domain\Service\User\GenerateJwtToken;
 
 abstract class TestCase extends BaseTestCase
 {

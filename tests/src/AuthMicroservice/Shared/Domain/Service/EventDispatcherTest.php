@@ -2,8 +2,8 @@
 
 namespace Tests\src\AuthMicroservice\Shared\Domain\Service;
 
-use AuthMicroservice\Shared\Domain\Service\DomainEvent;
-use AuthMicroservice\Shared\Domain\Service\EventDispatcher;
+use Shared\Domain\Service\DomainEvent;
+use Shared\Domain\Service\EventDispatcher;
 use Tests\TestCase;
 
 class EventDispatcherTest extends TestCase

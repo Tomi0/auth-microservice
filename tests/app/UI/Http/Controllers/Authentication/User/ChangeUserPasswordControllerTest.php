@@ -3,9 +3,9 @@
 namespace Tests\app\UI\Http\Controllers\Authentication\User;
 
 
-use AuthMicroservice\Authentication\Application\Service\User\ChangeUserPassword;
-use AuthMicroservice\Authentication\Application\Service\User\ChangeUserPasswordRequest;
 use Mockery\MockInterface;
+use Authentication\Application\Service\User\ChangeUserPassword;
+use Authentication\Application\Service\User\ChangeUserPasswordRequest;
 use Tests\TestCase;
 
 class ChangeUserPasswordControllerTest extends TestCase

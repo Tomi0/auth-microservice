@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use AuthMicroservice\Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
-use AuthMicroservice\Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
-use AuthMicroservice\Authentication\Domain\Model\User\User;
-use AuthMicroservice\Authentication\Domain\Model\User\UserRepository;
-use AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\TokenResetPassword\TokenResetPasswordDoctrineRepository;
-use AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\User\UserDoctrineRepository;
 use Illuminate\Support\ServiceProvider;
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
+use Authentication\Domain\Model\User\User;
+use Authentication\Domain\Model\User\UserRepository;
+use Authentication\Infrastructure\Doctrine\Domain\Model\TokenResetPassword\TokenResetPasswordDoctrineRepository;
+use Authentication\Infrastructure\Doctrine\Domain\Model\User\UserDoctrineRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
