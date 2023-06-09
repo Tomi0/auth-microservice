@@ -32,10 +32,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $pdo = app()->make(\Doctrine\ORM\EntityManagerInterface::class)->getConnection()
-            ->getWrappedConnection();
+        try {
+            $pdo = app()->make(\Doctrine\ORM\EntityManagerInterface::class)->getConnection()
+                ->getWrappedConnection();
+            app()->make(\Illuminate\Database\ConnectionInterface::class)->setPdo($pdo);
+        } catch (\Throwable $throwable) {}
 
-        app()->make(\Illuminate\Database\ConnectionInterface::class)->setPdo($pdo);
 
         Factory::guessFactoryNamesUsing(function (string $modelName) {
             return 'Database\Factories\\' . class_basename($modelName) . 'Factory';

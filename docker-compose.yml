@@ -43,7 +43,7 @@ services:
     auth-php:
         build:
             context: .
-            dockerfile: docker/php8.2/Dockerfile
+            dockerfile: docker/development/php8.2/Dockerfile
         user: "1000:1000"
         container_name: auth-php
         working_dir: /var/www
