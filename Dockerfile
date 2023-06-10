@@ -12,7 +12,10 @@ RUN apt-get update && apt-get install -y git \
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN docker-php-ext-install pdo_mysql mbstring zip
 
-COPY ./docker/production/nginx /etc/nginx/conf.d
+WORKDIR /var/www
+
+RUN rm -rf /var/www/html
+COPY ./docker/production/nginx/default.conf /etc/nginx/sites-enabled/default
 COPY --chown=www-data:www-data . /var/www
 RUN rm -rf /var/www/bootstrap/cache/*.php
 RUN rm -rf /var/www/storage/logs/*.php
@@ -22,8 +25,6 @@ RUN cd /var/www && /usr/bin/composer install
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 EXPOSE 9000
-
-COPY docker/production/entrypoint.sh /etc/supervisor/conf.d/supervisord.conf
 
 ENV APP_NAME="Authentication microservice"
 ENV APP_ENV=production
