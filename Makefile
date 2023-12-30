@@ -5,7 +5,7 @@ install:
 	make generate-keys
 
 composer-install:
-	docker run --rm -it -v $(shell pwd):/app -w /app --user $(id -u):$(id -g) composer:2.2.7 composer install --ignore-platform-reqs --no-ansi
+	docker run --rm -it -v $(shell pwd):/app -w /app --user $(shell id -u):$(shell id -g) composer:2.2.7 composer install --ignore-platform-reqs --no-ansi
 
 start:
 	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker compose up --build -d
@@ -14,7 +14,7 @@ stop:
 	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker compose down
 
 test:
-	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker exec auth-php ./vendor/bin/phpunit
+	docker exec --user $(shell id -u):$(shell id -g) auth-php ./vendor/bin/phpunit
 
 generate-keys:
 	openssl genrsa -out storage/app/signing_keys/key.pem 2048
