@@ -1,6 +1,11 @@
 
+install:
+	make composer-install
+	@if [ ! -f .env ]; then cp .env.example .env; fi
+	make generate-keys
+
 composer-install:
-	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker exec auth-php composer install
+	docker run --rm -it -v $(shell pwd):/app -w /app --user $(id -u):$(id -g) composer:2.2.7 composer install --ignore-platform-reqs --no-ansi
 
 start:
 	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker compose up --build -d
