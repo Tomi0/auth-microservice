@@ -2,8 +2,9 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
+use Authentication\Domain\Model\AuthorizedHost\AuthorizedHost;
+use Authentication\Domain\Model\AuthorizedHost\HostNotAuthorized;
 use Illuminate\Support\Facades\Hash;
-use Lcobucci\JWT\Configuration;
 use Authentication\Application\Service\User\LoginUser;
 use Authentication\Application\Service\User\LoginUserRequest;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
@@ -20,6 +21,7 @@ class LoginUserTest extends TestCase
 {
     private User $user;
     private LoginUser $loginUser;
+    private AuthorizedHost $authorizedHost;
 
     protected function setUp(): void
     {
@@ -33,6 +35,9 @@ class LoginUserTest extends TestCase
         $this->user = entity(User::class)->create([
             'password' => Hash::make('password')
         ]);
+        $this->authorizedHost = entity(AuthorizedHost::class)->create([
+            'compra.tomibuenalacid.es',
+        ]);
     }
 
     /**
@@ -40,7 +45,7 @@ class LoginUserTest extends TestCase
      */
     public function testReturnValueIsString(): void
     {
-        $value = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password'));
+        $value = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->hostName()));
 
         $this->assertIsString($value);
     }
@@ -48,13 +53,19 @@ class LoginUserTest extends TestCase
     public function testThrowInvalidCredentialsWhenWrongEmail(): void
     {
         $this->expectException(InvalidCredentialsException::class);
-        $this->loginUser->handle(new LoginUserRequest('asdf', 'password'));
+        $this->loginUser->handle(new LoginUserRequest('asdf', 'password', $this->authorizedHost->hostName()));
     }
 
     public function testThrowInvalidCredentialsWhenWrongPassword(): void
     {
         $this->expectException(InvalidCredentialsException::class);
-        $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'incorrect password'));
+        $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'incorrect password', $this->authorizedHost->hostName()));
+    }
+
+    public function testThrowHostNotAuthorized(): void
+    {
+        $this->expectException(HostNotAuthorized::class);
+        $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'incorrect password', 'test.com'));
     }
 
     /**
@@ -62,7 +73,7 @@ class LoginUserTest extends TestCase
      */
     public function testValidJwtToken(): void
     {
-        $result = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password'));
+        $result = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->hostName()));
 
         $parser = new Parser(new JoseEncoder());
 

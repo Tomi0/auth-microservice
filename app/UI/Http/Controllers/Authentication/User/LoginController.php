@@ -24,7 +24,8 @@ class LoginController
     {
         return response()->json($this->loginUser->handle(new LoginUserRequest(
             $loginValidator->input('email'),
-            $loginValidator->input('password')
+            $loginValidator->input('password'),
+            $loginValidator->input('host_name')
         )));
     }
 }

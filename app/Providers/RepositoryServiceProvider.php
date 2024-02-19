@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Authentication\Domain\Model\AuthorizedHost\AuthorizedHost;
+use Authentication\Domain\Model\AuthorizedHost\AuthorizedHostRepository;
+use Authentication\Infrastructure\Doctrine\Domain\Model\AutorizedHost\AuthorizedHostDoctrineRepository;
 use Illuminate\Support\ServiceProvider;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
@@ -29,6 +32,12 @@ class RepositoryServiceProvider extends ServiceProvider
             return new TokenResetPasswordDoctrineRepository(
                 $app['em'],
                 $app['em']->getClassMetaData(TokenResetPassword::class)
+            );
+        });
+        $this->app->bind(AuthorizedHostRepository::class, function($app) {
+            return new AuthorizedHostDoctrineRepository(
+                $app['em'],
+                $app['em']->getClassMetaData(AuthorizedHost::class)
             );
         });
     }

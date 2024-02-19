@@ -21,4 +21,4 @@ generate-keys:
 	openssl rsa -in storage/app/signing_keys/key.pem -outform PEM -pubout -out storage/app/signing_keys/public.pem
 
 bash:
-	docker exec --user $(shell id -u):$(shell id -g) auth-php /bin/bash
+	docker exec -it --user $(shell id -u):$(shell id -g) auth-php /bin/bash

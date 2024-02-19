@@ -23,6 +23,7 @@ class LoginValidator extends FormRequest
         return [
             'email' => 'required|string',
             'password' => 'required|string',
+            'host_name' => 'required|string',
         ];
     }
 }
