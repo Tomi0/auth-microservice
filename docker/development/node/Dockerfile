@@ -1,11 +1,12 @@
-FROM node:18.6.0-alpine
-
-RUN npm install -g @angular/cli
+FROM node:21.6-alpine
 
 RUN mkdir /app
 
 WORKDIR /app
 
 EXPOSE 4200
+
+RUN mkdir "/.npm"
+RUN chmod -R 777 /.npm
 
 ENTRYPOINT ["npm", "start"]

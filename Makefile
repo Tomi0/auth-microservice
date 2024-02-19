@@ -7,6 +7,9 @@ install:
 composer-install:
 	docker run --rm -it -v $(shell pwd):/app -w /app --user $(shell id -u):$(shell id -g) composer:2.2.7 composer install --ignore-platform-reqs --no-ansi
 
+build:
+	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker compose build
+
 start:
 	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker compose up --build -d
 

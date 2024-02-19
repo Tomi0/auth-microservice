@@ -54,6 +54,19 @@ services:
         depends_on:
             - auth-db
             - auth-db-testing
+    auth-frontend:
+        build:
+            context: .
+            dockerfile: docker/development/node/Dockerfile
+        user: "${USER_ID}:${GROUP_ID}"
+        environment:
+            USER_ID: "${USER_ID}"
+            GROUP_ID: "${GROUP_ID}"
+        container_name: auth-frontend
+        volumes:
+            - ./resources/frontend:/app
+        ports:
+            - "4200:4200"
 
 volumes:
     auth-db:
