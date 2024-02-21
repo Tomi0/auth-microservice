@@ -22,7 +22,7 @@ class CreateUserTest extends TestCase
 
     public function testUserExistsInDataBase(): void
     {
-        $request = new CreateUserRequest('test@test.test', 'test');
+        $request = new CreateUserRequest('test', 'test@test.test', 'test');
         $this->createUser->handle($request);
 
         $this->assertDatabaseHas('user', [
@@ -37,13 +37,13 @@ class CreateUserTest extends TestCase
     {
         $this->expectsEvents(UserCreated::class);
 
-        $request = new CreateUserRequest('test@test.test', 'test');
+        $request = new CreateUserRequest('test', 'test@test.test', 'test');
         $this->createUser->handle($request);
     }
 
     public function testReturnValueIsAnUser(): void
     {
-        $request = new CreateUserRequest('test@test.test', 'test');
+        $request = new CreateUserRequest('test', 'test@test.test', 'test');
         $result = $this->createUser->handle($request);
 
         $this->assertInstanceOf(User::class, $result);
@@ -51,7 +51,7 @@ class CreateUserTest extends TestCase
 
     public function testReturnExpectedUser(): void
     {
-        $request = new CreateUserRequest('test@test.test', 'test');
+        $request = new CreateUserRequest('test', 'test@test.test', 'test');
         $result = $this->createUser->handle($request);
 
         $this->assertInstanceOf(User::class, $result);

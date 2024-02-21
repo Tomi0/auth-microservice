@@ -20,6 +20,7 @@ class CreateUserValidator extends FormRequest
     public function rules(): array
     {
         return [
+            'full_name' => ['required', 'max:255'],
             'email' => ['required', 'email'],
             'password' => 'required|min:6',
         ];

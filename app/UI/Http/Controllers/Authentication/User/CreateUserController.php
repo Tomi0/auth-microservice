@@ -20,6 +20,7 @@ class CreateUserController extends Controller
     public function __invoke(CreateUserValidator $createUserValidator): JsonResponse
     {
         return response()->json($this->createUser->handle(new CreateUserRequest(
+            $createUserValidator->input('full_name'),
             $createUserValidator->input('email'),
             $createUserValidator->input('password')
         )), 201);

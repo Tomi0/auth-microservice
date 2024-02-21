@@ -9,14 +9,16 @@ use Ramsey\Uuid\UuidInterface;
 class User implements JsonSerializable
 {
     private UuidInterface $id;
+    private string $fullName;
     private string $email;
     private string $password;
     private bool $admin;
     private DateTime $createdAt;
     private DateTime $updatedAt;
 
-    public function __construct(string $email, string $password)
+    public function __construct(string $fullName, string $email, string $password)
     {
+        $this->fullName = $fullName;
         $this->email = $email;
         $this->password = $password;
         $this->admin = false;
@@ -25,6 +27,11 @@ class User implements JsonSerializable
     public function id(): UuidInterface
     {
         return $this->id;
+    }
+
+    public function fullName(): string
+    {
+        return $this->fullName;
     }
 
     public function email(): string

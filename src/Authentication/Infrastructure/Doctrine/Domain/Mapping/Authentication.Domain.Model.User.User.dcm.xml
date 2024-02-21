@@ -12,6 +12,7 @@
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator"/>
         </id>
 
+        <field name="fullName" column="full_name" type="string"/>
         <field name="email" column="email" type="string"/>
         <field name="password" column="password" type="string"/>
         <field name="admin" column="admin" type="boolean"/>
