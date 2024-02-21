@@ -103,4 +103,5 @@ return [
 
     'password_timeout' => 10800,
 
+    'enable_authorized_host' => env('ENABLE_AUTHORIZED_HOST', false)
 ];

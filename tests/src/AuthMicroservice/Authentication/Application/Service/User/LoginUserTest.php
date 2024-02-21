@@ -4,6 +4,7 @@ namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
 use Authentication\Domain\Model\AuthorizedHost\AuthorizedHost;
 use Authentication\Domain\Model\AuthorizedHost\HostNotAuthorized;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Authentication\Application\Service\User\LoginUser;
 use Authentication\Application\Service\User\LoginUserRequest;
@@ -64,6 +65,7 @@ class LoginUserTest extends TestCase
 
     public function testThrowHostNotAuthorized(): void
     {
+        Config::set('auth.enable_authorized_host', true);
         $this->expectException(HostNotAuthorized::class);
         $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'incorrect password', 'test.com'));
     }
