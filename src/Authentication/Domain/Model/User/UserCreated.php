@@ -7,18 +7,25 @@ use Shared\Domain\Model\DomainEvent;
 
 class UserCreated implements DomainEvent
 {
-    private User $user;
+    private string $fullName;
+    private string $email;
     private DateTime $occurredOn;
 
-    public function __construct(User $user)
+    public function __construct(string $fullName, string $email)
     {
-        $this->user = $user;
         $this->occurredOn = new DateTime();
+        $this->fullName = $fullName;
+        $this->email = $email;
     }
 
-    public function user(): User
+    public function fullName(): string
     {
-        return $this->user;
+        return $this->fullName;
+    }
+
+    public function email(): string
+    {
+        return $this->email;
     }
 
     public function occurredOn(): DateTime

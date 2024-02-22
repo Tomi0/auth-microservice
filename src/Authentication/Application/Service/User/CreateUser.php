@@ -30,7 +30,7 @@ class CreateUser
 
         $this->userRepository->persistir($user);
 
-        $this->eventDispatcher->execute(new UserCreated($user));
+        $this->eventDispatcher->execute(new UserCreated($user->fullName(), $user->email()));
 
         return $user;
     }
