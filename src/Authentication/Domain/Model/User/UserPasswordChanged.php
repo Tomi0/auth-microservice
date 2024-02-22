@@ -4,29 +4,37 @@ namespace Authentication\Domain\Model\User;
 
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use DateTime;
+use Ramsey\Uuid\UuidInterface;
 use Shared\Domain\Model\DomainEvent;
 
 class UserPasswordChanged implements DomainEvent
 {
-    private User $user;
-    private TokenResetPassword $tokenResetPassword;
+    private UuidInterface $userId;
+    private string $fullName;
+    private string $email;
     private DateTime $occurredOn;
 
-    public function __construct(User $user, TokenResetPassword $tokenResetPassword)
+    public function __construct(UuidInterface $userId, string $fullName, string $email)
     {
-        $this->user = $user;
-        $this->tokenResetPassword = $tokenResetPassword;
+        $this->userId = $userId;
+        $this->fullName = $fullName;
+        $this->email = $email;
         $this->occurredOn = new DateTime();
     }
 
-    public function user(): User
+    public function userId(): UuidInterface
     {
-        return $this->user;
+        return $this->userId;
     }
 
-    public function tokenResetPassword(): TokenResetPassword
+    public function fullName(): string
     {
-        return $this->tokenResetPassword;
+        return $this->fullName;
+    }
+
+    public function email(): string
+    {
+        return $this->email;
     }
 
     public function occurredOn(): DateTime

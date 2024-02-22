@@ -8,23 +8,30 @@ use Shared\Domain\Model\DomainEvent;
 
 class TokenResetPasswordGenerated implements DomainEvent
 {
-    private User $userToResetPassword;
-    private TokenResetPassword $tokenResetPassword;
+    private string $userFullName;
+    private string $userEmail;
+    private string $tokenResetPassword;
     private DateTime $occurredOn;
 
-    public function __construct(User $userToResetPassword, TokenResetPassword $tokenResetPassword)
+    public function __construct(string $userFullName, string $userEmail, string $tokenResetPassword)
     {
-        $this->userToResetPassword = $userToResetPassword;
+        $this->userFullName = $userFullName;
+        $this->userEmail = $userEmail;
         $this->tokenResetPassword = $tokenResetPassword;
         $this->occurredOn = new DateTime();
     }
 
-    public function userToResetPassword(): User
+    public function userFullName(): string
     {
-        return $this->userToResetPassword;
+        return $this->userFullName;
     }
 
-    public function tokenResetPassword(): TokenResetPassword
+    public function userEmail(): string
+    {
+        return $this->userEmail;
+    }
+
+    public function tokenResetPassword(): string
     {
         return $this->tokenResetPassword;
     }

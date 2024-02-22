@@ -48,6 +48,6 @@ class ChangeUserPassword
 
         $this->userRepository->persistir($user);
 
-        $this->eventDispatcher->execute(new UserPasswordChanged($user, $tokenResetPassword));
+        $this->eventDispatcher->execute(new UserPasswordChanged($user->id(), $user->fullName(), $user->email()));
     }
 }

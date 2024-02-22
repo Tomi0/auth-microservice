@@ -45,6 +45,6 @@ class GenerateTokenResetPassword
 
         $this->tokenResetPasswordRepository->persist($tokenResetPassword);
 
-        $this->eventDispatcher->execute(new TokenResetPasswordGenerated($user, $tokenResetPassword));
+        $this->eventDispatcher->execute(new TokenResetPasswordGenerated($user->fullName(), $user->email(), $tokenResetPassword->token()));
     }
 }
