@@ -18,7 +18,7 @@ class PersistDomainEventSubscriber implements EventSubscriber
     {
         DB::table('event')->insert([
             'id' => Uuid::uuid4(),
-            'event_name' => class_basename($event),
+            'event_name' => get_class($event),
             'event_data' => json_encode($event),
             'occurred_on' => $event->occurredOn(),
         ]);

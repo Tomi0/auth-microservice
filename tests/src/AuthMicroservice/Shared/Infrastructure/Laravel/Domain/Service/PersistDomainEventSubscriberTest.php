@@ -30,7 +30,7 @@ class PersistDomainEventSubscriberTest extends TestCase
 
         $this->assertDatabaseCount('event', 1);
         $this->assertDatabaseHas('event', [
-            'event_name' => class_basename($domainEvent),
+            'event_name' => get_class($domainEvent),
             'event_data' => json_encode($domainEvent),
             'occurred_on' => $occurredOn->format('Y-m-d H:i:s')
         ]);
