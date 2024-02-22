@@ -6,18 +6,18 @@
         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
           Create a new account
         </h1>
-        <form class="space-y-4 md:space-y-6" [formGroup]="crearContactoForm" (submit)="sendCreateUserRequest()">
+        <form class="space-y-4 md:space-y-6" [formGroup]="formService.getForm()" (submit)="sendCreateUserRequest()">
           <div class="mt-2">
-            <app-input label="Full name" inputType="text" [formControlInput]="getFormControl('full_name')"></app-input>
+            <app-input label="Full name" inputType="text" [formControlInput]="formService.getFormControl('full_name')"></app-input>
           </div>
           <div class="mt-3">
             <app-input label="Email" inputType="email" placeHolder="example@gmail.com"
 
-                       [formControlInput]="getFormControl('email')"></app-input>
+                       [formControlInput]="formService.getFormControl('email')"></app-input>
           </div>
           <div class="mt-3">
             <app-input label="Password" inputType="password" placeHolder="**********"
-                       [formControlInput]="getFormControl('password')"></app-input>
+                       [formControlInput]="formService.getFormControl('password')"></app-input>
           </div>
           <button type="submit"
                   class="transition-all w-full dark:text-white bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-primary-800">

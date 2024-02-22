@@ -17,13 +17,12 @@ class LoginValidator extends FormRequest
         return true;
     }
 
-    #[ArrayShape(['email' => "string", 'password' => "string"])]
     public function rules(): array
     {
         return [
             'email' => 'required|string',
             'password' => 'required|string',
-            'host_name' => 'required|string',
+            'host_name' => 'nullable|string',
         ];
     }
 }

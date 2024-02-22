@@ -5,7 +5,9 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from "@angular
 import {RegisterUserService} from "./register-user.service";
 import {User} from "../../../application/shared/model/User.model";
 import {ValidationService} from "../../../infrastructure/validation/validation.service";
-import {InputComponent} from "../../../application/shared/components/input/input.component";
+import {InputComponent} from "../../../application/shared/component/input/input.component";
+import {ToastrService} from "ngx-toastr";
+import {FormService} from "../../../application/shared/service/form.service";
 
 @Component({
   selector: 'app-register-account',
@@ -16,36 +18,27 @@ import {InputComponent} from "../../../application/shared/components/input/input
 })
 export class RegisterAccountComponent {
 
-  public crearContactoForm: FormGroup = {} as FormGroup;
-
-
-  constructor(protected formBuilder: FormBuilder,
+  constructor(public formService: FormService,
               protected router: Router,
+              protected toastrService: ToastrService,
               protected validationService: ValidationService,
               protected registerUserService: RegisterUserService) {
-    this.buildForm();
-  }
-
-  public buildForm(): void {
-    this.crearContactoForm = this.formBuilder.group({
+    this.formService.buildForm({
       full_name: null,
       email: null,
       password: null,
-    })
+    });
   }
 
   public sendCreateUserRequest(): void {
-    this.registerUserService.__invoke(this.crearContactoForm.value).subscribe({
+    this.registerUserService.__invoke(this.formService.formData()).subscribe({
       next: (user: User) => {
+        this.toastrService.success('New account has been created')
         this.router.navigate(['/auth/login']);
       },
       error: (errorResponse) => {
-        this.validationService.validateForm(this.crearContactoForm, errorResponse.error.errors)
+        this.validationService.validateForm(this.formService.getForm(), errorResponse.error.errors)
       }
     })
-  }
-
-  public getFormControl(formControlName: string) {
-    return this.crearContactoForm.get(formControlName) as FormControl;
   }
 }
