@@ -2,7 +2,8 @@
 
 namespace Tests\src\AuthMicroservice\Shared\Domain\Service;
 
-use Shared\Domain\Service\DomainEvent;
+use DateTime;
+use Shared\Domain\Model\DomainEvent;
 use Shared\Domain\Service\EventDispatcher;
 use Tests\TestCase;
 
@@ -21,7 +22,12 @@ class EventDispatcherTest extends TestCase
     {
         $this->expectsEvents(DomainEvent::class);
 
-        $this->eventDispatcher->execute(new class() implements DomainEvent {});
+        $this->eventDispatcher->execute(new class() implements DomainEvent {
+            public function occurredOn(): DateTime
+            {
+                return new DateTime();
+            }
+        });
     }
 
 }
