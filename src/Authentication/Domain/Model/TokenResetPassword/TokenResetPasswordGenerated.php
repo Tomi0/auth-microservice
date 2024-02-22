@@ -40,4 +40,13 @@ class TokenResetPasswordGenerated implements DomainEvent
     {
         return $this->occurredOn;
     }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'userFullName' => $this->userFullName(),
+            'userEmail' => $this->userEmail(),
+            'tokenResetPassword' => $this->tokenResetPassword(),
+        ];
+    }
 }

@@ -4,6 +4,7 @@ namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
 use Authentication\Domain\Model\AuthorizedHost\AuthorizedHost;
 use Authentication\Domain\Model\AuthorizedHost\HostNotAuthorized;
+use Authentication\Domain\Model\User\UserLoggedIn;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Authentication\Application\Service\User\LoginUser;
@@ -49,6 +50,16 @@ class LoginUserTest extends TestCase
         $value = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->hostName()));
 
         $this->assertIsString($value);
+    }
+
+    /**
+     * @throws HostNotAuthorized
+     * @throws InvalidCredentialsException
+     */
+    public function testPublicUserLoggedIn(): void
+    {
+        $this->assertEventPublished(UserLoggedIn::class);
+        $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->hostName()));
     }
 
     public function testThrowInvalidCredentialsWhenWrongEmail(): void

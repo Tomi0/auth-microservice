@@ -41,4 +41,13 @@ class UserPasswordChanged implements DomainEvent
     {
         return $this->occurredOn;
     }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'userId' => $this->userId(),
+            'fullName' => $this->fullName(),
+            'email' => $this->email(),
+        ];
+    }
 }

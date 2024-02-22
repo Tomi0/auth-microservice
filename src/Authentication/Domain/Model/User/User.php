@@ -5,6 +5,7 @@ namespace Authentication\Domain\Model\User;
 use DateTime;
 use JsonSerializable;
 use Ramsey\Uuid\UuidInterface;
+use Shared\Domain\Service\EventPublisher;
 
 class User implements JsonSerializable
 {
@@ -22,6 +23,10 @@ class User implements JsonSerializable
         $this->email = $email;
         $this->password = $password;
         $this->admin = false;
+
+        EventPublisher::instance()->publish(
+            new UserCreated($this->fullName(), $this->email())
+        );
     }
 
     public function id(): UuidInterface
@@ -78,5 +83,9 @@ class User implements JsonSerializable
     public function changePassword(string $passwordEncoded): void
     {
         $this->password = $passwordEncoded;
+
+        EventPublisher::instance()->publish(
+            new UserPasswordChanged($this->id(), $this->fullName(), $this->email())
+        );
     }
 }

@@ -9,6 +9,7 @@ use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordGenerated;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserNotFoundException;
+use Shared\Domain\Model\DomainEvent;
 use Tests\TestCase;
 
 class GenerateTokenResetPasswordTest extends TestCase
@@ -64,7 +65,7 @@ class GenerateTokenResetPasswordTest extends TestCase
      */
     public function testFireTokenResetPasswordGenerated(): void
     {
-        $this->expectsEvents(TokenResetPasswordGenerated::class);
+        $this->assertEventPublished(TokenResetPasswordGenerated::class);
         $this->generateTokenResetPassword->handle(new GenerateTokenResetPasswordRequest($this->user->email()));
     }
 

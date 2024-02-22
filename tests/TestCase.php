@@ -6,6 +6,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Service\User\GenerateJwtToken;
+use Shared\Domain\Model\DomainEvent;
+use Shared\Domain\Service\EventPublisher;
+use Shared\Domain\Service\EventSubscriber;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -15,6 +18,17 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+    }
+
+    protected function assertEventPublished(string $domainEventClassName): void
+    {
+        $mock = $this->createMock(EventSubscriber::class);
+
+        $mock->method('isSubscribedTo')->willReturn(true);
+        $mock->expects($this->once())->method('handle')->with($this->isInstanceOf($domainEventClassName));
+        EventPublisher::instance()->subscribe(
+            $mock
+        );
     }
 
     public function beginDatabaseTransaction(): void

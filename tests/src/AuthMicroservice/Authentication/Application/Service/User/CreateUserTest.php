@@ -35,7 +35,7 @@ class CreateUserTest extends TestCase
      */
     public function testFireUserCreated(): void
     {
-        $this->expectsEvents(UserCreated::class);
+        $this->assertEventPublished(UserCreated::class);
 
         $request = new CreateUserRequest('test', 'test@test.test', 'test');
         $this->createUser->handle($request);

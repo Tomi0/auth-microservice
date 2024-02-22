@@ -32,4 +32,12 @@ class UserCreated implements DomainEvent
     {
         return $this->occurredOn;
     }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'fullName' => $this->fullName,
+            'email' => $this->email,
+        ];
+    }
 }
