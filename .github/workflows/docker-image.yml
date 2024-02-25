@@ -17,6 +17,4 @@ jobs:
       - name: Push the Docker image
         with:
           docker_token: ${{ secrets.DOCKER_TOKEN }}
-        run:
-          docker login -u tomi0 -p "$docker_token"
-          docker push tomi0/auth-microservice:latest
+        run: docker login -u tomi0 -p "$docker_token" && docker push tomi0/auth-microservice:latest
