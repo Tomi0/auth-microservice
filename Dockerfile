@@ -1,42 +1,42 @@
-FROM composer:2.5.7 as composer
+FROM node:21.6-alpine as builder
+
+RUN mkdir /app
+
+COPY resources/frontend /app
+
+RUN cd /app && npm install && npm run build --prod
 
 FROM php:8.2-fpm
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.5.7 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && apt-get install -y git \
     libonig-dev \
     libzip-dev \
     zip \
     nginx
+
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN docker-php-ext-install pdo_mysql mbstring zip
 
 WORKDIR /var/www
-
 RUN rm -rf /var/www/html
-COPY ./docker/production/nginx/default.conf /etc/nginx/sites-enabled/default
-COPY --chown=www-data:www-data . /var/www
-RUN rm -rf /var/www/bootstrap/cache/*.php
-RUN rm -rf /var/www/storage/logs/*.php
 
-RUN cd /var/www && /usr/bin/composer install
+RUN mkdir /var/www/frontend
+RUN mkdir /var/www/api
+
+COPY --chown=www-data:www-data --from=builder /app/dist/auth-microservice/browser /var/www/frontend
+COPY --chown=www-data:www-data . /var/www/api
+
+COPY ./docker/production/nginx/default.conf /etc/nginx/sites-enabled/default
+
+RUN cd /var/www/api && /usr/bin/composer install
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-EXPOSE 9000
+RUN chown www-data:www-data -R /var/www
 
-ENV APP_NAME="Authentication microservice"
-ENV APP_ENV=production
-ENV APP_KEY="base64:yAjw7noaOz+Qq1/1yTPx9HZ8ScT5LVHjNrbtiq7z5lk="
-ENV APP_DEBUG=false
-ENV LOG_CHANNEL=daily
-ENV LOG_DEPRECATIONS_CHANNEL=null
-ENV LOG_LEVEL=debug
-ENV FILESYSTEM_DRIVER=local
-ENV QUEUE_CONNECTION=sync
-ENV SESSION_DRIVER=file
-ENV SESSION_LIFETIME=120
+EXPOSE 9000
 
 COPY docker/production/entrypoint.sh /etc/entrypoint.sh
 

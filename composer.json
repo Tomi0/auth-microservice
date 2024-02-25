@@ -1,9 +1,10 @@
 {
-    "name": "laravel/laravel",
+    "name": "tomi0/auth-microservice",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "Authentication microservice.",
+    "keywords": ["Authenticacion", "Microservices"],
     "license": "MIT",
+    "version": "1.0",
     "require": {
         "php": "^8.2",
         "fruitcake/laravel-cors": "^2.0",
