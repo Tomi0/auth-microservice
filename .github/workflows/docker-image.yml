@@ -12,9 +12,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          docker_token: ${{ secrets.DOCKER_TOKEN }}
       - name: Build the Docker image
         run: docker build . --tag tomi0/auth-microservice:latest
       - name: Push the Docker image
+        env:
+          docker_token: ${{ secrets.DOCKER_TOKEN }}
         run: docker login -u tomi0 -p "$docker_token" && docker push tomi0/auth-microservice:latest
