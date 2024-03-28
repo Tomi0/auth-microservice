@@ -94,6 +94,6 @@ class LoginUserTest extends TestCase
 
         $validator = new Validator();
 
-        $this->assertTrue($validator->validate($token, new SignedWith(new Sha256(), InMemory::file(config('filesystems.disks.jwt_signing_keys.root') . '/' . config('jwt.jwt_public_key_filename')))));
+        $this->assertTrue($validator->validate($token, new SignedWith(new Sha256(), InMemory::plainText($this->createOrGetSigningKey()->publicKey()))));
     }
 }

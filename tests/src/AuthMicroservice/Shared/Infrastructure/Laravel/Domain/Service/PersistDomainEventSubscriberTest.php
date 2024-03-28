@@ -2,6 +2,7 @@
 
 namespace Tests\src\AuthMicroservice\Shared\Infrastructure\Laravel\Domain\Service;
 
+use Illuminate\Support\Facades\DB;
 use Shared\Domain\Model\DomainEvent;
 use Shared\Infrastructure\Laravel\Domain\Service\PersistDomainEventSubscriber;
 use Tests\TestCase;
@@ -24,6 +25,7 @@ class PersistDomainEventSubscriberTest extends TestCase
         $domainEvent->method('jsonSerialize')->willReturn(['test' => 'test']);
         $domainEvent->method('occurredOn')->willReturn($occurredOn);
 
+        DB::table('event')->whereRaw('0=0')->delete();
         $this->assertDatabaseCount('event', 0);
 
         $eventSubscriber->handle($domainEvent);

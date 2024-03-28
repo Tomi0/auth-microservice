@@ -15,6 +15,7 @@ class LoginControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->createOrGetSigningKey();
         $this->user = entity(User::class)->create([
             'password' => Hash::make('secret'),
         ]);

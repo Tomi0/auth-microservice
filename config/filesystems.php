@@ -35,11 +35,6 @@ return [
             'root' => storage_path('app'),
         ],
 
-        'jwt_signing_keys' => [
-            'driver' => 'local',
-            'root' => storage_path('app/signing_keys'),
-        ],
-
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
