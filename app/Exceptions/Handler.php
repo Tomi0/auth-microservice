@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
 use Authentication\Domain\Model\User\UserHasNotPermissionsException;
 use Authentication\Domain\Model\User\UserNotLoggedException;
+use Shared\Domain\Model\DomainValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -54,6 +55,9 @@ class Handler extends ExceptionHandler
         }
         if ($e instanceof UserNotLoggedException) {
             return response()->json(['message' => 'User not logged'], 401);
+        }
+        if ($e instanceof DomainValidationException) {
+            return response()->json(['message' => 'User not logged', 'errors' => [$e->fieldName() => [$e->getMessage()]]], 422);
         }
 
         return parent::render($request, $e);

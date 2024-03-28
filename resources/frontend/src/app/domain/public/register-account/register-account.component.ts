@@ -37,7 +37,11 @@ export class RegisterAccountComponent {
         this.router.navigate(['/auth/login']);
       },
       error: (errorResponse) => {
-        this.validationService.validateForm(this.formService.getForm(), errorResponse.error.errors)
+        if (errorResponse.status === 422) {
+          this.validationService.validateForm(this.formService.getForm(), errorResponse.error.errors)
+        } else {
+          this.toastrService.error('An error occurred while trying to create an account. Please try again later.')
+        }
       }
     })
   }

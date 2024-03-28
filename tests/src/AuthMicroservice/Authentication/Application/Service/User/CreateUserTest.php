@@ -2,6 +2,7 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
+use Authentication\Domain\Model\User\EmailAlreadyInUseException;
 use Exception;
 use Authentication\Application\Service\User\CreateUser;
 use Authentication\Application\Service\User\CreateUserRequest;
@@ -28,6 +29,17 @@ class CreateUserTest extends TestCase
         $this->assertDatabaseHas('user', [
             'email' => 'test@test.test',
         ]);
+    }
+
+    public function testThrowEmailAlreadyInUse(): void
+    {
+        $this->expectExceptionMessage('Email already in use');
+        $this->expectException(EmailAlreadyInUseException::class);
+
+        entity(User::class)->create(['email' => 'test@test.test']);
+        $request = new CreateUserRequest('test', 'test@test.test', 'test');
+
+        $this->createUser->handle($request);
     }
 
     /**

@@ -35,7 +35,11 @@ export class LoginUserComponent {
         this.toastrService.success('Log in successfully')
       },
       error: (errorResponse) => {
-        this.validationService.validateForm(this.formService.getForm(), errorResponse.error.errors);
+        if (errorResponse.status === 422) {
+          this.validationService.validateForm(this.formService.getForm(), errorResponse.error.errors);
+        } else {
+          this.toastrService.error('An error occurred while trying to log in. Please try again later.')
+        }
       }
     })
   }
