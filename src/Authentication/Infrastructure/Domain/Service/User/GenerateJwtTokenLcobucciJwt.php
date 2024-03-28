@@ -2,6 +2,7 @@
 
 namespace Authentication\Infrastructure\Domain\Service\User;
 
+use Authentication\Domain\Model\SigningKey\SigningKey;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\Storage;
 use Lcobucci\JWT\Configuration;
@@ -16,11 +17,12 @@ use Ramsey\Uuid\Uuid;
 
 class GenerateJwtTokenLcobucciJwt extends GenerateJwtToken
 {
-    public function execute(User $user): string
+    public function execute(User $user, SigningKey $signingKey): string
     {
         $tokenBuilder = new Builder(new JoseEncoder(), ChainedFormatter::default());
         $algorithm = new Sha256();
-        $signingKey = InMemory::file(config('filesystems.disks.jwt_signing_keys.root') . '/' . config('jwt.jwt_private_key_filename'));
+
+        $jwtSigningKey = InMemory::plainText($signingKey->privateKey());
         $now = new DateTimeImmutable();
 
         return $tokenBuilder->issuedBy('auth-microservice')
@@ -30,7 +32,7 @@ class GenerateJwtTokenLcobucciJwt extends GenerateJwtToken
             ->expiresAt($now->modify('+1 hour'))
             ->withClaim('user_id', $user->id())
             ->withClaim('user_email', $user->email())
-            ->getToken($algorithm, $signingKey)
+            ->getToken($algorithm, $jwtSigningKey)
             ->toString();
     }
 }

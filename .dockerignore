@@ -2,4 +2,3 @@
 .env
 composer.lock
 resources/frontend/node_modules
-./storage/app/signing_keys

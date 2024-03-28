@@ -16,7 +16,8 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "lcobucci/jwt": "^5.0",
-        "ramsey/uuid-doctrine": "^1.8"
+        "ramsey/uuid-doctrine": "^1.8",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.7",

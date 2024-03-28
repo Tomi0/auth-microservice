@@ -5,6 +5,8 @@ namespace Authentication\Application\Service\User;
 use Authentication\Domain\Model\AuthorizedHost\AuthorizedHostNotFoundException;
 use Authentication\Domain\Model\AuthorizedHost\AuthorizedHostRepository;
 use Authentication\Domain\Model\AuthorizedHost\HostNotAuthorized;
+use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
+use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
 use Authentication\Domain\Model\User\UserLoggedIn;
 use Authentication\Domain\Model\User\UserNotFoundException;
@@ -21,11 +23,13 @@ class LoginUser
     private CheckPasswordHash $checkPasswordHash;
     private AuthorizedHostRepository $autorizedHostRepository;
     private GetConfigItem $getConfigItem;
+    private SigningKeyRepository $signingKey;
 
     public function __construct(UserRepository           $userRepository,
                                 AuthorizedHostRepository $autorizedHostRepository,
                                 GenerateJwtToken         $generateJwtToken,
                                 GetConfigItem            $getConfigItem,
+                                SigningKeyRepository     $signingKey,
                                 CheckPasswordHash        $checkPasswordHash)
     {
         $this->userRepository = $userRepository;
@@ -33,15 +37,17 @@ class LoginUser
         $this->checkPasswordHash = $checkPasswordHash;
         $this->autorizedHostRepository = $autorizedHostRepository;
         $this->getConfigItem = $getConfigItem;
+        $this->signingKey = $signingKey;
     }
 
     /**
      * @throws InvalidCredentialsException
      * @throws HostNotAuthorized
+     * @throws SigningKeyNotFoundException
      */
     public function handle(LoginUserRequest $loginUserRequest): string
     {
-        if ((bool) $this->getConfigItem->execute('auth.enable_authorized_host')) {
+        if ((bool)$this->getConfigItem->execute('auth.enable_authorized_host')) {
             try {
                 $this->autorizedHostRepository->ofHostName($loginUserRequest->hostName);
             } catch (AuthorizedHostNotFoundException $e) {
@@ -56,11 +62,16 @@ class LoginUser
         }
 
         if ($this->checkPasswordHash->execute($loginUserRequest->password, $user->password())) {
+
+            $signingKey = $this->signingKey->first();
+
+            $jwtToken = $this->generateJwtToken->execute($user, $signingKey);
+
             EventPublisher::instance()->publish(
                 new UserLoggedIn($user->id(), $user->fullName(), $user->email())
             );
 
-            return $this->generateJwtToken->execute($user);
+            return $jwtToken;
         }
 
         throw new InvalidCredentialsException();

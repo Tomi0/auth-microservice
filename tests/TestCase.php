@@ -2,10 +2,15 @@
 
 namespace Tests;
 
+use Authentication\Domain\Model\SigningKey\SigningKey;
+use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
+use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Service\User\GenerateJwtToken;
+use LaravelDoctrine\ORM\Facades\EntityManager;
+use Ramsey\Uuid\Uuid;
 use Shared\Domain\Model\DomainEvent;
 use Shared\Domain\Service\EventPublisher;
 use Shared\Domain\Service\EventSubscriber;
@@ -18,6 +23,7 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->createOrGetSigningKey();
     }
 
     protected function assertEventPublished(string $domainEventClassName): void
@@ -44,9 +50,25 @@ abstract class TestCase extends BaseTestCase
     protected function getJwtToken(User $user = null): string
     {
         $user = ($user === null) ? entity(User::class)->create() : $user;
+        $signingKey = $this->createOrGetSigningKey();
 
-        /** @var GenerateJwtToken $configuration */
-        $configuration = $this->app->make(GenerateJwtToken::class);
-        return 'Bearer ' . $configuration->execute($user);
+        /** @var GenerateJwtToken $generateJwtToken */
+        $generateJwtToken = $this->app->make(GenerateJwtToken::class);
+        return 'Bearer ' . $generateJwtToken->execute($user, $signingKey);
+    }
+
+    protected function createOrGetSigningKey(): SigningKey
+    {
+        /** @var SigningKeyRepository $signingKeyRepository */
+        $signingKeyRepository = app()->make(SigningKeyRepository::class);
+
+        try {
+            $signingKey = $signingKeyRepository->first();
+        } catch (SigningKeyNotFoundException $e) {
+            $signingKey = new SigningKey(Uuid::uuid4());
+            $signingKeyRepository->persist($signingKey);
+        }
+
+        return $signingKey;
     }
 }
