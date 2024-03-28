@@ -23,6 +23,8 @@ class User implements JsonSerializable
         $this->email = $email;
         $this->password = $password;
         $this->admin = false;
+        $this->createdAt = new DateTime();
+        $this->updatedAt = new DateTime();
 
         EventPublisher::instance()->publish(
             new UserCreated($this->fullName(), $this->email())

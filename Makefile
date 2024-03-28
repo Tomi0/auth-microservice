@@ -1,8 +1,12 @@
 
 install:
 	make composer-install
+	make npm-install
 	@if [ ! -f .env ]; then cp .env.example .env; fi
 	make generate-keys
+
+npm-install:
+	docker run --rm -it -v $(shell pwd)/resources/frontend:/app -w /app --user $(shell id -u):$(shell id -g) node:21.6-alpine npm install
 
 composer-install:
 	docker run --rm -it -v $(shell pwd):/app -w /app --user $(shell id -u):$(shell id -g) composer:2.2.7 composer install --ignore-platform-reqs --no-ansi

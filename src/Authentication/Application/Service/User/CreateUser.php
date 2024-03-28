@@ -2,8 +2,9 @@
 
 namespace Authentication\Application\Service\User;
 
+use Authentication\Domain\Model\User\EmailAlreadyInUseException;
 use Authentication\Domain\Model\User\User;
-use Authentication\Domain\Model\User\UserCreated;
+use Authentication\Domain\Model\User\UserNotFoundException;
 use Authentication\Domain\Model\User\UserRepository;
 use Authentication\Domain\Service\User\EncodePassword;
 
@@ -18,9 +19,18 @@ class CreateUser
         $this->encodePassword = $encodePassword;
     }
 
+    /**
+     * @throws EmailAlreadyInUseException
+     */
     public function handle(CreateUserRequest $createUserRequest): User
     {
-        // TODO unique email
+        try {
+            $this->userRepository->ofEmail($createUserRequest->email);
+
+            throw new EmailAlreadyInUseException('email', 'Email already in use');
+        } catch (UserNotFoundException $e) {
+        }
+
         $passwordHash = $this->encodePassword->execute($createUserRequest->password);
 
         $user = new User($createUserRequest->fullName, $createUserRequest->email, $passwordHash);
