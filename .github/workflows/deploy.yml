@@ -7,7 +7,7 @@ on:
 jobs:
 
   tests:
-    uses: Tomi0/auth-microservice/.github/workflows/tests.yml@laravel-tests
+    uses: ./.github/workflows/tests.yml
   build:
     runs-on: ubuntu-latest
     steps:
