@@ -5,8 +5,14 @@ on:
   push:
     branches:
       - main
+      - develop
 
 jobs:
+  hola-mundo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Hola Mundo"
+        run: echo "Hola Mundo"
   laravel-tests:
 
     runs-on: ubuntu-latest
