@@ -12,12 +12,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Hola Mundo"
-        run: echo "Hola Mundo"
+        run: sleep 2 && echo "Hola Mundo"
   hola-mundo1:
     runs-on: ubuntu-latest
+    needs: [hola-mundo]
     steps:
       - name: "Hola Mundo1"
-        run: echo "Hola Mundo1"
+        run: sleep 2 && echo "Hola Mundo1"
+  hola-mundo2:
+    runs-on: ubuntu-latest
+    needs: [hola-mundo1]
+    steps:
+      - name: "Hola Mundo2"
+        run: sleep 2 && echo "Hola Mundo2"
 #  laravel-tests:
 #
 #    runs-on: ubuntu-latest
