@@ -1,4 +1,4 @@
-name: Docker build image CI
+name: Deploy
 
 on:
   push:
@@ -6,10 +6,10 @@ on:
 
 jobs:
 
+  tests:
+    uses: Tomi0/auth-microservice/.github/workflows/tests.yml@laravel-tests
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
