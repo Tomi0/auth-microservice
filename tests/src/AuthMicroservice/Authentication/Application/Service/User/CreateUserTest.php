@@ -3,6 +3,8 @@
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
 use Authentication\Domain\Model\User\EmailAlreadyInUseException;
+use Authentication\Domain\Model\User\UserRepository;
+use Authentication\Domain\Service\User\EncodePassword;
 use Exception;
 use Authentication\Application\Service\User\CreateUser;
 use Authentication\Application\Service\User\CreateUserRequest;
@@ -13,22 +15,26 @@ use Tests\TestCase;
 class CreateUserTest extends TestCase
 {
     private CreateUser $createUser;
+    private UserRepository $userRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->createUser = $this->app->make(CreateUser::class);
+        $this->userRepository = $this->app->make(UserRepository::class);
+        $this->createUser = new CreateUser(
+            $this->userRepository,
+            $this->app->make(EncodePassword::class)
+        );
         $this->withoutEvents();
     }
 
     public function testUserExistsInDataBase(): void
     {
-        $request = new CreateUserRequest('test', 'test@test.test', 'test');
+        $email = 'test@test.test';
+        $request = new CreateUserRequest('test', $email, 'test');
         $this->createUser->handle($request);
 
-        $this->assertDatabaseHas('user', [
-            'email' => 'test@test.test',
-        ]);
+        $this->assertInstanceOf(User::class, $this->userRepository->ofEmail($email));
     }
 
     public function testThrowEmailAlreadyInUse(): void
@@ -36,7 +42,7 @@ class CreateUserTest extends TestCase
         $this->expectExceptionMessage('Email already in use');
         $this->expectException(EmailAlreadyInUseException::class);
 
-        entity(User::class)->create(['email' => 'test@test.test']);
+        $this->userRepository->persist(entity(User::class)->make(['email' => 'test@test.test']));
         $request = new CreateUserRequest('test', 'test@test.test', 'test');
 
         $this->createUser->handle($request);

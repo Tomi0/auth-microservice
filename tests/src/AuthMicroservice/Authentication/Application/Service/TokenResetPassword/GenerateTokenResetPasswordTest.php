@@ -2,6 +2,8 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\TokenResetPassword;
 
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
+use Authentication\Domain\Model\User\UserRepository;
 use Exception;
 use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPassword;
 use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPasswordRequest;
@@ -10,23 +12,33 @@ use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordGenerated;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserNotFoundException;
 use Shared\Domain\Model\DomainEvent;
+use Shared\Domain\Service\RandomStringGenerator;
 use Tests\TestCase;
 
 class GenerateTokenResetPasswordTest extends TestCase
 {
     private GenerateTokenResetPassword $generateTokenResetPassword;
     private User $user;
+    private UserRepository $userRepository;
+    private TokenResetPasswordRepository $tokenResetPasswordRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->generateTokenResetPassword = $this->app->make(GenerateTokenResetPassword::class);
+        $this->userRepository = $this->app->make(UserRepository::class);
+        $this->tokenResetPasswordRepository = $this->app->make(TokenResetPasswordRepository::class);
+        $this->generateTokenResetPassword = new GenerateTokenResetPassword(
+            $this->tokenResetPasswordRepository,
+            $this->userRepository,
+            $this->app->make(RandomStringGenerator::class),
+        );
         $this->initDatosTest();
     }
 
     private function initDatosTest(): void
     {
-        $this->user = entity(User::class)->create();
+        $this->user = entity(User::class)->make();
+        $this->userRepository->persist($this->user);
     }
 
     /**
@@ -36,9 +48,7 @@ class GenerateTokenResetPasswordTest extends TestCase
     {
         $this->generateTokenResetPassword->handle(new GenerateTokenResetPasswordRequest($this->user->email()));
 
-        $this->assertDatabaseHas('token_reset_password', [
-            'email' => $this->user->email(),
-        ]);
+        $this->assertInstanceOf(TokenResetPassword::class, $this->tokenResetPasswordRepository->ofEmail($this->user->email()));
     }
 
     /**
@@ -46,17 +56,14 @@ class GenerateTokenResetPasswordTest extends TestCase
      */
     public function testGenerateNewTokenResetPasswordIfAlreadyExists(): void
     {
-        $tokenResetPassword = entity(TokenResetPassword::class)->create(['email' => $this->user->email(), 'token' => 'token_reset_password']);
+        $tokenResetPassword = entity(TokenResetPassword::class)->make(['email' => $this->user->email(), 'token' => 'token_reset_password']);
+        $this->tokenResetPasswordRepository->persist($tokenResetPassword);
         $this->generateTokenResetPassword->handle(new GenerateTokenResetPasswordRequest($this->user->email()));
 
         $this->assertInstanceOf(TokenResetPassword::class, $tokenResetPassword);
-        $this->assertDatabaseMissing('token_reset_password', [
-            'email' => $this->user->email(),
-            'token' => 'token_reset_password',
-        ]);
-        $this->assertDatabaseHas('token_reset_password', [
-            'email' => $this->user->email(),
-        ]);
+
+        $token = $this->tokenResetPasswordRepository->ofEmail($this->user->email());
+        $this->assertNotEquals('token_reset_password', $token->token());
     }
 
     /**

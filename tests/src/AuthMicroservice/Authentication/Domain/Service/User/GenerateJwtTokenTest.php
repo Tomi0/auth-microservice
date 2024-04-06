@@ -30,7 +30,7 @@ class GenerateJwtTokenTest extends TestCase
 
     private function initDatosTest(): void
     {
-        $this->user = entity(User::class)->create();
+        $this->user = entity(User::class)->make();
         $this->signingKey = new SigningKey(Uuid::uuid4());
     }
 

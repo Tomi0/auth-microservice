@@ -26,5 +26,6 @@
         <server name="SESSION_DRIVER" value="array"/>
         <server name="DOCTRINE_CACHE" value="void"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
+        <server name="IN_MEMORY_REPOSITORY" value="true"/>
     </php>
 </phpunit>

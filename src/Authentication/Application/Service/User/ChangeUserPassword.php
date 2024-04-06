@@ -42,6 +42,6 @@ class ChangeUserPassword
 
         $user->changePassword($this->encodePassword->execute($changeUserPasswordRequest->password));
 
-        $this->userRepository->persistir($user);
+        $this->userRepository->persist($user);
     }
 }

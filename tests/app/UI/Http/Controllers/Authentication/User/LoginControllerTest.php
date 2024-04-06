@@ -3,6 +3,8 @@
 namespace Tests\app\UI\Http\Controllers\Authentication\User;
 
 use Authentication\Domain\Model\AuthorizedHost\AuthorizedHost;
+use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
+use Authentication\Domain\Model\User\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Authentication\Domain\Model\User\User;
 use Tests\TestCase;
@@ -11,15 +13,20 @@ class LoginControllerTest extends TestCase
 {
     private User $user;
     private AuthorizedHost $authorizedHost;
+    private UserRepository $userRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->createOrGetSigningKey();
-        $this->user = entity(User::class)->create([
+        $this->instanceSigningKeyRepository();
+        $this->userRepository = $this->app->make(UserRepository::class);
+        $this->user = entity(User::class)->make([
             'password' => Hash::make('secret'),
         ]);
-        $this->authorizedHost = entity(AuthorizedHost::class)->create([
+        $this->userRepository->persist($this->user);
+        $this->app->instance(UserRepository::class, $this->userRepository);
+        $this->app->instance(SigningKeyRepository::class, $this->signingKeyRepository);
+        $this->authorizedHost = entity(AuthorizedHost::class)->make([
             'compra.tomibuenalacid.es',
         ]);
     }
@@ -44,6 +51,7 @@ class LoginControllerTest extends TestCase
             'host_name' => $this->authorizedHost->hostName()
         ]);
 
+        $request->dump();
         $request->assertStatus(200);
     }
 

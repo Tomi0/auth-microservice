@@ -3,6 +3,7 @@
 namespace Tests\app\UI\Http\Controllers\Authentication\TokenResetPassword;
 
 use Authentication\Domain\Model\User\User;
+use Authentication\Domain\Model\User\UserRepository;
 use Tests\TestCase;
 
 class GenerateTokenResetPasswordControllerTest extends TestCase
@@ -12,9 +13,12 @@ class GenerateTokenResetPasswordControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userToResetPassword = entity(User::class)->create([
+        $this->userRepository = $this->app->make(UserRepository::class);
+        $this->userToResetPassword = entity(User::class)->make([
             'admin' => 0,
         ]);
+        $this->userRepository->persist($this->userToResetPassword);
+        $this->app->instance(UserRepository::class, $this->userRepository);
     }
 
     public function testRouteNotWorkingIfUserNotLogged(): void

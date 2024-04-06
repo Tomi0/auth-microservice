@@ -2,8 +2,10 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
+use Authentication\Domain\Model\User\UserRepository;
+use Authentication\Domain\Service\User\EncodePassword;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Authentication\Application\Service\User\ChangeUserPassword;
 use Authentication\Application\Service\User\ChangeUserPasswordRequest;
@@ -21,24 +23,37 @@ class ChangeUserPasswordTest extends TestCase
     private User $user;
     private TokenResetPassword $tokenResetPassword;
     private User $otherUser;
+    private UserRepository $userRepository;
+    private $tokenResetPasswordRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->withoutEvents();
-        $this->updateUserPassword = $this->app->make(ChangeUserPassword::class);
+        $this->userRepository = $this->app->make(UserRepository::class);
+        $this->tokenResetPasswordRepository = $this->app->make(TokenResetPasswordRepository::class);
+        $this->updateUserPassword = new ChangeUserPassword(
+            $this->userRepository,
+            $this->tokenResetPasswordRepository,
+            $this->app->make(EncodePassword::class),
+        );
         $this->initDatosTest();
     }
 
     private function initDatosTest(): void
     {
-        $this->user = entity(User::class)->create();
-        $this->tokenResetPassword = entity(TokenResetPassword::class)->create([
+        $this->user = entity(User::class)->make();
+        $this->tokenResetPassword = entity(TokenResetPassword::class)->make([
             'email' => $this->user->email(),
         ]);
-        $this->otherUser = entity(User::class)->create([
+        $this->otherUser = entity(User::class)->make([
             'password' => Hash::make('otherUserPassword'),
         ]);
+
+        $this->userRepository->persist($this->user);
+        $this->userRepository->persist($this->otherUser);
+        $this->tokenResetPasswordRepository->persist($this->tokenResetPassword);
+
     }
 
     /**
@@ -70,10 +85,17 @@ class ChangeUserPasswordTest extends TestCase
     public function testUserPasswordIsNotUpdatedWhenUserHasNotPermissionsExceptionThrown(): void
     {
         $this->expectException(UserHasNotPermissionsException::class);
-        $this->updateUserPassword->handle(new ChangeUserPasswordRequest($this->tokenResetPassword->token(), 'secret', $this->otherUser->email()));
+        $newPassword = 'secret';
+        $this->updateUserPassword->handle(
+            new ChangeUserPasswordRequest(
+                $this->tokenResetPassword->token(),
+                $newPassword,
+                $this->otherUser->email()
+            )
+        );
 
-        $user = DB::table('user')->where('email', '=', $this->user->email())->first();
-        $this->assertFalse(Hash::check('secret', $user->password));
+
+        $this->assertFalse(Hash::check($newPassword, $this->otherUser->password()));
     }
 
     /**
@@ -83,10 +105,18 @@ class ChangeUserPasswordTest extends TestCase
      */
     public function testUpdateUserPasswordInDB(): void
     {
-        $this->updateUserPassword->handle(new ChangeUserPasswordRequest($this->tokenResetPassword->token(), 'secret', $this->user->email()));
-        $user = DB::table('user')->where('email', '=', $this->user->email())->first();
+        $newPassword = 'secret';
 
-        $this->assertTrue(Hash::check('secret', $user->password));
+        $this->updateUserPassword->handle(
+            new ChangeUserPasswordRequest(
+                $this->tokenResetPassword->token(),
+                $newPassword,
+                $this->user->email()
+            )
+        );
+
+
+        $this->assertTrue(Hash::check($newPassword, $this->user->password()));
     }
 
     /**
@@ -96,14 +126,13 @@ class ChangeUserPasswordTest extends TestCase
      */
     public function testUpdateCorrectUserPassword(): void
     {
-        $this->updateUserPassword->handle(new ChangeUserPasswordRequest($this->tokenResetPassword->token(), 'secret', $this->user->email()));
-        $user = DB::table('user')->where('email', '=', $this->user->email())->first();
-        $otherUser = DB::table('user')->where('email', '=', $this->otherUser->email())->first();
+        $newPassword = 'secret';
+        $this->updateUserPassword->handle(new ChangeUserPasswordRequest($this->tokenResetPassword->token(), $newPassword, $this->user->email()));
 
-        $this->assertTrue(Hash::check('secret', $user->password));
+        $this->assertTrue(Hash::check($newPassword, $this->user->password()));
 
-        $this->assertFalse(Hash::check('secret', $otherUser->password));
-        $this->assertTrue(Hash::check('otherUserPassword', $otherUser->password));
+        $this->assertFalse(Hash::check($newPassword, $this->otherUser->password()));
+        $this->assertTrue(Hash::check('otherUserPassword', $this->otherUser->password()));
     }
 
 }

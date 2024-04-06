@@ -45,7 +45,7 @@ class JwtGuard implements Guard
         if (!$configuration->validator()->validate($token, ...$constraints))
             throw new InvalidJwtTokenException();
 
-        $this->setUser($userRepository->ofId(Uuid::fromString($token->claims()->get('jti'))));
+        $this->setUser($userRepository->ofId($token->claims()->get('jti')));
     }
 
     public function check(): bool

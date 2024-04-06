@@ -3,6 +3,7 @@
 namespace Authentication\Infrastructure\Doctrine\Domain\Model\User;
 
 use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserNotFoundException;
@@ -24,7 +25,7 @@ class UserDoctrineRepository extends EntityRepository implements UserRepository
         return $user;
     }
 
-    public function persistir(User $user): void
+    public function persist(User $user): void
     {
         $em = $this->getEntityManager();
         $em->persist($user);
@@ -34,7 +35,7 @@ class UserDoctrineRepository extends EntityRepository implements UserRepository
     /**
      * @throws UserNotFoundException
      */
-    public function ofId(UuidInterface $userId): User
+    public function ofId(string $userId): User
     {
         $user = $this->find($userId);
         if ($user === null) {
@@ -67,5 +68,10 @@ class UserDoctrineRepository extends EntityRepository implements UserRepository
         }
 
         return $queryBuilder->orderBy('u.email', 'ASC')->getQuery()->getResult();
+    }
+
+    public function nextId(): string
+    {
+        return Uuid::uuid4()->toString();
     }
 }

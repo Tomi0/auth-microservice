@@ -8,8 +8,7 @@
     <entity name="Authentication\Domain\Model\User\User" table="user" repository-class="AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\User\UserDoctrineRepository">
 
         <id name="id" column="id" type="uuid">
-            <generator strategy="CUSTOM"/>
-            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator"/>
+            <generator strategy="NONE"/>
         </id>
 
         <field name="fullName" column="full_name" type="string"/>
