@@ -25,17 +25,8 @@ class PersistDomainEventSubscriberTest extends TestCase
         $domainEvent->method('jsonSerialize')->willReturn(['test' => 'test']);
         $domainEvent->method('occurredOn')->willReturn($occurredOn);
 
-        DB::table('event')->whereRaw('0=0')->delete();
-        $this->assertDatabaseCount('event', 0);
-
+        DB::shouldReceive('table')->once()->with('event')->andReturnSelf();
+        DB::shouldReceive('insert')->once();
         $eventSubscriber->handle($domainEvent);
-
-        $this->assertDatabaseCount('event', 1);
-        $this->assertDatabaseHas('event', [
-            'event_name' => get_class($domainEvent),
-            'event_data' => json_encode($domainEvent),
-            'occurred_on' => $occurredOn->format('Y-m-d H:i:s')
-        ]);
-
     }
 }

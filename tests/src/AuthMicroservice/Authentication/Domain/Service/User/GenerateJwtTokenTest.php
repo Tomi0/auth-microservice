@@ -36,9 +36,6 @@ class GenerateJwtTokenTest extends TestCase
 
     public function testGeneratedJwtTokenIsValid(): void
     {
-        EntityManager::persist($this->signingKey);
-        EntityManager::flush();
-
         $resultToken = $this->generateJwtToken->execute($this->user, $this->signingKey);
 
         $parser = new Parser(new JoseEncoder());

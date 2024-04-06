@@ -14,6 +14,7 @@ use Ramsey\Uuid\Uuid;
 use Shared\Domain\Model\DomainEvent;
 use Shared\Domain\Service\EventPublisher;
 use Shared\Domain\Service\EventSubscriber;
+use Shared\Infrastructure\Laravel\Domain\Service\PersistDomainEventSubscriber;
 
 abstract class TestCase extends BaseTestCase
 {
