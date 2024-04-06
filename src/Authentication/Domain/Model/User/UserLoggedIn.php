@@ -8,12 +8,12 @@ use Shared\Domain\Model\DomainEvent;
 
 class UserLoggedIn implements DomainEvent
 {
-    private UuidInterface $userId;
+    private string $userId;
     private string $userFullName;
     private string $userEmail;
     private DateTime $occurredOn;
 
-    public function __construct(UuidInterface $userId, string $userFullName, string $userEmail)
+    public function __construct(string $userId, string $userFullName, string $userEmail)
     {
         $this->userId = $userId;
         $this->userFullName = $userFullName;

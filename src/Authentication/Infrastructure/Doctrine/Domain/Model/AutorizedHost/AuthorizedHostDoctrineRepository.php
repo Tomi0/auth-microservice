@@ -22,4 +22,9 @@ class AuthorizedHostDoctrineRepository extends EntityRepository implements Autho
 
         return $authorizedHost;
     }
+
+    public function persist(AuthorizedHost $authorizedHost): void
+    {
+        // TODO not implemented yet
+    }
 }

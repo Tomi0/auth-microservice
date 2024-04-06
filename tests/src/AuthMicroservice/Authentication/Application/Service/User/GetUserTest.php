@@ -2,6 +2,7 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
+use Authentication\Domain\Model\User\UserRepository;
 use Ramsey\Uuid\Uuid;
 use Authentication\Application\Service\User\GetUser;
 use Authentication\Application\Service\User\GetUserRequest;
@@ -15,26 +16,30 @@ class GetUserTest extends TestCase
     private GetUser $getUser;
     private User $user;
     private User $anotherUser;
+    private UserRepository $userRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->getUser = $this->app->make(GetUser::class);
+        $this->userRepository = $this->app->make(UserRepository::class);
+        $this->getUser = new GetUser($this->userRepository);
         $this->initDatosTest();
     }
 
 
     private function initDatosTest(): void
     {
-        $this->user = entity(User::class)->create();
-        $this->anotherUser = entity(User::class)->create();
+        $this->user = entity(User::class)->make();
+        $this->anotherUser = entity(User::class)->make();
+        $this->userRepository->persist($this->user);
+        $this->userRepository->persist($this->anotherUser);
     }
 
     public function testReturnUserInstance(): void
     {
         $result = $this->getUser->handle(new GetUserRequest(
-            $this->user->id()->toString(),
-            $this->user->id()->toString(),
+            $this->user->id(),
+            $this->user->id(),
         ));
 
         $this->assertInstanceOf(User::class, $result);
@@ -43,8 +48,8 @@ class GetUserTest extends TestCase
     public function testReturnExpectedUser(): void
     {
         $result = $this->getUser->handle(new GetUserRequest(
-            $this->user->id()->toString(),
-            $this->user->id()->toString(),
+            $this->user->id(),
+            $this->user->id(),
         ));
 
         $this->assertEquals($this->user, $result);
@@ -55,8 +60,8 @@ class GetUserTest extends TestCase
         $this->expectException(UserHasNotPermissionsException::class);
 
         $this->getUser->handle(new GetUserRequest(
-            $this->user->id()->toString(),
-            $this->anotherUser->id()->toString(),
+            $this->user->id(),
+            $this->anotherUser->id(),
         ));
     }
 

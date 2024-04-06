@@ -9,12 +9,12 @@ use Shared\Domain\Model\DomainEvent;
 
 class UserPasswordChanged implements DomainEvent
 {
-    private UuidInterface $userId;
+    private string $userId;
     private string $fullName;
     private string $email;
     private DateTime $occurredOn;
 
-    public function __construct(UuidInterface $userId, string $fullName, string $email)
+    public function __construct(string $userId, string $fullName, string $email)
     {
         $this->userId = $userId;
         $this->fullName = $fullName;
@@ -22,7 +22,7 @@ class UserPasswordChanged implements DomainEvent
         $this->occurredOn = new DateTime();
     }
 
-    public function userId(): UuidInterface
+    public function userId(): string
     {
         return $this->userId;
     }

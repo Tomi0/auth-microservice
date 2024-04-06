@@ -14,16 +14,18 @@ use Ramsey\Uuid\Uuid;
 use Shared\Domain\Model\DomainEvent;
 use Shared\Domain\Service\EventPublisher;
 use Shared\Domain\Service\EventSubscriber;
+use Shared\Infrastructure\Laravel\Domain\Service\PersistDomainEventSubscriber;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    use RefreshDatabase;
+
+    protected SigningKeyRepository $signingKeyRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->createOrGetSigningKey();
+        $this->instanceSigningKeyRepository();
     }
 
     protected function assertEventPublished(string $domainEventClassName): void
@@ -37,38 +39,23 @@ abstract class TestCase extends BaseTestCase
         );
     }
 
-    public function beginDatabaseTransaction(): void
-    {
-        $connection = $this->app->make('em')->getConnection();
-        $connection->beginTransaction();
-
-        $this->beforeApplicationDestroyed(function () use ($connection) {
-            $connection->rollback();
-        });
-    }
-
     protected function getJwtToken(User $user = null): string
     {
-        $user = ($user === null) ? entity(User::class)->create() : $user;
-        $signingKey = $this->createOrGetSigningKey();
+        $user = ($user === null) ? entity(User::class)->make() : $user;
+        $signingKey = $this->instanceSigningKeyRepository();
 
         /** @var GenerateJwtToken $generateJwtToken */
         $generateJwtToken = $this->app->make(GenerateJwtToken::class);
         return 'Bearer ' . $generateJwtToken->execute($user, $signingKey);
     }
 
-    protected function createOrGetSigningKey(): SigningKey
+    protected function instanceSigningKeyRepository(): SigningKey
     {
-        /** @var SigningKeyRepository $signingKeyRepository */
-        $signingKeyRepository = app()->make(SigningKeyRepository::class);
-
-        try {
-            $signingKey = $signingKeyRepository->first();
-        } catch (SigningKeyNotFoundException $e) {
-            $signingKey = new SigningKey(Uuid::uuid4());
-            $signingKeyRepository->persist($signingKey);
-        }
-
+        $this->signingKeyRepository = $this->app->make(SigningKeyRepository::class);
+        $signingKey = entity(SigningKey::class)->make();
+        $this->signingKeyRepository->persist(
+            $signingKey
+        );
         return $signingKey;
     }
 }

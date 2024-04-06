@@ -24,6 +24,6 @@ class GetUser
         if ($getUserRequest->userId !== $getUserRequest->authenticatedUser)
             throw new UserHasNotPermissionsException();
 
-        return $this->userRepository->ofId(Uuid::fromString($getUserRequest->userId));
+        return $this->userRepository->ofId($getUserRequest->userId);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Shared\Domain\Service\EventPublisher;
+use Shared\Domain\Service\EventSubscriber;
 use Shared\Infrastructure\Laravel\Domain\Service\PersistDomainEventSubscriber;
 
 class EventServiceProvider extends ServiceProvider
@@ -20,8 +21,10 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        EventPublisher::instance()->subscribe(
-            new PersistDomainEventSubscriber()
-        );
+        if (! env('IN_MEMORY_REPOSITORY')) {
+            EventPublisher::instance()->subscribe(
+                new PersistDomainEventSubscriber()
+            );
+        }
     }
 }

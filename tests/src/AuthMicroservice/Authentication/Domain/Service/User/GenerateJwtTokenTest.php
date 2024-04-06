@@ -30,15 +30,12 @@ class GenerateJwtTokenTest extends TestCase
 
     private function initDatosTest(): void
     {
-        $this->user = entity(User::class)->create();
+        $this->user = entity(User::class)->make();
         $this->signingKey = new SigningKey(Uuid::uuid4());
     }
 
     public function testGeneratedJwtTokenIsValid(): void
     {
-        EntityManager::persist($this->signingKey);
-        EntityManager::flush();
-
         $resultToken = $this->generateJwtToken->execute($this->user, $this->signingKey);
 
         $parser = new Parser(new JoseEncoder());

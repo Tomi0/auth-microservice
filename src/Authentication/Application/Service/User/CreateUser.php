@@ -33,9 +33,14 @@ class CreateUser
 
         $passwordHash = $this->encodePassword->execute($createUserRequest->password);
 
-        $user = new User($createUserRequest->fullName, $createUserRequest->email, $passwordHash);
+        $user = new User(
+            $this->userRepository->nextId(),
+            $createUserRequest->fullName,
+            $createUserRequest->email,
+            $passwordHash
+        );
 
-        $this->userRepository->persistir($user);
+        $this->userRepository->persist($user);
 
         return $user;
     }

@@ -6,7 +6,9 @@ use Ramsey\Uuid\UuidInterface;
 
 interface UserRepository
 {
-    public function persistir(User $user): void;
+    public function nextId(): string;
+
+    public function persist(User $user): void;
 
     /**
      * @throws UserNotFoundException
@@ -16,7 +18,7 @@ interface UserRepository
     /**
      * @throws UserNotFoundException
      */
-    public function ofId(UuidInterface $userId): User;
+    public function ofId(string $userId): User;
 
     public function remove(User $user): void;
 
