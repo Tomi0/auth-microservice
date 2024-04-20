@@ -51,7 +51,6 @@ class LoginControllerTest extends TestCase
             'host_name' => $this->authorizedHost->hostName()
         ]);
 
-        $request->dump();
         $request->assertStatus(200);
     }
 
