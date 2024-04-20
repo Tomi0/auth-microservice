@@ -32,7 +32,8 @@ export class LoginUserComponent {
     this.loginService.__invoke(this.formService.formData()).subscribe({
       next: (token: string) => {
         localStorage.setItem('token', token);
-        this.toastrService.success('Log in successfully')
+        this.toastrService.success('Log in successfully');
+        window.top?.postMessage({type: 'login', data: {token: token}}, '*')
       },
       error: (errorResponse) => {
         if (errorResponse.status === 422) {

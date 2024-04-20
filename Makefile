@@ -15,7 +15,7 @@ build:
 	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker compose build
 
 start:
-	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker compose up --build -d
+	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker compose up -d
 
 stop:
 	USER_ID=${shell id -u} GROUP_ID=${shell id -g} docker compose down
