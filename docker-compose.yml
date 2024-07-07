@@ -15,36 +15,27 @@ services:
             MYSQL_DATABASE: 'auth'
             MYSQL_USER: 'user'
             MYSQL_PASSWORD: 'secret'
-    auth-webserver:
-        image: nginx:1.22-alpine
-        container_name: auth-webserver
+    auth-backend:
+        image: auth-microservice:latest
+        container_name: auth-backend
         working_dir: /var/www
-        volumes:
-            - ./:/var/www
-            - ./docker/development/nginx:/etc/nginx/conf.d
         ports:
+            - "8080:8080"
             - "8000:80"
-        networks:
-            - auth-network
-        depends_on:
-            - auth-php
-    auth-php:
-        build:
-            context: .
-            dockerfile: docker/development/php8.2/Dockerfile
-        user: "${USER_ID}:${GROUP_ID}"
-        container_name: auth-php
-        working_dir: /var/www
         volumes:
-            - ./:/var/www
+            - ./:/var/www/api
         networks:
             - auth-network
         depends_on:
             - auth-db
+        environment:
+            USER_ID: "${USER_ID}"
+            GROUP_ID: "${GROUP_ID}"
+            APP_ENV: "local"
     auth-frontend:
         build:
             context: .
-            dockerfile: docker/development/node/Dockerfile
+            dockerfile: docker/node/Dockerfile
         user: "${USER_ID}:${GROUP_ID}"
         environment:
             USER_ID: "${USER_ID}"
