@@ -16,8 +16,7 @@ RUN apt-get update && apt-get install -y git \
     zip \
     nginx
 
-RUN pecl install xdebug && docker-php-ext-enable xdebug
-RUN docker-php-ext-install pdo_mysql mbstring zip
+RUN docker-php-ext-install pdo_mysql mbstring zip opcache
 
 RUN useradd auth-microservice -m -s /bin/bash
 
