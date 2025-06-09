@@ -24,4 +24,4 @@ test:
 	docker exec -it --user $(shell id -u):$(shell id -g) -w /var/www/api auth-backend ./vendor/bin/phpunit --testdox
 
 bash:
-	docker exec -it auth-backend /bin/bash
+	docker exec -it auth /bin/bash

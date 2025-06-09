@@ -15,12 +15,11 @@ services:
             MYSQL_DATABASE: 'auth'
             MYSQL_USER: 'user'
             MYSQL_PASSWORD: 'secret'
-    auth-backend:
+    auth:
         image: auth-microservice:latest
-        container_name: auth-backend
+        container_name: auth
         working_dir: /var/www
         ports:
-            - "8080:8080"
             - "8000:80"
         volumes:
             - ./:/var/www/api

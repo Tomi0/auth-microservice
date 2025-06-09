@@ -15,7 +15,6 @@ if [ "$APP_ENV" = 'production' ]; then
     su auth-microservice --command "php api/artisan route:cache"
     su auth-microservice --command "php api/artisan view:cache"
     su auth-microservice --command "php api/artisan icons:cache"
-    su auth-microservice --command "php api/artisan filament:cache"
     su auth-microservice --command "php api/artisan migrate --force"
 fi
 

@@ -30,8 +30,7 @@ COPY --chown=auth-microservice:auth-microservice --from=builder /app/dist/auth-m
 COPY --chown=auth-microservice:auth-microservice . /var/www/api
 
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY docker/nginx/default.conf /etc/nginx/sites-enabled/default
-COPY docker/nginx/backend.conf /etc/nginx/sites-enabled/backend.conf
+COPY docker/nginx/site.conf /etc/nginx/sites-enabled/default
 COPY ./docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN cd /var/www/api && /usr/bin/composer install --optimize-autoloader --no-dev
