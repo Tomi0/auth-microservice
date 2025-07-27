@@ -3,18 +3,12 @@
 namespace Tests;
 
 use Authentication\Domain\Model\SigningKey\SigningKey;
-use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
 use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Service\User\GenerateJwtToken;
-use LaravelDoctrine\ORM\Facades\EntityManager;
-use Ramsey\Uuid\Uuid;
-use Shared\Domain\Model\DomainEvent;
 use Shared\Domain\Service\EventPublisher;
 use Shared\Domain\Service\EventSubscriber;
-use Shared\Infrastructure\Laravel\Domain\Service\PersistDomainEventSubscriber;
 
 abstract class TestCase extends BaseTestCase
 {
