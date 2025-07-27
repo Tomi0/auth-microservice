@@ -2,9 +2,8 @@
 
 namespace Authentication\Application\Service\User;
 
-use Authentication\Domain\Model\AuthorizedHost\AuthorizedHostNotFoundException;
-use Authentication\Domain\Model\AuthorizedHost\AuthorizedHostRepository;
-use Authentication\Domain\Model\AuthorizedHost\HostNotAuthorized;
+use Authentication\Domain\Model\Client\ClientNotFoundException;
+use Authentication\Domain\Model\Client\ClientRepository;
 use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
@@ -14,46 +13,36 @@ use Authentication\Domain\Model\User\UserRepository;
 use Authentication\Domain\Service\User\CheckPasswordHash;
 use Authentication\Domain\Service\User\GenerateJwtToken;
 use Shared\Domain\Service\EventPublisher;
-use Shared\Domain\Service\GetConfigItem;
 
 class LoginUser
 {
     private UserRepository $userRepository;
     private GenerateJwtToken $generateJwtToken;
     private CheckPasswordHash $checkPasswordHash;
-    private AuthorizedHostRepository $autorizedHostRepository;
-    private GetConfigItem $getConfigItem;
+    private ClientRepository $autorizedHostRepository;
     private SigningKeyRepository $signingKey;
 
-    public function __construct(UserRepository           $userRepository,
-                                AuthorizedHostRepository $autorizedHostRepository,
-                                GenerateJwtToken         $generateJwtToken,
-                                GetConfigItem            $getConfigItem,
-                                SigningKeyRepository     $signingKey,
-                                CheckPasswordHash        $checkPasswordHash)
+    public function __construct(UserRepository       $userRepository,
+                                ClientRepository     $autorizedHostRepository,
+                                GenerateJwtToken     $generateJwtToken,
+                                SigningKeyRepository $signingKey,
+                                CheckPasswordHash    $checkPasswordHash)
     {
         $this->userRepository = $userRepository;
         $this->generateJwtToken = $generateJwtToken;
         $this->checkPasswordHash = $checkPasswordHash;
         $this->autorizedHostRepository = $autorizedHostRepository;
-        $this->getConfigItem = $getConfigItem;
         $this->signingKey = $signingKey;
     }
 
     /**
+     * @throws ClientNotFoundException
      * @throws InvalidCredentialsException
-     * @throws HostNotAuthorized
      * @throws SigningKeyNotFoundException
      */
     public function handle(LoginUserRequest $loginUserRequest): string
     {
-        if ((bool)$this->getConfigItem->execute('auth.enable_authorized_host')) {
-            try {
-                $this->autorizedHostRepository->ofHostName($loginUserRequest->hostName);
-            } catch (AuthorizedHostNotFoundException $e) {
-                throw new HostNotAuthorized('Host ' . $loginUserRequest->hostName . ' not authorized');
-            }
-        }
+        $this->autorizedHostRepository->ofHostName($loginUserRequest->hostName);
 
         try {
             $user = $this->userRepository->ofEmail($loginUserRequest->email);

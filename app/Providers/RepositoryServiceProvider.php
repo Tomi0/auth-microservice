@@ -2,19 +2,19 @@
 
 namespace App\Providers;
 
-use Authentication\Domain\Model\AuthorizedHost\AuthorizedHost;
-use Authentication\Domain\Model\AuthorizedHost\AuthorizedHostRepository;
+use Authentication\Domain\Model\Client\Client;
+use Authentication\Domain\Model\Client\ClientRepository;
 use Authentication\Domain\Model\SigningKey\SigningKey;
 use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserRepository;
-use Authentication\Infrastructure\Doctrine\Domain\Model\AutorizedHost\AuthorizedHostDoctrineRepository;
+use Authentication\Infrastructure\Doctrine\Domain\Model\AutorizedHost\ClientDoctrineRepository;
 use Authentication\Infrastructure\Doctrine\Domain\Model\SigningKey\SigningKeyDoctrineRepository;
 use Authentication\Infrastructure\Doctrine\Domain\Model\TokenResetPassword\TokenResetPasswordDoctrineRepository;
 use Authentication\Infrastructure\Doctrine\Domain\Model\User\UserDoctrineRepository;
-use Authentication\Infrastructure\Laravel\Domain\Model\AuthorizedHost\AuthorizedHostInMemoryRepository;
+use Authentication\Infrastructure\Laravel\Domain\Model\AuthorizedHost\ClientInMemoryRepository;
 use Authentication\Infrastructure\Laravel\Domain\Model\SigningKey\SigningKeyInMemoryRepository;
 use Authentication\Infrastructure\Laravel\Domain\Model\TokenResetPassword\TokenResetPasswordInMemoryRepository;
 use Authentication\Infrastructure\Laravel\Domain\Model\User\UserInMemoryRepository;
@@ -63,10 +63,10 @@ class RepositoryServiceProvider extends ServiceProvider
                 $app['em']->getClassMetaData(TokenResetPassword::class)
             );
         });
-        $this->app->bind(AuthorizedHostRepository::class, function ($app) {
-            return new AuthorizedHostDoctrineRepository(
+        $this->app->bind(ClientRepository::class, function ($app) {
+            return new ClientDoctrineRepository(
                 $app['em'],
-                $app['em']->getClassMetaData(AuthorizedHost::class)
+                $app['em']->getClassMetaData(Client::class)
             );
         });
         $this->app->bind(SigningKeyRepository::class, function ($app) {
@@ -81,7 +81,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepository::class, UserInMemoryRepository::class);
         $this->app->bind(TokenResetPasswordRepository::class, TokenResetPasswordInMemoryRepository::class);
-        $this->app->bind(AuthorizedHostRepository::class, AuthorizedHostInMemoryRepository::class);
+        $this->app->bind(ClientRepository::class, ClientInMemoryRepository::class);
         $this->app->bind(SigningKeyRepository::class, SigningKeyInMemoryRepository::class);
     }
 }

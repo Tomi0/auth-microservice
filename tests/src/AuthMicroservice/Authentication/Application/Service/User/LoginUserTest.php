@@ -2,9 +2,9 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
-use Authentication\Domain\Model\AuthorizedHost\AuthorizedHost;
-use Authentication\Domain\Model\AuthorizedHost\AuthorizedHostRepository;
-use Authentication\Domain\Model\AuthorizedHost\HostNotAuthorized;
+use Authentication\Domain\Model\Client\Client;
+use Authentication\Domain\Model\Client\ClientRepository;
+use Authentication\Domain\Model\Client\HostNotAuthorized;
 use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Model\User\UserLoggedIn;
 use Authentication\Domain\Model\User\UserRepository;
@@ -29,15 +29,15 @@ class LoginUserTest extends TestCase
 {
     private User $user;
     private LoginUser $loginUser;
-    private AuthorizedHost $authorizedHost;
+    private Client $authorizedHost;
     private UserRepository $userRepository;
-    private AuthorizedHostRepository $autorizedHostRepository;
+    private ClientRepository $autorizedHostRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->userRepository = $this->app->make(UserRepository::class);
-        $this->autorizedHostRepository = $this->app->make(AuthorizedHostRepository::class);
+        $this->autorizedHostRepository = $this->app->make(ClientRepository::class);
         $this->loginUser = new LoginUser(
             $this->userRepository,
             $this->autorizedHostRepository,
@@ -54,7 +54,7 @@ class LoginUserTest extends TestCase
         $this->user = entity(User::class)->make([
             'password' => Hash::make('password')
         ]);
-        $this->authorizedHost = entity(AuthorizedHost::class)->make([
+        $this->authorizedHost = entity(Client::class)->make([
             'compra.tomibuenalacid.es',
         ]);
         $this->userRepository->persist($this->user);
@@ -66,7 +66,7 @@ class LoginUserTest extends TestCase
      */
     public function testReturnValueIsString(): void
     {
-        $value = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->hostName()));
+        $value = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->redirectUrl()));
 
         $this->assertIsString($value);
     }
@@ -78,19 +78,19 @@ class LoginUserTest extends TestCase
     public function testPublicUserLoggedIn(): void
     {
         $this->assertEventPublished(UserLoggedIn::class);
-        $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->hostName()));
+        $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->redirectUrl()));
     }
 
     public function testThrowInvalidCredentialsWhenWrongEmail(): void
     {
         $this->expectException(InvalidCredentialsException::class);
-        $this->loginUser->handle(new LoginUserRequest('asdf', 'password', $this->authorizedHost->hostName()));
+        $this->loginUser->handle(new LoginUserRequest('asdf', 'password', $this->authorizedHost->redirectUrl()));
     }
 
     public function testThrowInvalidCredentialsWhenWrongPassword(): void
     {
         $this->expectException(InvalidCredentialsException::class);
-        $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'incorrect password', $this->authorizedHost->hostName()));
+        $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'incorrect password', $this->authorizedHost->redirectUrl()));
     }
 
     public function testThrowHostNotAuthorized(): void
@@ -105,7 +105,7 @@ class LoginUserTest extends TestCase
      */
     public function testValidJwtToken(): void
     {
-        $result = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->hostName()));
+        $result = $this->loginUser->handle(new LoginUserRequest($this->user->email(), 'password', $this->authorizedHost->redirectUrl()));
 
         $parser = new Parser(new JoseEncoder());
 

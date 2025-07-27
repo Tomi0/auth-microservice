@@ -5,14 +5,15 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
 
-    <entity name="Authentication\Domain\Model\AuthorizedHost\AuthorizedHost" table="authorized_host" repository-class="AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\AuthorizedHost\AuthorizedHostDoctrineRepository">
+    <entity name="Authentication\Domain\Model\Client\Client" table="client" repository-class="AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\Client\ClientDoctrineRepository">
 
         <id name="id" column="id" type="uuid">
-            <generator strategy="CUSTOM"/>
-            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator"/>
+            <generator strategy="NONE"/>
         </id>
 
-        <field name="hostName" column="hostname" type="string"/>
+        <field name="name" column="name" type="string"/>
+        <field name="clientSecret" column="client_secret" type="string"/>
+        <field name="redirectUrl" column="redirect_url" type="string"/>
 
         <field name="createdAt" type="datetime" column="created_at">
             <gedmo:timestampable on="create"/>

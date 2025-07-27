@@ -1,9 +1,9 @@
 <?php
 
 
-use Authentication\Domain\Model\AuthorizedHost\AuthorizedHost;
+use Authentication\Domain\Model\Client\Client;
 
-$factory->define(AuthorizedHost::class, function(Faker\Generator $faker) {
+$factory->define(Client::class, function(Faker\Generator $faker) {
     return [
         'hostName' => $faker->domainName(),
     ];
