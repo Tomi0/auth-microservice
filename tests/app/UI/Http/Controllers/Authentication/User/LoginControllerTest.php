@@ -34,7 +34,7 @@ class LoginControllerTest extends TestCase
 
     public function testRouteValidatorWorks(): void
     {
-        $request = $this->postJson('/auth/login', [
+        $request = $this->postJson('/oauth/login', [
             'email' => null,
             'password' => null,
             'host_name' => $this->authorizedHost->redirectUrl()
@@ -45,7 +45,7 @@ class LoginControllerTest extends TestCase
 
     public function testRouteWorks(): void
     {
-        $request = $this->postJson('/auth/login', [
+        $request = $this->postJson('/oauth/login', [
             'email' => $this->user->email(),
             'password' => 'secret',
             'host_name' => $this->authorizedHost->redirectUrl()
@@ -56,7 +56,7 @@ class LoginControllerTest extends TestCase
 
     public function testInvalidCredentials(): void
     {
-        $request = $this->postJson('/auth/login', [
+        $request = $this->postJson('/oauth/login', [
             'email' => 'user',
             'password' => 'invalid password',
             'host_name' => $this->authorizedHost->redirectUrl()

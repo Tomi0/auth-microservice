@@ -14,7 +14,7 @@ use Authentication\Domain\Service\User\CheckPasswordHash;
 use Authentication\Domain\Service\User\GenerateJwtToken;
 use Shared\Domain\Service\EventPublisher;
 
-class LoginUser
+class AuthorizeUser
 {
     private UserRepository $userRepository;
     private GenerateJwtToken $generateJwtToken;

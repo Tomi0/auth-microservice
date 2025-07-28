@@ -33,16 +33,16 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
         $this->routes(function () {
             Route::group([
                 'namespace' => $this->namespace,
-                'prefix' => 'auth',
+                'prefix' => 'oauth',
             ], function () {
-                require base_path('app/UI/Http/Routes/auth.php');
+                require base_path('app/UI/Http/Routes/oauth.php');
             });
         });
     }

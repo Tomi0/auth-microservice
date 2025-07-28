@@ -23,7 +23,7 @@ class GenerateTokenResetPasswordControllerTest extends TestCase
 
     public function testRouteNotWorkingIfUserNotLogged(): void
     {
-        $httpRequest = $this->postJson('/auth/token-reset-password', [
+        $httpRequest = $this->postJson('/oauth/token-reset-password', [
             'email' => $this->userToResetPassword->email(),
         ]);
 
@@ -32,7 +32,7 @@ class GenerateTokenResetPasswordControllerTest extends TestCase
 
     public function testRouteWorksIfUserLogged(): void
     {
-        $httpRequest = $this->postJson('/auth/token-reset-password', [
+        $httpRequest = $this->postJson('/oauth/token-reset-password', [
             'email' => $this->userToResetPassword->email(),
         ], [
             'Authorization' => $this->getJwtToken($this->userToResetPassword),

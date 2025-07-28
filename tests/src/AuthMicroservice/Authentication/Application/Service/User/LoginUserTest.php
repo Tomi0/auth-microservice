@@ -2,7 +2,7 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
-use Authentication\Application\Service\User\LoginUser;
+use Authentication\Application\Service\User\AuthorizeUser;
 use Authentication\Application\Service\User\LoginUserRequest;
 use Authentication\Domain\Model\Client\Client;
 use Authentication\Domain\Model\Client\ClientRepository;
@@ -27,7 +27,7 @@ use Tests\TestCase;
 class LoginUserTest extends TestCase
 {
     private User $user;
-    private LoginUser $loginUser;
+    private AuthorizeUser $loginUser;
     private Client $authorizedHost;
     private UserRepository $userRepository;
     private ClientRepository $autorizedHostRepository;
@@ -37,7 +37,7 @@ class LoginUserTest extends TestCase
         parent::setUp();
         $this->userRepository = $this->app->make(UserRepository::class);
         $this->autorizedHostRepository = $this->app->make(ClientRepository::class);
-        $this->loginUser = new LoginUser(
+        $this->loginUser = new AuthorizeUser(
             $this->userRepository,
             $this->autorizedHostRepository,
             $this->app->make(GenerateJwtToken::class),

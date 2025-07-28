@@ -12,7 +12,7 @@ class ChangeUserPasswordControllerTest extends TestCase
 {
     public function testRouteValidatorWorks(): void
     {
-        $request = $this->postJson('/auth/user/change-password', []);
+        $request = $this->postJson('/oauth/user/change-password', []);
 
         $request->assertStatus(422);
     }
@@ -24,7 +24,7 @@ class ChangeUserPasswordControllerTest extends TestCase
                 return $arg == (new ChangeUserPasswordRequest('token_reset_password', 'secret', 'tomi0@test.com'));
             })->once();
         });
-        $request = $this->postJson('/auth/user/change-password', [
+        $request = $this->postJson('/oauth/user/change-password', [
             'email' => 'tomi0@test.com',
             'password' => 'secret',
             'token' => 'token_reset_password'
