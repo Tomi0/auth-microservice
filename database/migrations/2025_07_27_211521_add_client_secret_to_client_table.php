@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::rename('authorized_host', 'client');
         Schema::table('client', function (Blueprint $table) {
-            $table->string('name')->after('id');
+            $table->string('name')->after('id')->unique();
             $table->string('client_secret')->after('name');
             $table->renameColumn('hostname', 'redirect_url');
         });

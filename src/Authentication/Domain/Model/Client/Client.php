@@ -21,7 +21,7 @@ class Client
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
         $this->clientSecret = $clientSecret;
-        $this->name = $name;
+        $this->name = $name . '-' . $id->toString();
     }
 
     public function id(): UuidInterface

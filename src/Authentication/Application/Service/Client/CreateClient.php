@@ -24,7 +24,7 @@ class CreateClient
 
     public function handle(CreateClientRequest $createClientRequest): string
     {
-        $clientSecret = $this->randomStringGenerator->execute();
+        $clientSecret = $this->randomStringGenerator->execute(32);
 
         $client = new Client(
             $this->clientRepository->nextId(),
