@@ -1,6 +1,6 @@
 <?php
 
-namespace Authentication\Infrastructure\Laravel\Domain\Model\AuthorizedHost;
+namespace Authentication\Infrastructure\Laravel\Domain\Model\Client;
 
 use Authentication\Domain\Model\Client\Client;
 use Authentication\Domain\Model\Client\ClientNotFoundException;

@@ -9,7 +9,7 @@ use Authentication\Domain\Model\Client\Client;
 use Authentication\Domain\Model\Client\ClientRepository;
 use Authentication\Domain\Service\User\CheckPasswordHash;
 use Authentication\Domain\Service\User\EncodePassword;
-use Authentication\Infrastructure\Laravel\Domain\Model\AuthorizedHost\ClientInMemoryRepository;
+use Authentication\Infrastructure\Laravel\Domain\Model\Client\ClientInMemoryRepository;
 use Shared\Domain\Service\RandomStringGenerator;
 use Tests\TestCase;
 

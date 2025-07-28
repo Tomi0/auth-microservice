@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <entity name="Authentication\Domain\Model\AuthorizationCode\AuthorizationCode" table="authorization_code" repository-class="AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\AuthorizationCode\AuthorizationCodeDoctrineRepository">
+
+        <id name="id" column="id" type="uuid">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="clientId" column="client_id" type="string"/>
+        <field name="userId" column="user_id" type="string"/>
+        <field name="code" column="code" type="string"/>
+        <field name="expiresAt" column="expires_at" type="datetime_immutable"/>
+
+
+        <field name="createdAt" type="datetime_immutable" column="created_at">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="updatedAt" type="datetime_immutable" column="updated_at">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+    </entity>
+
+</doctrine-mapping>
