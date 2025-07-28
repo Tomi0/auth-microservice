@@ -3,16 +3,14 @@
 namespace Authentication\Infrastructure\Domain\Service\User;
 
 use Authentication\Domain\Model\SigningKey\SigningKey;
-use DateTimeImmutable;
-use Illuminate\Support\Facades\Storage;
-use Lcobucci\JWT\Configuration;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Service\User\GenerateJwtToken;
+use DateTimeImmutable;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
-use \Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token\Builder;
 use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Token\Builder;
 use Ramsey\Uuid\Uuid;
 
 class GenerateJwtTokenLcobucciJwt extends GenerateJwtToken

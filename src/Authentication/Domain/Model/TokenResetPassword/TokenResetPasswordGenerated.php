@@ -2,7 +2,6 @@
 
 namespace Authentication\Domain\Model\TokenResetPassword;
 
-use Authentication\Domain\Model\User\User;
 use DateTime;
 use Shared\Domain\Model\DomainEvent;
 

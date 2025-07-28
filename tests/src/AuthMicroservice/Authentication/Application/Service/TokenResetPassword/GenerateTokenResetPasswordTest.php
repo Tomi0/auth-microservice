@@ -2,16 +2,15 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\TokenResetPassword;
 
-use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
-use Authentication\Domain\Model\User\UserRepository;
-use Exception;
 use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPassword;
 use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPasswordRequest;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordGenerated;
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserNotFoundException;
-use Shared\Domain\Model\DomainEvent;
+use Authentication\Domain\Model\User\UserRepository;
+use Exception;
 use Shared\Domain\Service\RandomStringGenerator;
 use Tests\TestCase;
 

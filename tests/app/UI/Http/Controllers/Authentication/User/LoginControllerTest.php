@@ -4,9 +4,9 @@ namespace Tests\app\UI\Http\Controllers\Authentication\User;
 
 use Authentication\Domain\Model\Client\Client;
 use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
+use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserRepository;
 use Illuminate\Support\Facades\Hash;
-use Authentication\Domain\Model\User\User;
 use Tests\TestCase;
 
 class LoginControllerTest extends TestCase

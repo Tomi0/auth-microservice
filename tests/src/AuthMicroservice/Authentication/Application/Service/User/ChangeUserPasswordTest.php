@@ -2,19 +2,19 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
-use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
-use Authentication\Domain\Model\User\UserRepository;
-use Authentication\Domain\Service\User\EncodePassword;
-use Exception;
-use Illuminate\Support\Facades\Hash;
 use Authentication\Application\Service\User\ChangeUserPassword;
 use Authentication\Application\Service\User\ChangeUserPasswordRequest;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundException;
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserHasNotPermissionsException;
 use Authentication\Domain\Model\User\UserNotFoundException;
 use Authentication\Domain\Model\User\UserPasswordChanged;
+use Authentication\Domain\Model\User\UserRepository;
+use Authentication\Domain\Service\User\EncodePassword;
+use Exception;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class ChangeUserPasswordTest extends TestCase

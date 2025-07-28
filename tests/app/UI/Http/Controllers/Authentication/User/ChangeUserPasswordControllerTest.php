@@ -3,9 +3,9 @@
 namespace Tests\app\UI\Http\Controllers\Authentication\User;
 
 
-use Mockery\MockInterface;
 use Authentication\Application\Service\User\ChangeUserPassword;
 use Authentication\Application\Service\User\ChangeUserPasswordRequest;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class ChangeUserPasswordControllerTest extends TestCase

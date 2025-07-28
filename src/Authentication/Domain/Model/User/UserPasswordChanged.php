@@ -2,9 +2,7 @@
 
 namespace Authentication\Domain\Model\User;
 
-use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use DateTime;
-use Ramsey\Uuid\UuidInterface;
 use Shared\Domain\Model\DomainEvent;
 
 class UserPasswordChanged implements DomainEvent

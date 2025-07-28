@@ -2,20 +2,19 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
+use Authentication\Application\Service\User\LoginUser;
+use Authentication\Application\Service\User\LoginUserRequest;
 use Authentication\Domain\Model\Client\Client;
 use Authentication\Domain\Model\Client\ClientRepository;
 use Authentication\Domain\Model\Client\HostNotAuthorized;
-use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
+use Authentication\Domain\Model\User\InvalidCredentialsException;
+use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserLoggedIn;
 use Authentication\Domain\Model\User\UserRepository;
 use Authentication\Domain\Service\User\CheckPasswordHash;
 use Authentication\Domain\Service\User\GenerateJwtToken;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
-use Authentication\Application\Service\User\LoginUser;
-use Authentication\Application\Service\User\LoginUserRequest;
-use Authentication\Domain\Model\User\InvalidCredentialsException;
-use Authentication\Domain\Model\User\User;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;

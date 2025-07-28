@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Str;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
+use Illuminate\Support\Str;
 
 $factory->define(TokenResetPassword::class, function(Faker\Generator $faker) {
     return [

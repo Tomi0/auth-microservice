@@ -3,7 +3,6 @@
 namespace Authentication\Application\Service\TokenResetPassword;
 
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
-use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordGenerated;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundException;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
 use Authentication\Domain\Model\User\UserNotFoundException;

@@ -2,10 +2,10 @@
 
 namespace Authentication\Infrastructure\Doctrine\Domain\Model\TokenResetPassword;
 
-use Doctrine\ORM\EntityRepository;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundException;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
+use Doctrine\ORM\EntityRepository;
 
 class TokenResetPasswordDoctrineRepository extends EntityRepository implements TokenResetPasswordRepository
 {

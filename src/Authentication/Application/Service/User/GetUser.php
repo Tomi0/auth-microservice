@@ -2,7 +2,6 @@
 
 namespace Authentication\Application\Service\User;
 
-use Ramsey\Uuid\Uuid;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserHasNotPermissionsException;
 use Authentication\Domain\Model\User\UserNotFoundException;

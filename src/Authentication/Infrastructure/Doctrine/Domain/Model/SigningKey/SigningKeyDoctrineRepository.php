@@ -2,9 +2,9 @@
 
 namespace Authentication\Infrastructure\Doctrine\Domain\Model\SigningKey;
 
-use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Model\SigningKey\SigningKey;
 use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
+use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Doctrine\ORM\EntityRepository;
 use Ramsey\Uuid\Uuid;
 

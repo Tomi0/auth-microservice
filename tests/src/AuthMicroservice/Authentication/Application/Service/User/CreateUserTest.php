@@ -2,14 +2,14 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
+use Authentication\Application\Service\User\CreateUser;
+use Authentication\Application\Service\User\CreateUserRequest;
 use Authentication\Domain\Model\User\EmailAlreadyInUseException;
+use Authentication\Domain\Model\User\User;
+use Authentication\Domain\Model\User\UserCreated;
 use Authentication\Domain\Model\User\UserRepository;
 use Authentication\Domain\Service\User\EncodePassword;
 use Exception;
-use Authentication\Application\Service\User\CreateUser;
-use Authentication\Application\Service\User\CreateUserRequest;
-use Authentication\Domain\Model\User\User;
-use Authentication\Domain\Model\User\UserCreated;
 use Tests\TestCase;
 
 class CreateUserTest extends TestCase

@@ -4,8 +4,8 @@ namespace Authentication\Application\Service\User;
 
 use Authentication\Domain\Model\Client\ClientNotFoundException;
 use Authentication\Domain\Model\Client\ClientRepository;
-use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
+use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
 use Authentication\Domain\Model\User\UserLoggedIn;
 use Authentication\Domain\Model\User\UserNotFoundException;

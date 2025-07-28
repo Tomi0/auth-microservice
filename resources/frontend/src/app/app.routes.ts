@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {AuthLayoutComponent} from "./infrastructure/layout/auth-layout/auth-layout.component";
 import {LoginUserComponent} from "./domain/public/login-user/login-user.component";
 import {RegisterAccountComponent} from "./domain/public/register-account/register-account.component";

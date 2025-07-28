@@ -5,8 +5,8 @@ namespace Tests\src\AuthMicroservice\Authentication\Application\Service\SigingKe
 use Authentication\Application\Service\SigningKey\GenerateSigningKey;
 use Authentication\Application\Service\SigningKey\GenerateSigningKeyRequest;
 use Authentication\Domain\Model\SigningKey\SigingKeyCreated;
-use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Model\SigningKey\SigningKey;
+use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Mockery\MockInterface;
 use Tests\TestCase;
 

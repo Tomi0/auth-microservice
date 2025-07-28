@@ -2,11 +2,11 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\JsonResponse;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
 use Authentication\Domain\Model\User\UserHasNotPermissionsException;
 use Authentication\Domain\Model\User\UserNotLoggedException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Shared\Domain\Model\DomainValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;

@@ -3,7 +3,6 @@
 namespace App\UI\Http\Validators\Authentication\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 class LoginValidator extends FormRequest
 {

@@ -6,7 +6,6 @@ use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundExc
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
 use Authentication\Domain\Model\User\UserHasNotPermissionsException;
 use Authentication\Domain\Model\User\UserNotFoundException;
-use Authentication\Domain\Model\User\UserPasswordChanged;
 use Authentication\Domain\Model\User\UserRepository;
 use Authentication\Domain\Service\User\EncodePassword;
 

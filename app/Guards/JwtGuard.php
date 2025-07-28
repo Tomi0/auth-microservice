@@ -2,16 +2,15 @@
 
 namespace App\Guards;
 
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\Request;
-use Lcobucci\JWT\Configuration;
-use Lcobucci\JWT\UnencryptedToken;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Authentication\Domain\Model\User\InvalidJwtTokenException;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserNotFoundException;
 use Authentication\Domain\Model\User\UserRepository;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\UnencryptedToken;
+use Ramsey\Uuid\UuidInterface;
 
 class JwtGuard implements Guard
 {

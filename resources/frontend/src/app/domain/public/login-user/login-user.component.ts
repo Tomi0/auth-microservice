@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {InputComponent} from "../../../application/shared/component/input/input.component";

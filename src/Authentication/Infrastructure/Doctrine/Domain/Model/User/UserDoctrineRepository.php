@@ -2,12 +2,11 @@
 
 namespace Authentication\Infrastructure\Doctrine\Domain\Model\User;
 
-use Doctrine\ORM\EntityRepository;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserNotFoundException;
 use Authentication\Domain\Model\User\UserRepository;
+use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\Uuid;
 
 class UserDoctrineRepository extends EntityRepository implements UserRepository
 {

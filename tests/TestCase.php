@@ -4,9 +4,9 @@ namespace Tests;
 
 use Authentication\Domain\Model\SigningKey\SigningKey;
 use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Service\User\GenerateJwtToken;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Shared\Domain\Service\EventPublisher;
 use Shared\Domain\Service\EventSubscriber;
 

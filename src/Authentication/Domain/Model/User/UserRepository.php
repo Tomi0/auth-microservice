@@ -2,8 +2,6 @@
 
 namespace Authentication\Domain\Model\User;
 
-use Ramsey\Uuid\UuidInterface;
-
 interface UserRepository
 {
     public function nextId(): string;

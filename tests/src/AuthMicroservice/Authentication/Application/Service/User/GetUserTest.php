@@ -2,13 +2,13 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\User;
 
-use Authentication\Domain\Model\User\UserRepository;
-use Ramsey\Uuid\Uuid;
 use Authentication\Application\Service\User\GetUser;
 use Authentication\Application\Service\User\GetUserRequest;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserHasNotPermissionsException;
 use Authentication\Domain\Model\User\UserNotFoundException;
+use Authentication\Domain\Model\User\UserRepository;
+use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class GetUserTest extends TestCase

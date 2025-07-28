@@ -4,7 +4,6 @@ namespace Authentication\Domain\Model\User;
 
 use DateTime;
 use JsonSerializable;
-use Ramsey\Uuid\UuidInterface;
 use Shared\Domain\Service\EventPublisher;
 
 class User implements JsonSerializable

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {RegisterUserService} from "./register-user.service";
 import {User} from "../../../application/shared/model/User.model";
 import {ValidationService} from "../../../infrastructure/validation/validation.service";

@@ -3,7 +3,6 @@
 namespace Authentication\Domain\Model\User;
 
 use DateTime;
-use Ramsey\Uuid\UuidInterface;
 use Shared\Domain\Model\DomainEvent;
 
 class UserLoggedIn implements DomainEvent

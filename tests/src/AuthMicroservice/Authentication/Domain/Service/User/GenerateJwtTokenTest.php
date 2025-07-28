@@ -5,7 +5,6 @@ namespace Tests\src\AuthMicroservice\Authentication\Domain\Service\User;
 use Authentication\Domain\Model\SigningKey\SigningKey;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Service\User\GenerateJwtToken;
-use LaravelDoctrine\ORM\Facades\EntityManager;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;

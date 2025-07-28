@@ -4,12 +4,12 @@ namespace App\UI\Http\Controllers\Authentication\User;
 
 use App\UI\Http\Controllers\Controller;
 use App\UI\Http\Validators\Authentication\User\ChangeUserPasswordValidator;
-use Illuminate\Http\JsonResponse;
 use Authentication\Application\Service\User\ChangeUserPassword;
 use Authentication\Application\Service\User\ChangeUserPasswordRequest;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundException;
 use Authentication\Domain\Model\User\UserHasNotPermissionsException;
 use Authentication\Domain\Model\User\UserNotFoundException;
+use Illuminate\Http\JsonResponse;
 
 class ChangeUserPasswordController extends Controller
 {

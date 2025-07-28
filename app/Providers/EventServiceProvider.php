@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Shared\Domain\Service\EventPublisher;
-use Shared\Domain\Service\EventSubscriber;
 use Shared\Infrastructure\Laravel\Domain\Service\PersistDomainEventSubscriber;
 
 class EventServiceProvider extends ServiceProvider

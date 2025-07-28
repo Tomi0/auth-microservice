@@ -2,8 +2,8 @@
 
 namespace Authentication\Infrastructure\Domain\Service\User;
 
-use Illuminate\Support\Facades\Hash;
 use Authentication\Domain\Service\User\EncodePassword;
+use Illuminate\Support\Facades\Hash;
 
 class EncodePasswordLaravel extends EncodePassword
 {

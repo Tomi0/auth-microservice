@@ -2,9 +2,9 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Domain\Service\User;
 
+use Authentication\Domain\Service\User\EncodePassword;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Authentication\Domain\Service\User\EncodePassword;
 use Tests\TestCase;
 
 class EncodePasswordTest extends TestCase

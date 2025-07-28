@@ -2,16 +2,12 @@
 
 namespace App\Providers;
 
-use DateTimeZone;
+use Doctrine\ORM\EntityManagerInterface;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
-use Lcobucci\Clock\SystemClock;
-use Lcobucci\JWT\Configuration;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Lcobucci\JWT\Signer\Key\InMemory;
-use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
+use Throwable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,10 +29,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         try {
-            $pdo = app()->make(\Doctrine\ORM\EntityManagerInterface::class)->getConnection()
+            $pdo = app()->make(EntityManagerInterface::class)->getConnection()
                 ->getWrappedConnection();
-            app()->make(\Illuminate\Database\ConnectionInterface::class)->setPdo($pdo);
-        } catch (\Throwable $throwable) {}
+            app()->make(ConnectionInterface::class)->setPdo($pdo);
+        } catch (Throwable $throwable) {}
 
 
         Factory::guessFactoryNamesUsing(function (string $modelName) {
