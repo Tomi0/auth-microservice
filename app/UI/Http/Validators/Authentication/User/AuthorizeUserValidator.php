@@ -4,7 +4,7 @@ namespace App\UI\Http\Validators\Authentication\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginValidator extends FormRequest
+class AuthorizeUserValidator extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,7 +21,8 @@ class LoginValidator extends FormRequest
         return [
             'email' => 'required|string',
             'password' => 'required|string',
-            'host_name' => 'nullable|string',
+            'clientName' => 'required|string',
+            'redirectUrl' => 'required|string',
         ];
     }
 }

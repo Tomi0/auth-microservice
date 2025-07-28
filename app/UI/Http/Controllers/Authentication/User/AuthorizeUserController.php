@@ -2,9 +2,10 @@
 
 namespace App\UI\Http\Controllers\Authentication\User;
 
-use App\UI\Http\Validators\Authentication\User\LoginValidator;
+use App\UI\Http\Validators\Authentication\User\AuthorizeUserValidator;
 use Authentication\Application\Service\User\AuthorizeUser;
-use Authentication\Application\Service\User\LoginUserRequest;
+use Authentication\Application\Service\User\AuthorizeUserRequest;
+use Authentication\Domain\Model\AuthorizationCode\InvalidRedirectUrlException;
 use Authentication\Domain\Model\Client\ClientNotFoundException;
 use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
@@ -12,24 +13,25 @@ use Illuminate\Http\JsonResponse;
 
 class AuthorizeUserController
 {
-    private AuthorizeUser $loginUser;
+    private AuthorizeUser $authorizeUser;
 
-    public function __construct(AuthorizeUser $loginUser)
+    public function __construct(AuthorizeUser $authorizeUser)
     {
-        $this->loginUser = $loginUser;
+        $this->authorizeUser = $authorizeUser;
     }
 
     /**
-     * @throws InvalidCredentialsException
      * @throws ClientNotFoundException
-     * @throws SigningKeyNotFoundException
+     * @throws InvalidCredentialsException
+     * @throws InvalidRedirectUrlException
      */
-    public function __invoke(LoginValidator $loginValidator): JsonResponse
+    public function __invoke(AuthorizeUserValidator $authorizeUserValidator): JsonResponse
     {
-        return response()->json($this->loginUser->handle(new LoginUserRequest(
-            $loginValidator->input('email'),
-            $loginValidator->input('password'),
-            $loginValidator->input('host_name')
+        return response()->json($this->authorizeUser->handle(new AuthorizeUserRequest(
+            $authorizeUserValidator->input('email'),
+            $authorizeUserValidator->input('password'),
+            $authorizeUserValidator->input('clientName'),
+            $authorizeUserValidator->input('redirectUrl')
         )));
     }
 }

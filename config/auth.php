@@ -103,5 +103,7 @@ return [
 
     'password_timeout' => 10800,
 
-    'enable_authorized_host' => env('ENABLE_AUTHORIZED_HOST', false)
+    'authorization_code' => [
+        'expires_at_minutes' => env('AUTH_CODE_EXPIRES_AT_MINUTES', 1),
+    ],
 ];

@@ -59,4 +59,9 @@ class Client
     {
         return $this->updatedAt;
     }
+
+    public function isValidRedirectUrl(string $redirectUrl): bool
+    {
+        return $this->redirectUrl === $redirectUrl;
+    }
 }

@@ -10,13 +10,16 @@ use Ramsey\Uuid\UuidInterface;
 
 class ClientInMemoryRepository implements ClientRepository
 {
+    /**
+     * @var Client[]
+     */
     public array $clients = [];
 
-    public function ofHostName(string $hostName): Client
+    public function ofName(string $name): Client
     {
-        foreach ($this->clients as $authorizedHost) {
-            if ($authorizedHost->hostName() === $hostName) {
-                return $authorizedHost;
+        foreach ($this->clients as $client) {
+            if ($client->name() === $name) {
+                return $client;
             }
         }
         throw new ClientNotFoundException();

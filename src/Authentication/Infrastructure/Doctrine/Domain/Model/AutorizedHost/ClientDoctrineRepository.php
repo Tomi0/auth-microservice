@@ -15,12 +15,12 @@ class ClientDoctrineRepository extends EntityRepository implements ClientReposit
     /**
      * @inheritDoc
      */
-    public function ofHostName(string $hostName): Client
+    public function ofName(string $name): Client
     {
-        $client = $this->findOneBy(['hostName' => $hostName]);
+        $client = $this->findOneBy(['name' => $name]);
 
         if ($client === null)
-            throw new ClientNotFoundException('Host ' . $hostName . ' not found');
+            throw new ClientNotFoundException('Client name ' . $name . ' not found');
 
         return $client;
     }

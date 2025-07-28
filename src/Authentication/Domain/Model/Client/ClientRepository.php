@@ -9,7 +9,7 @@ interface ClientRepository
     /**
      * @throws ClientNotFoundException
      */
-    public function ofHostName(string $hostName): Client;
+    public function ofName(string $name): Client;
 
     public function persist(Client $client): void;
 

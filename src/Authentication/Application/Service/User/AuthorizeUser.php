@@ -2,67 +2,88 @@
 
 namespace Authentication\Application\Service\User;
 
+use Authentication\Domain\Model\AuthorizationCode\AuthorizationCode;
+use Authentication\Domain\Model\AuthorizationCode\AuthorizationCodeRepository;
+use Authentication\Domain\Model\AuthorizationCode\InvalidRedirectUrlException;
 use Authentication\Domain\Model\Client\ClientNotFoundException;
 use Authentication\Domain\Model\Client\ClientRepository;
-use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
-use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
-use Authentication\Domain\Model\User\UserLoggedIn;
+use Authentication\Domain\Model\User\UserAuthorized;
 use Authentication\Domain\Model\User\UserNotFoundException;
 use Authentication\Domain\Model\User\UserRepository;
 use Authentication\Domain\Service\User\CheckPasswordHash;
-use Authentication\Domain\Service\User\GenerateJwtToken;
+use DateTimeImmutable;
+use Exception;
 use Shared\Domain\Service\EventPublisher;
+use Shared\Domain\Service\GetConfigItem;
+use Shared\Domain\Service\RandomStringGenerator;
 
 class AuthorizeUser
 {
     private UserRepository $userRepository;
-    private GenerateJwtToken $generateJwtToken;
     private CheckPasswordHash $checkPasswordHash;
-    private ClientRepository $autorizedHostRepository;
-    private SigningKeyRepository $signingKey;
+    private ClientRepository $clientRepository;
+    private AuthorizationCodeRepository $authorizationCodeRepository;
+    private RandomStringGenerator $randomStringGenerator;
+    private GetConfigItem $getConfigItem;
 
-    public function __construct(UserRepository       $userRepository,
-                                ClientRepository     $autorizedHostRepository,
-                                GenerateJwtToken     $generateJwtToken,
-                                SigningKeyRepository $signingKey,
-                                CheckPasswordHash    $checkPasswordHash)
+    public function __construct(UserRepository              $userRepository,
+                                ClientRepository            $clientRepository,
+                                AuthorizationCodeRepository $authorizationCodeRepository,
+                                RandomStringGenerator       $randomStringGenerator,
+                                GetConfigItem               $getConfigItem,
+                                CheckPasswordHash           $checkPasswordHash)
     {
         $this->userRepository = $userRepository;
-        $this->generateJwtToken = $generateJwtToken;
         $this->checkPasswordHash = $checkPasswordHash;
-        $this->autorizedHostRepository = $autorizedHostRepository;
-        $this->signingKey = $signingKey;
+        $this->clientRepository = $clientRepository;
+        $this->authorizationCodeRepository = $authorizationCodeRepository;
+        $this->randomStringGenerator = $randomStringGenerator;
+        $this->getConfigItem = $getConfigItem;
     }
 
     /**
      * @throws ClientNotFoundException
      * @throws InvalidCredentialsException
-     * @throws SigningKeyNotFoundException
+     * @throws InvalidRedirectUrlException
+     * @throws Exception
      */
-    public function handle(LoginUserRequest $loginUserRequest): string
+    public function handle(AuthorizeUserRequest $authorizeUserRequest): AuthorizationCode
     {
-        $this->autorizedHostRepository->ofHostName($loginUserRequest->hostName);
+        $client = $this->clientRepository->ofName($authorizeUserRequest->clientName);
+
+        if ($client->isValidRedirectUrl($authorizeUserRequest->redirectUrl) === false) {
+            throw new InvalidRedirectUrlException('Invalid redirect URL');
+        }
 
         try {
-            $user = $this->userRepository->ofEmail($loginUserRequest->email);
-        } catch (UserNotFoundException $e) {
+            $user = $this->userRepository->ofEmail($authorizeUserRequest->email);
+        } catch (UserNotFoundException) {
             throw new InvalidCredentialsException();
         }
 
-        if ($this->checkPasswordHash->execute($loginUserRequest->password, $user->password())) {
-
-            $signingKey = $this->signingKey->first();
-
-            $jwtToken = $this->generateJwtToken->execute($user, $signingKey);
-
-            EventPublisher::instance()->publish(
-                new UserLoggedIn($user->id(), $user->fullName(), $user->email())
-            );
-
-            return $jwtToken;
+        if (false === $this->checkPasswordHash->execute($authorizeUserRequest->password, $user->password())) {
+            throw new InvalidCredentialsException();
         }
 
-        throw new InvalidCredentialsException();
+        $authorizationCodeId = $this->authorizationCodeRepository->nextId();
+        $configExpiresAtMinutes = $this->getConfigItem->execute('auth.authorization_code.expires_at_minutes');
+
+        $authorizationCode = new AuthorizationCode(
+            $authorizationCodeId,
+            $client->id(),
+            $user->id(),
+            $authorizationCodeId . '-' . $this->randomStringGenerator->execute(32),
+            new DateTimeImmutable('+' . $configExpiresAtMinutes . ' minutes'),
+        );
+
+        EventPublisher::instance()->publish(new UserAuthorized(
+            $authorizationCode->id(),
+            $user->id(),
+            $client->id()
+        ));
+
+        return $authorizationCode;
+
     }
 }

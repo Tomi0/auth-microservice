@@ -7,6 +7,7 @@ use Authentication\Domain\Model\User\UserNotFoundException;
 use Authentication\Domain\Model\User\UserRepository;
 use Doctrine\ORM\EntityRepository;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class UserDoctrineRepository extends EntityRepository implements UserRepository
 {
@@ -69,8 +70,8 @@ class UserDoctrineRepository extends EntityRepository implements UserRepository
         return $queryBuilder->orderBy('u.email', 'ASC')->getQuery()->getResult();
     }
 
-    public function nextId(): string
+    public function nextId(): UuidInterface
     {
-        return Uuid::uuid4()->toString();
+        return Uuid::uuid4();
     }
 }
