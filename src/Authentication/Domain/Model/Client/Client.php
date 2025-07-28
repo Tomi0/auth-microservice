@@ -2,8 +2,10 @@
 
 namespace Authentication\Domain\Model\Client;
 
+use Authentication\Application\Service\Client\ClientCreated;
 use DateTime;
 use Ramsey\Uuid\UuidInterface;
+use Shared\Domain\Service\EventPublisher;
 
 class Client
 {
@@ -22,6 +24,10 @@ class Client
         $this->updatedAt = new DateTime();
         $this->clientSecret = $clientSecret;
         $this->name = $name . '-' . $id->toString();
+
+        EventPublisher::instance()->publish(
+            new ClientCreated($this->id())
+        );
     }
 
     public function id(): UuidInterface

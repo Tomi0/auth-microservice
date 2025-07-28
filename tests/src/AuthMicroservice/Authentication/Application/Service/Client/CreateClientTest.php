@@ -2,6 +2,7 @@
 
 namespace Tests\src\AuthMicroservice\Authentication\Application\Service\Client;
 
+use Authentication\Application\Service\Client\ClientCreated;
 use Authentication\Application\Service\Client\CreateClient;
 use Authentication\Application\Service\Client\CreateClientRequest;
 use Authentication\Domain\Model\Client\Client;
@@ -58,8 +59,9 @@ class CreateClientTest extends TestCase
             'https://example.com/callback'
         ));
 
+        /** @var Client $client */
         $client = $this->clientRepository->clients[0];
-        $this->assertEquals('Test Client', $client->name());
+        $this->assertEquals('Test Client-' . $client->id(), $client->name());
     }
 
     public function testRedirectUrlIsSaved(): void
@@ -89,6 +91,16 @@ class CreateClientTest extends TestCase
         $checkPasswordHash = $this->app->make(CheckPasswordHash::class);
 
         $this->assertTrue($checkPasswordHash->execute($clientSecret, $client->clientSecret()));
+    }
+
+    public function testFireUserCreated(): void
+    {
+        $this->assertEventPublished(ClientCreated::class);
+
+        $this->createClient->handle(new CreateClientRequest(
+            'Test Client',
+            'https://example.com/callback'
+        ));
     }
 
 }
