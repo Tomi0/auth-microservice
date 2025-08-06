@@ -77,6 +77,8 @@ class AuthorizeUser
             new DateTimeImmutable('+' . $configExpiresAtMinutes . ' minutes'),
         );
 
+        $this->authorizationCodeRepository->persist($authorizationCode);
+
         EventPublisher::instance()->publish(new UserAuthorized(
             $authorizationCode->id(),
             $user->id(),

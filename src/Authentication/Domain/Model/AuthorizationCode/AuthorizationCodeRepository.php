@@ -8,4 +8,6 @@ interface AuthorizationCodeRepository
 {
 
     public function nextId(): UuidInterface;
+
+    public function persist(AuthorizationCode $authorizationCode): void;
 }
