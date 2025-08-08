@@ -30,6 +30,7 @@ class GenerateJwtTokenLcobucciJwt extends GenerateJwtToken
             ->expiresAt($now->modify('+1 hour'))
             ->withClaim('user_id', $user->id())
             ->withClaim('user_email', $user->email())
+            ->withClaim('user_full_name', $user->fullName())
             ->getToken($algorithm, $jwtSigningKey)
             ->toString();
     }

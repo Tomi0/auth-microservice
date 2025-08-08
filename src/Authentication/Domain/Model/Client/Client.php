@@ -64,4 +64,9 @@ class Client
     {
         return $this->redirectUrl === $redirectUrl;
     }
+
+    public function isValidSecret(string $clientSecret): bool
+    {
+        return $this->clientSecret === $clientSecret;
+    }
 }

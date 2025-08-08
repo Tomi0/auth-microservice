@@ -4,6 +4,7 @@ namespace Authentication\Infrastructure\Laravel\Domain\Model\AuthorizationCode;
 
 use Authentication\Domain\Model\AuthorizationCode\AuthorizationCode;
 use Authentication\Domain\Model\AuthorizationCode\AuthorizationCodeRepository;
+use Authentication\Domain\Model\AuthorizationCode\InvalidAuthorizationCodeException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -30,5 +31,19 @@ class AuthorizationCodeInMemoryRepository implements AuthorizationCodeRepository
     public function authorizationCodes(): array
     {
         return $this->authorizationCodes;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function ofCode(string $code): AuthorizationCode
+    {
+        foreach ($this->authorizationCodes as $authorizationCode) {
+            if ($authorizationCode->code() === $code) {
+                return $authorizationCode;
+            }
+        }
+
+        throw new InvalidAuthorizationCodeException("Authorization code not found: {$code}");
     }
 }

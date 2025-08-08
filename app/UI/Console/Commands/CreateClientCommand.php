@@ -33,6 +33,7 @@ class CreateClientCommand extends Command
         ));
 
         $this->info('Client created successfully.');
+        $this->info('Client name: ' . $clientName);
         $this->info('Client Secret (one time display): ' . $clientSecret);
 
         return SymfonyCommand::SUCCESS;

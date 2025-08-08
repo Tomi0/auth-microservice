@@ -10,4 +10,9 @@ interface AuthorizationCodeRepository
     public function nextId(): UuidInterface;
 
     public function persist(AuthorizationCode $authorizationCode): void;
+
+    /**
+     * @throws InvalidAuthorizationCodeException
+     */
+    public function ofCode(string $code): AuthorizationCode;
 }

@@ -2,6 +2,7 @@
 
 namespace Authentication\Domain\Model\AuthorizationCode;
 
+use Authentication\Domain\Model\Client\Client;
 use DateTimeImmutable;
 use DateTimeInterface;
 use JsonSerializable;
@@ -27,6 +28,11 @@ class AuthorizationCode implements JsonSerializable
 
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
+    }
+
+    public function belongsToClient(Client $client): bool
+    {
+        return $this->clientId->equals($client->id());
     }
 
     public function id(): UuidInterface
