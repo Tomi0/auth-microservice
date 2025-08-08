@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import {InputComponent} from "../../../application/shared/component/input/input.component";
+import {Component} from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 
@@ -7,7 +6,6 @@ import {ActivatedRoute} from "@angular/router";
   selector: 'app-test-redirect',
   standalone: true,
   imports: [
-    InputComponent,
     ReactiveFormsModule
   ],
   templateUrl: './test-redirect.component.html',

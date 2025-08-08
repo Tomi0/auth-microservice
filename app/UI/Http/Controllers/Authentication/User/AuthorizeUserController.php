@@ -7,7 +7,6 @@ use Authentication\Application\Service\User\AuthorizeUser;
 use Authentication\Application\Service\User\AuthorizeUserRequest;
 use Authentication\Domain\Model\AuthorizationCode\InvalidRedirectUrlException;
 use Authentication\Domain\Model\Client\ClientNotFoundException;
-use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
 use Authentication\Domain\Model\User\InvalidCredentialsException;
 use Illuminate\Http\JsonResponse;
 
