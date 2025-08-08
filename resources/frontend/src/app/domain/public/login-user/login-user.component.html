@@ -18,8 +18,8 @@
             Log in
           </button>
           <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-            Does't have an account yet? <a routerLink="/auth/register"
-                                      class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
+            Does't have an account yet? <a (click)="redirectToRegister()"
+                                      class=" cursor-pointer font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
           </p>
         </form>
       </div>

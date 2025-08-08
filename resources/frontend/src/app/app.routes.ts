@@ -2,6 +2,7 @@ import {Routes} from '@angular/router';
 import {AuthLayoutComponent} from "./infrastructure/layout/auth-layout/auth-layout.component";
 import {LoginUserComponent} from "./domain/public/login-user/login-user.component";
 import {RegisterAccountComponent} from "./domain/public/register-account/register-account.component";
+import {TestRedirectComponent} from "./domain/public/test-redirect/test-redirect.component";
 
 export const routes: Routes = [
   {
@@ -20,6 +21,10 @@ export const routes: Routes = [
       {
         path: 'auth/register',
         component: RegisterAccountComponent
+      },
+      {
+        path: 'test-redirect',
+        component: TestRedirectComponent
       },
     ]
   },

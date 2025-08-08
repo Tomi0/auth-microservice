@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
 import {RegisterUserService} from "./register-user.service";
 import {User} from "../../../application/shared/model/User.model";
@@ -12,7 +12,7 @@ import {FormService} from "../../../application/shared/service/form.service";
 @Component({
   selector: 'app-register-account',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, InputComponent],
+  imports: [CommonModule, ReactiveFormsModule, InputComponent],
   templateUrl: './register-account.component.html',
   styleUrl: './register-account.component.scss'
 })
@@ -20,6 +20,7 @@ export class RegisterAccountComponent {
 
   constructor(public formService: FormService,
               protected router: Router,
+              protected activatedRoute: ActivatedRoute,
               protected toastrService: ToastrService,
               protected validationService: ValidationService,
               protected registerUserService: RegisterUserService) {
@@ -30,11 +31,16 @@ export class RegisterAccountComponent {
     });
   }
 
+  public redirectToLogin(): void {
+    const queryParams = { ...this.activatedRoute.snapshot.queryParams };
+    this.router.navigate(['/auth/login'], { queryParams });
+  }
+
   public sendCreateUserRequest(): void {
     this.registerUserService.__invoke(this.formService.formData()).subscribe({
       next: (user: User) => {
-        this.toastrService.success('New account has been created')
-        this.router.navigate(['/auth/login']);
+        this.toastrService.success('New account has been created');
+        this.redirectToLogin();
       },
       error: (errorResponse) => {
         if (errorResponse.status === 422) {
