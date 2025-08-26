@@ -13,6 +13,7 @@ use Authentication\Domain\Model\SigningKey\SigningKeyNotFoundException;
 use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Model\User\UserNotFoundException;
 use Authentication\Domain\Model\User\UserRepository;
+use Authentication\Domain\Service\User\CheckPasswordHash;
 use Authentication\Domain\Service\User\GenerateJwtToken;
 
 class GetAccessToken
@@ -22,11 +23,13 @@ class GetAccessToken
     private GenerateJwtToken $jwtToken;
     private UserRepository $userRepository;
     private SigningKeyRepository $signingKeyRepository;
+    private CheckPasswordHash $checkPasswordHash;
 
     public function __construct(ClientRepository            $clientRepository,
                                 AuthorizationCodeRepository $authorizationCodeRepository,
                                 SigningKeyRepository        $signingKeyRepository,
                                 UserRepository              $userRepository,
+                                CheckPasswordHash           $checkPasswordHash,
                                 GenerateJwtToken            $jwtToken)
     {
         $this->clientRepository = $clientRepository;
@@ -34,6 +37,7 @@ class GetAccessToken
         $this->jwtToken = $jwtToken;
         $this->userRepository = $userRepository;
         $this->signingKeyRepository = $signingKeyRepository;
+        $this->checkPasswordHash = $checkPasswordHash;
     }
 
     /**
@@ -47,7 +51,7 @@ class GetAccessToken
     {
         $client = $this->clientRepository->ofName($getAccessTokenRequest->clientName);
 
-        if (false === $client->isValidSecret($getAccessTokenRequest->clientSecret)) {
+        if (false === $client->isValidSecret($getAccessTokenRequest->clientSecret, $this->checkPasswordHash)) {
             throw new ClientNameAndSecretMissmatchException();
         }
 

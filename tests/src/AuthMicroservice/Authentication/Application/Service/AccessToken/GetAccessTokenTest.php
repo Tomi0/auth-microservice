@@ -19,6 +19,7 @@ use Authentication\Domain\Model\User\UserRepository;
 use Authentication\Domain\Service\User\GenerateJwtToken;
 use Authentication\Infrastructure\Laravel\Domain\Model\AuthorizationCode\AuthorizationCodeInMemoryRepository;
 use Authentication\Infrastructure\Laravel\Domain\Model\Client\ClientInMemoryRepository;
+use Illuminate\Support\Facades\Hash;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -47,7 +48,10 @@ class GetAccessTokenTest extends TestCase
 
         /** @var User $user */
         $user = entity(User::class)->make();
-        $this->client = entity(Client::class)->make();
+        $this->clientSecret = 'secret123';
+        $this->client = entity(Client::class)->make([
+            'clientSecret' => Hash::make($this->clientSecret),
+        ]);
         $this->authorizationCode = entity(AuthorizationCode::class)->make([
             'clientId' => $this->client->id(),
             'userId' => $user->id(),
@@ -77,7 +81,7 @@ class GetAccessTokenTest extends TestCase
     public function testReturnAccessToken(): void
     {
         $getAccessTokenRequest = new GetAccessTokenRequest(
-            $this->client->clientSecret(),
+            $this->clientSecret,
             $this->authorizationCode->code(),
             $this->client->name()
         );
@@ -114,7 +118,7 @@ class GetAccessTokenTest extends TestCase
     public function testThrowInvalidAuthorizationCodeExceptionWhenWrongCode(): void
     {
         $getAccessTokenRequest = new GetAccessTokenRequest(
-            $this->client->clientSecret(),
+            $this->clientSecret,
             'wrong-authorization-code',
             $this->client->name()
         );
@@ -126,7 +130,7 @@ class GetAccessTokenTest extends TestCase
     public function testReturnAccessTokenIsTheExpectedOne(): void
     {
         $getAccessTokenRequest = new GetAccessTokenRequest(
-            $this->client->clientSecret(),
+            $this->clientSecret,
             $this->authorizationCode->code(),
             $this->client->name()
         );

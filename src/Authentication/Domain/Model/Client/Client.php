@@ -3,6 +3,7 @@
 namespace Authentication\Domain\Model\Client;
 
 use Authentication\Application\Service\Client\ClientCreated;
+use Authentication\Domain\Service\User\CheckPasswordHash;
 use DateTime;
 use Ramsey\Uuid\UuidInterface;
 use Shared\Domain\Service\EventPublisher;
@@ -65,8 +66,8 @@ class Client
         return $this->redirectUrl === $redirectUrl;
     }
 
-    public function isValidSecret(string $clientSecret): bool
+    public function isValidSecret(string $clientSecret, CheckPasswordHash $checkPasswordHash): bool
     {
-        return $this->clientSecret === $clientSecret;
+        return $checkPasswordHash->execute($clientSecret, $this->clientSecret);
     }
 }
