@@ -11,8 +11,8 @@
             <generator strategy="NONE"/>
         </id>
 
-        <field name="clientId" column="client_id" type="string"/>
-        <field name="userId" column="user_id" type="string"/>
+        <field name="clientId" column="client_id" type="uuid"/>
+        <field name="userId" column="user_id" type="uuid"/>
         <field name="code" column="code" type="string"/>
         <field name="expiresAt" column="expires_at" type="datetime_immutable"/>
 
