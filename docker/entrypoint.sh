@@ -2,8 +2,8 @@ echo "Starting entrypoint"
 
 if [ "${USER_ID}" ]; then
     echo "Changin auth-microservice UID and GID to ${USER_ID}:${GROUP_ID}"
-    usermod -u "USER_ID" auth-microservice
-    groupmod -g "GROUP_ID" auth-microservice
+    usermod -u ${USER_ID} auth-microservice
+    groupmod -g ${GROUP_ID} auth-microservice
     chown -R auth-microservice:auth-microservice /var/www
 fi
 
