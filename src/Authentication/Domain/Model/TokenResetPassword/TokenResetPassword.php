@@ -16,8 +16,9 @@ class TokenResetPassword
     private DateTime $createdAt;
     private DateTime $updatedAt;
 
-    public function __construct(User $user, string $token)
+    public function __construct(UuidInterface $id, User $user, string $token)
     {
+        $this->id = $id;
         $actualDate = new DateTime();
         $this->email = $user->email();
         $this->changeToken($token);
@@ -55,7 +56,7 @@ class TokenResetPassword
         return $this->updatedAt;
     }
 
-    public function changeToken(string $token): void
+    private function changeToken(string $token): void
     {
         if (strlen($token) < 16)
             throw new UnexpectedValueException('Token length can not be less than 16');

@@ -6,6 +6,7 @@ use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPass
 use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPasswordRequest;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordGenerated;
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundException;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserNotFoundException;
@@ -42,6 +43,7 @@ class GenerateTokenResetPasswordTest extends TestCase
 
     /**
      * @throws UserNotFoundException
+     * @throws TokenResetPasswordNotFoundException
      */
     public function testGenerateTokenResetPassword(): void
     {
@@ -51,6 +53,7 @@ class GenerateTokenResetPasswordTest extends TestCase
     }
 
     /**
+     * @throws TokenResetPasswordNotFoundException
      * @throws UserNotFoundException
      */
     public function testGenerateNewTokenResetPasswordIfAlreadyExists(): void
@@ -63,6 +66,12 @@ class GenerateTokenResetPasswordTest extends TestCase
 
         $token = $this->tokenResetPasswordRepository->ofEmail($this->user->email());
         $this->assertNotEquals('token_reset_password', $token->token());
+
+        try {
+            $this->tokenResetPasswordRepository->ofToken('token_reset_password');
+        } catch (TokenResetPasswordNotFoundException) {
+            $this->assertTrue(true, 'Token still exists');
+        }
     }
 
     /**

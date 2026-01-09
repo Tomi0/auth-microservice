@@ -2,6 +2,8 @@
 
 namespace Authentication\Domain\Model\TokenResetPassword;
 
+use Ramsey\Uuid\UuidInterface;
+
 interface TokenResetPasswordRepository
 {
 
@@ -16,4 +18,8 @@ interface TokenResetPasswordRepository
      * @throws TokenResetPasswordNotFoundException
      */
     public function ofEmail(string $email): TokenResetPassword;
+
+    public function remove(TokenResetPassword $tokenResetPassword): void;
+
+    public function nextId(): UuidInterface;
 }

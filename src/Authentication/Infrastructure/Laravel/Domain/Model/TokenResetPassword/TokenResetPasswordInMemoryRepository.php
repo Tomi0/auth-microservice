@@ -5,6 +5,8 @@ namespace Authentication\Infrastructure\Laravel\Domain\Model\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundException;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class TokenResetPasswordInMemoryRepository implements TokenResetPasswordRepository
 {
@@ -34,5 +36,19 @@ class TokenResetPasswordInMemoryRepository implements TokenResetPasswordReposito
             }
         }
         throw new TokenResetPasswordNotFoundException();
+    }
+
+    public function remove(TokenResetPassword $tokenResetPassword): void
+    {
+        foreach ($this->tokens as $key => $token) {
+            if ($token->id()->equals($tokenResetPassword->id())) {
+                unset($this->tokens[$key]);
+            }
+        }
+    }
+
+    public function nextId(): UuidInterface
+    {
+        return Uuid::uuid4();
     }
 }
