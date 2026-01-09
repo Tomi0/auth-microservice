@@ -41,10 +41,6 @@ class GenerateTokenResetPasswordTest extends TestCase
         $this->userRepository->persist($this->user);
     }
 
-    /**
-     * @throws UserNotFoundException
-     * @throws TokenResetPasswordNotFoundException
-     */
     public function testGenerateTokenResetPassword(): void
     {
         $this->generateTokenResetPassword->handle(new GenerateTokenResetPasswordRequest($this->user->email()));
@@ -52,10 +48,6 @@ class GenerateTokenResetPasswordTest extends TestCase
         $this->assertInstanceOf(TokenResetPassword::class, $this->tokenResetPasswordRepository->ofEmail($this->user->email()));
     }
 
-    /**
-     * @throws TokenResetPasswordNotFoundException
-     * @throws UserNotFoundException
-     */
     public function testGenerateNewTokenResetPasswordIfAlreadyExists(): void
     {
         $tokenResetPassword = entity(TokenResetPassword::class)->make(['email' => $this->user->email(), 'token' => 'token_reset_password']);
@@ -74,10 +66,6 @@ class GenerateTokenResetPasswordTest extends TestCase
         }
     }
 
-    /**
-     * @throws UserNotFoundException
-     * @throws Exception
-     */
     public function testFireTokenResetPasswordGenerated(): void
     {
         $this->assertEventPublished(TokenResetPasswordGenerated::class);
