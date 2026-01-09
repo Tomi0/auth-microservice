@@ -10,6 +10,9 @@ fi
 if [ "$APP_ENV" = 'production' ]; then
     su auth-microservice --command "php api/artisan optimize:clear"
     su auth-microservice --command "php api/artisan optimize"
+    su auth-microservice --command "php api/artisan doctrine:clear:metadata:cache"
+    su auth-microservice --command "php api/artisan doctrine:clear:query:cache"
+    su auth-microservice --command "php api/artisan doctrine:clear:result:cache"
     su auth-microservice --command "php api/artisan config:cache"
     su auth-microservice --command "php api/artisan event:cache"
     su auth-microservice --command "php api/artisan route:cache"
