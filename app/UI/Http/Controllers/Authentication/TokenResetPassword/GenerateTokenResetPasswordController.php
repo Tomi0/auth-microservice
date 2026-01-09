@@ -17,9 +17,6 @@ class GenerateTokenResetPasswordController
         $this->generateTokenResetPassword = $generateTokenResetPassword;
     }
 
-    /**
-     * @throws UserNotFoundException
-     */
     public function __invoke(GenerateTokenResetPasswordValidator $request): JsonResponse
     {
         $this->generateTokenResetPassword->handle(new GenerateTokenResetPasswordRequest($request->input('email')));

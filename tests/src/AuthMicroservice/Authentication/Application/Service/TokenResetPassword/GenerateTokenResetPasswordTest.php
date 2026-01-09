@@ -84,9 +84,14 @@ class GenerateTokenResetPasswordTest extends TestCase
         $this->generateTokenResetPassword->handle(new GenerateTokenResetPasswordRequest($this->user->email()));
     }
 
-    public function testThrowUserNotFoundException(): void
+    public function testNothingHappensIfEmailIsNotRegistered(): void
     {
-        $this->expectException(UserNotFoundException::class);
-        $this->generateTokenResetPassword->handle(new GenerateTokenResetPasswordRequest('invalidUser@user.test'));
+        $email = 'invalidUser@user.test';
+        $this->generateTokenResetPassword->handle(new GenerateTokenResetPasswordRequest($email));
+        try {
+            $this->tokenResetPasswordRepository->ofEmail($email);
+        } catch (TokenResetPasswordNotFoundException $e) {
+            $this->assertTrue(true, 'Token is registered');
+        }
     }
 }

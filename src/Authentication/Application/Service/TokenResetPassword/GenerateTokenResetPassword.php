@@ -24,12 +24,13 @@ class GenerateTokenResetPassword
         $this->randomStringGenerator = $randomStringGenerator;
     }
 
-    /**
-     * @throws UserNotFoundException
-     */
     public function handle(GenerateTokenResetPasswordRequest $generateTokenResetPasswordRequest): void
     {
-        $user = $this->userRepository->ofEmail($generateTokenResetPasswordRequest->email);
+        try {
+            $user = $this->userRepository->ofEmail($generateTokenResetPasswordRequest->email);
+        } catch (UserNotFoundException) {
+            return;
+        }
 
         try {
             $tokenResetPassword = $this->tokenResetPasswordRepository->ofEmail($generateTokenResetPasswordRequest->email);

@@ -18,8 +18,8 @@ import {AuthorizationCode} from "../../../application/shared/model/Authorization
 })
 export class LoginUserComponent {
 
-  private redirectUrl: null|string;
-  private clientName: string|null;
+  private redirectUrl: null | string;
+  private clientName: string | null;
 
   public constructor(public formService: FormService,
                      protected validationService: ValidationService,
@@ -39,8 +39,7 @@ export class LoginUserComponent {
   }
 
   public redirectToRegister(): void {
-    const queryParams = { ...this.activatedRoute.snapshot.queryParams };
-    this.router.navigate(['/auth/register'], { queryParams });
+    this.redirect('/auth/register');
   }
 
   public sendLoginRequest(): void {
@@ -61,5 +60,14 @@ export class LoginUserComponent {
         }
       }
     })
+  }
+
+  protected redirectToResetPassword() {
+    this.redirect('/auth/reset-password')
+  }
+
+  private redirect(url: string): void {
+    const queryParams = {...this.activatedRoute.snapshot.queryParams};
+    this.router.navigate([url], {queryParams});
   }
 }
