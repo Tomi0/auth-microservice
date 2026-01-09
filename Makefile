@@ -6,7 +6,7 @@ install:
 	make build
 
 npm-install:
-	docker run --rm -it -v $(shell pwd)/resources/frontend:/app -w /app --user $(shell id -u):$(shell id -g) node:21.6-alpine npm install
+	docker run --rm -it -v $(shell pwd)/resources/frontend:/app -w /app node:21.6-alpine sh -c "npm install && chown -R $(shell id -u):$(shell id -g) /app/node_modules"
 
 composer-install:
 	docker run --rm -it -v $(shell pwd):/app -w /app --user $(shell id -u):$(shell id -g) composer:2.2.7 composer install --ignore-platform-reqs --no-ansi
