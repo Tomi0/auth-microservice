@@ -135,4 +135,22 @@ class ChangeUserPasswordTest extends TestCase
         $this->assertTrue(Hash::check('otherUserPassword', $this->otherUser->password()));
     }
 
+    /**
+     * @throws UserNotFoundException
+     * @throws UserHasNotPermissionsException
+     * @throws TokenResetPasswordNotFoundException
+     */
+    public function testTokenResetPasswordIsDeletedAfterPasswordChanged(): void
+    {
+        $newPassword = 'secret';
+
+        $this->assertNotNull($this->tokenResetPasswordRepository->ofEmail($this->user->email()));
+        $this->updateUserPassword->handle(new ChangeUserPasswordRequest($this->tokenResetPassword->token(), $newPassword, $this->user->email()));
+        try {
+            $this->tokenResetPasswordRepository->ofEmail($this->user->email());
+        } catch (TokenResetPasswordNotFoundException) {
+            $this->assertTrue(true);
+        }
+    }
+
 }

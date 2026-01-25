@@ -41,5 +41,6 @@ class SigningKeyDoctrineRepository extends EntityRepository implements SigningKe
     {
         $em = $this->getEntityManager();
         $em->remove($signingKey);
+        $em->flush();
     }
 }

@@ -4,6 +4,7 @@ import {LoginUserComponent} from "./domain/public/login-user/login-user.componen
 import {RegisterAccountComponent} from "./domain/public/register-account/register-account.component";
 import {TestRedirectComponent} from "./domain/public/test-redirect/test-redirect.component";
 import {ResetPasswordComponent} from "./domain/public/reset-password/reset-password.component";
+import {ChangePasswordComponent} from "./domain/public/change-password/change-password.component";
 
 export const routes: Routes = [
   {
@@ -26,6 +27,10 @@ export const routes: Routes = [
       {
         path: 'auth/reset-password',
         component: ResetPasswordComponent
+      },
+      {
+        path: 'auth/change-password',
+        component: ChangePasswordComponent
       },
       {
         path: 'test-redirect',

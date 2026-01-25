@@ -42,5 +42,6 @@ class ChangeUserPassword
         $user->changePassword($this->encodePassword->execute($changeUserPasswordRequest->password));
 
         $this->userRepository->persist($user);
+        $this->tokenResetPasswordRepository->remove($tokenResetPassword);
     }
 }

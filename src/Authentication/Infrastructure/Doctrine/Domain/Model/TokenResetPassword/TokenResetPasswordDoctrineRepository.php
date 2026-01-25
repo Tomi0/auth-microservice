@@ -49,6 +49,7 @@ class TokenResetPasswordDoctrineRepository extends EntityRepository implements T
     {
         $em = $this->getEntityManager();
         $em->remove($tokenResetPassword);
+        $em->flush();
     }
 
     public function nextId(): UuidInterface
