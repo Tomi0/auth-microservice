@@ -86,6 +86,7 @@ class User implements JsonSerializable
     public function changePassword(string $passwordEncoded): void
     {
         $this->password = $passwordEncoded;
+        $this->updatedAt = new DateTime();
 
         EventPublisher::instance()->publish(
             new UserPasswordChanged($this->id(), $this->fullName(), $this->email())

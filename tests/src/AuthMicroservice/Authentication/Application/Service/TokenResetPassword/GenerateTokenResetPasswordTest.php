@@ -6,6 +6,7 @@ use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPass
 use Authentication\Application\Service\TokenResetPassword\GenerateTokenResetPasswordRequest;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordGenerated;
+use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundException;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
 use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserNotFoundException;
@@ -41,6 +42,7 @@ class GenerateTokenResetPasswordTest extends TestCase
     }
 
     /**
+     * @throws TokenResetPasswordNotFoundException
      * @throws UserNotFoundException
      */
     public function testGenerateTokenResetPassword(): void
@@ -52,6 +54,7 @@ class GenerateTokenResetPasswordTest extends TestCase
 
     /**
      * @throws UserNotFoundException
+     * @throws TokenResetPasswordNotFoundException
      */
     public function testGenerateNewTokenResetPasswordIfAlreadyExists(): void
     {
