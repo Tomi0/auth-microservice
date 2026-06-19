@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         try {
             $pdo = app()->make(EntityManagerInterface::class)->getConnection()
-                ->getWrappedConnection();
+                ->getNativeConnection();
             app()->make(ConnectionInterface::class)->setPdo($pdo);
         } catch (Throwable $throwable) {}
 
