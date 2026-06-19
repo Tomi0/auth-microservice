@@ -12,7 +12,7 @@ class PersistDomainEventSubscriberTest extends TestCase
     public function testIsSubscribedToAllEvents(): void
     {
         $eventSubscriber = new PersistDomainEventSubscriber();
-        $this->assertTrue($eventSubscriber->isSubscribedTo($this->createMock(DomainEvent::class)));
+        $this->assertTrue($eventSubscriber->isSubscribedTo($this->createStub(DomainEvent::class)));
     }
 
     public function testInsertEventInDB(): void
@@ -20,7 +20,7 @@ class PersistDomainEventSubscriberTest extends TestCase
         $eventSubscriber = new PersistDomainEventSubscriber();
         $occurredOn = new \DateTime();
 
-        $domainEvent = $this->createMock(DomainEvent::class);
+        $domainEvent = $this->createStub(DomainEvent::class);
 
         $domainEvent->method('jsonSerialize')->willReturn(['test' => 'test']);
         $domainEvent->method('occurredOn')->willReturn($occurredOn);

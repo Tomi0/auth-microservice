@@ -54,7 +54,7 @@ class EventPublisherTest extends TestCase
         $this->assertFalse($subscriber1->called);
         $this->assertFalse($subscriber2->called);
 
-        $mock = $this->createMock(DomainEvent::class);
+        $mock = $this->createStub(DomainEvent::class);
         $mock->method('occurredOn')->willReturn(new \DateTime());
         $eventPublisher->publish($mock);
 

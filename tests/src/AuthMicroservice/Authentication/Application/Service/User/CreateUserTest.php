@@ -10,6 +10,7 @@ use Authentication\Domain\Model\User\UserCreated;
 use Authentication\Domain\Model\User\UserRepository;
 use Authentication\Domain\Service\User\EncodePassword;
 use Exception;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class CreateUserTest extends TestCase
@@ -25,7 +26,7 @@ class CreateUserTest extends TestCase
             $this->userRepository,
             $this->app->make(EncodePassword::class)
         );
-        $this->withoutEvents();
+        Event::fake();
     }
 
     public function testUserExistsInDataBase(): void

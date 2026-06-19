@@ -4,6 +4,7 @@ namespace Authentication\Domain\Model\TokenResetPassword;
 
 use Authentication\Domain\Model\User\User;
 use DateTime;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Shared\Domain\Service\EventPublisher;
 use UnexpectedValueException;
@@ -18,6 +19,7 @@ class TokenResetPassword
 
     public function __construct(User $user, string $token)
     {
+        $this->id = Uuid::uuid4();
         $actualDate = new DateTime();
         $this->email = $user->email();
         $this->changeToken($token);
@@ -61,5 +63,6 @@ class TokenResetPassword
             throw new UnexpectedValueException('Token length can not be less than 16');
 
         $this->token = $token;
+        $this->updatedAt = new DateTime();
     }
 }
