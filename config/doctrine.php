@@ -1,7 +1,5 @@
 <?php
 
-use Ramsey\Uuid\Doctrine\UuidType;
-
 return [
 
     /*
@@ -14,7 +12,7 @@ return [
     | paths setting to the appropriate path and replace App namespace
     | by your own namespace.
     |
-    | Available meta drivers: fluent|annotations|yaml|simplified_yaml|xml|simplified_xml|config|static_php|php
+    | Available meta drivers: attributes|xml|simplified_xml|static_php|php
     |
     | Available connections: mysql|oracle|pgsql|sqlite|sqlsrv
     | (Connections can be configured in the database config)
@@ -28,16 +26,15 @@ return [
     */
     'managers'                   => [
         'default' => [
-            'dev'           => env('APP_DEBUG', true),
+            'dev'           => env('APP_DEBUG', false),
             'meta'          => env('DOCTRINE_METADATA', 'xml'),
             'connection'    => env('DB_CONNECTION', 'mysql'),
-            'namespaces'    => [],
             'paths'         => [
                 base_path('src/Authentication/Infrastructure/Doctrine/Domain/Mapping')
             ],
             'repository'    => Doctrine\ORM\EntityRepository::class,
             'proxies'       => [
-                'namespace'     => 'Proxies',
+                'namespace'     => 'DoctrineProxies',
                 'path'          => storage_path('proxies'),
                 'auto_generate' => env('DOCTRINE_PROXY_AUTOGENERATE', true)
             ],
@@ -79,6 +76,14 @@ return [
             */
             'mapping_types' => [
                 //'enum' => 'string'
+            ],
+
+            /**
+             * References:
+             * https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/architecture.html#middlewares
+             */
+            'middlewares' => [
+                // Doctrine\DBAL\Logging\Middleware::class
             ]
         ]
     ],
@@ -94,8 +99,7 @@ return [
     |
     */
     'extensions'                 => [
-        //LaravelDoctrine\ORM\Extensions\TablePrefix\TablePrefixExtension::class,
-        LaravelDoctrine\Extensions\Timestamps\TimestampableExtension::class,
+        //LaravelDoctrine\Extensions\Timestamps\TimestampableExtension::class,
         //LaravelDoctrine\Extensions\SoftDeletes\SoftDeleteableExtension::class,
         //LaravelDoctrine\Extensions\Sluggable\SluggableExtension::class,
         //LaravelDoctrine\Extensions\Sortable\SortableExtension::class,
@@ -114,7 +118,6 @@ return [
     |--------------------------------------------------------------------------
     */
     'custom_types'               => [
-        UuidType::NAME => UuidType::class
     ],
     /*
     |--------------------------------------------------------------------------
@@ -144,43 +147,30 @@ return [
     ],
     /*
     |--------------------------------------------------------------------------
-    | Enable query logging with laravel file logging,
-    | debugbar, clockwork or an own implementation.
-    | Setting it to false, will disable logging
-    |
-    | Available:
-    | - LaravelDoctrine\ORM\Loggers\LaravelDebugbarLogger
-    | - LaravelDoctrine\ORM\Loggers\ClockworkLogger
-    | - LaravelDoctrine\ORM\Loggers\FileLogger
-    |--------------------------------------------------------------------------
-    */
-    'logger'                     => env('DOCTRINE_LOGGER', false),
-    /*
-    |--------------------------------------------------------------------------
     | Cache
     |--------------------------------------------------------------------------
     |
     | Configure meta-data, query and result caching here.
     | Optionally you can enable second level caching.
     |
-    | Available: apc|array|file|illuminate|memcached|php_file|redis|void
+    | Available: apc|array|file|illuminate|memcached|php_file|redis
     |
     */
     'cache' => [
-        'second_level' => true,
-        'default' => env('DOCTRINE_CACHE', 'array'),
-        'namespace' => null,
-        'metadata' => [
-            'driver' => env('DOCTRINE_METADATA_CACHE', env('DOCTRINE_CACHE', 'array')),
-            'namespace' => null,
+        'second_level'     => false,
+        'default'          => env('DOCTRINE_CACHE', 'array'),
+        'namespace'        => null,
+        'metadata'         => [
+            'driver'       => env('DOCTRINE_METADATA_CACHE', env('DOCTRINE_CACHE', 'array')),
+            'namespace'    => 'metadata',
         ],
-        'query' => [
-            'driver' => env('DOCTRINE_QUERY_CACHE', env('DOCTRINE_CACHE', 'array')),
-            'namespace' => null,
+        'query'            => [
+            'driver'       => env('DOCTRINE_QUERY_CACHE', env('DOCTRINE_CACHE', 'array')),
+            'namespace'    => 'query',
         ],
-        'result' => [
-            'driver' => env('DOCTRINE_RESULT_CACHE', env('DOCTRINE_CACHE', 'array')),
-            'namespace' => null,
+        'result'           => [
+            'driver'       => env('DOCTRINE_RESULT_CACHE', env('DOCTRINE_CACHE', 'array')),
+            'namespace'    => 'result',
         ],
     ],
     /*

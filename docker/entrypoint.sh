@@ -1,10 +1,11 @@
 echo "Starting entrypoint"
 
 if [ "${USER_ID}" ]; then
-    echo "Changin auth-microservice UID and GID to ${USER_ID}:${GROUP_ID}"
-    usermod -u "USER_ID" auth-microservice
-    groupmod -g "GROUP_ID" auth-microservice
+    echo "Changing auth-microservice UID and GID to ${USER_ID}:${GROUP_ID}"
+    usermod -u "$USER_ID" auth-microservice
+    groupmod -g "$GROUP_ID" auth-microservice
     chown -R auth-microservice:auth-microservice /var/www
+    chown -R auth-microservice:auth-microservice /run/php
 fi
 
 if [ "$APP_ENV" = 'production' ]; then

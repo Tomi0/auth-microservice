@@ -6,7 +6,7 @@ COPY resources/frontend /app
 
 RUN cd /app && npm install && npm run build --prod
 
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 COPY --from=composer:2.5.7 /usr/bin/composer /usr/bin/composer
 
@@ -43,5 +43,7 @@ EXPOSE 80
 EXPOSE 8080
 
 COPY docker/entrypoint.sh /etc/entrypoint.sh
+
+RUN mkdir -p /run/php && chown auth-microservice:auth-microservice /run/php
 
 ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
