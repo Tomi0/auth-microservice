@@ -14,6 +14,7 @@ use Authentication\Domain\Model\User\UserPasswordChanged;
 use Authentication\Domain\Model\User\UserRepository;
 use Authentication\Domain\Service\User\EncodePassword;
 use Exception;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -29,7 +30,7 @@ class ChangeUserPasswordTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->withoutEvents();
+        Event::fake();
         $this->userRepository = $this->app->make(UserRepository::class);
         $this->tokenResetPasswordRepository = $this->app->make(TokenResetPasswordRepository::class);
         $this->updateUserPassword = new ChangeUserPassword(
