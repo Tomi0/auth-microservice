@@ -27,7 +27,7 @@ class SigningKey
         $this->privateKey = $privateKeyString;
         $this->publicKey = $privateKeyDetails['key'];
 
-        EventPublisher::instance()->publish(new SigingKeyCreated($this->id(), $this->publicKey()));
+        EventPublisher::instance()->publish(new SigningKeyCreated($this->id(), $this->publicKey()));
     }
 
     public function id(): string

@@ -5,7 +5,7 @@ namespace Authentication\Domain\Model\SigningKey;
 use DateTime;
 use Shared\Domain\Model\DomainEvent;
 
-class SigingKeyCreated implements DomainEvent
+class SigningKeyCreated implements DomainEvent
 {
     private string $id;
     private string $publicKey;

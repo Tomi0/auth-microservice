@@ -4,7 +4,7 @@ namespace Tests\src\AuthMicroservice\Authentication\Application\Service\SigingKe
 
 use Authentication\Application\Service\SigningKey\GenerateSigningKey;
 use Authentication\Application\Service\SigningKey\GenerateSigningKeyRequest;
-use Authentication\Domain\Model\SigningKey\SigingKeyCreated;
+use Authentication\Domain\Model\SigningKey\SigningKeyCreated;
 use Authentication\Domain\Model\SigningKey\SigningKey;
 use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Mockery\MockInterface;
@@ -16,7 +16,7 @@ class GenerateSigingKeyTest extends TestCase
 
     public function testThrowSigingKeyCreated(): void
     {
-        $this->assertEventPublished(SigingKeyCreated::class);
+        $this->assertEventsPublished(SigningKeyCreated::class);
         $this->mock(SigningKeyRepository::class, function (MockInterface $mock) {
             $mock->shouldReceive('first')->once();
             $mock->shouldReceive('persist')->once();

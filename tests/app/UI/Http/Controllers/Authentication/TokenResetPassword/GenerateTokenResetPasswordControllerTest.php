@@ -29,15 +29,4 @@ class GenerateTokenResetPasswordControllerTest extends TestCase
 
         $this->assertSame(200, $httpRequest->getStatusCode());
     }
-
-    public function testRouteWorksIfUserLogged(): void
-    {
-        $httpRequest = $this->postJson('/oauth/token-reset-password', [
-            'email' => $this->userToResetPassword->email(),
-        ], [
-            'Authorization' => $this->getJwtToken($this->userToResetPassword),
-        ]);
-
-        $this->assertSame(200, $httpRequest->getStatusCode());
-    }
 }

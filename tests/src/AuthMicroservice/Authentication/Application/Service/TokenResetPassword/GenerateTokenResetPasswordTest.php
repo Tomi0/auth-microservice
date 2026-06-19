@@ -74,7 +74,7 @@ class GenerateTokenResetPasswordTest extends TestCase
      */
     public function testFireTokenResetPasswordGenerated(): void
     {
-        $this->assertEventPublished(TokenResetPasswordGenerated::class);
+        $this->assertEventsPublished(TokenResetPasswordGenerated::class);
         $this->generateTokenResetPassword->handle(new GenerateTokenResetPasswordRequest($this->user->email()));
     }
 

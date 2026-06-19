@@ -37,6 +37,20 @@ class SigningKeyDoctrineRepository extends EntityRepository implements SigningKe
         throw new SigningKeyNotFoundException('No signing key found');
     }
 
+    /**
+     * @throws SigningKeyNotFoundException
+     */
+    public function ofId(string $id): SigningKey
+    {
+        $signingKey = $this->find($id);
+
+        if ($signingKey instanceof SigningKey) {
+            return $signingKey;
+        }
+
+        throw new SigningKeyNotFoundException('Signing key with id ' . $id . ' not found');
+    }
+
     public function remove(SigningKey $signingKey): void
     {
         $em = $this->getEntityManager();

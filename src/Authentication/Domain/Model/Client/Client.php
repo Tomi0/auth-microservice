@@ -14,10 +14,11 @@ class Client
     private string $name;
     private string $clientSecret;
     private string $redirectUrl;
+    private ?string $signingKeyId;
     private DateTime $createdAt;
     private DateTime $updatedAt;
 
-    public function __construct(UuidInterface $id, string $name, string $clientSecret, string $redirectUrl)
+    public function __construct(UuidInterface $id, string $name, string $clientSecret, string $redirectUrl, string $signingKeyId)
     {
         $this->id = $id;
         $this->redirectUrl = $redirectUrl;
@@ -25,6 +26,7 @@ class Client
         $this->updatedAt = new DateTime();
         $this->clientSecret = $clientSecret;
         $this->name = $name . '-' . $id->toString();
+        $this->signingKeyId = $signingKeyId;
 
         EventPublisher::instance()->publish(
             new ClientCreated($this->id())
@@ -59,6 +61,11 @@ class Client
     public function updatedAt(): DateTime
     {
         return $this->updatedAt;
+    }
+
+    public function signingKeyId(): ?string
+    {
+        return $this->signingKeyId;
     }
 
     public function isValidRedirectUrl(string $redirectUrl): bool

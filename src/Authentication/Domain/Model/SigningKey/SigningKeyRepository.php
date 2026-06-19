@@ -14,5 +14,10 @@ interface SigningKeyRepository
      */
     public function first(): SigningKey;
 
+    /**
+     * @throws SigningKeyNotFoundException
+     */
+    public function ofId(string $id): SigningKey;
+
     public function remove(SigningKey $signingKey): void;
 }

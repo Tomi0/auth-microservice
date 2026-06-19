@@ -28,14 +28,12 @@ class AuthorizeUserTest extends TestCase
     private AuthorizeUser $authorizeUser;
     private Client $client;
     private UserRepository $userRepository;
-    private ClientRepository $clientRepository;
     private AuthorizationCodeRepository $authorizationCodeRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->userRepository = $this->app->make(UserRepository::class);
-        $this->clientRepository = $this->app->make(ClientRepository::class);
         $this->authorizationCodeRepository = $this->app->make(AuthorizationCodeRepository::class);
         $this->authorizeUser = new AuthorizeUser(
             $this->userRepository,
@@ -85,7 +83,7 @@ class AuthorizeUserTest extends TestCase
      */
     public function testPublishUserAuthorized(): void
     {
-        $this->assertEventPublished(UserAuthorized::class);
+        $this->assertEventsPublished(UserAuthorized::class);
         $this->authorizeUser->handle(new AuthorizeUserRequest(
             $this->user->email(),
             'password',
