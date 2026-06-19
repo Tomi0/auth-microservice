@@ -12,6 +12,7 @@
         <field name="name" column="name" type="string"/>
         <field name="clientSecret" column="client_secret" type="string"/>
         <field name="redirectUrl" column="redirect_url" type="string"/>
+        <field name="signingKeyId" column="signing_key_id" type="string"/>
         <field name="createdAt" type="datetime" column="created_at" />
         <field name="updatedAt" type="datetime" column="updated_at"/>
 
