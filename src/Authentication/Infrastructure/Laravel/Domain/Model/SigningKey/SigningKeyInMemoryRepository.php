@@ -41,4 +41,15 @@ class SigningKeyInMemoryRepository implements SigningKeyRepository
             }
         }
     }
+
+    public function ofId(string $id): SigningKey
+    {
+        foreach ($this->signingKeys as $value) {
+            if ($value->id() === $id) {
+                return $value;
+            }
+        }
+
+        throw new SigningKeyNotFoundException();
+    }
 }

@@ -65,7 +65,7 @@ class ChangeUserPasswordTest extends TestCase
      */
     public function testFireUserPasswordUpdated(): void
     {
-        $this->assertEventPublished(UserPasswordChanged::class);
+        $this->assertEventsPublished(UserPasswordChanged::class);
         $this->updateUserPassword->handle(new ChangeUserPasswordRequest($this->tokenResetPassword->token(), 'secret', $this->user->email()));
     }
 

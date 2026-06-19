@@ -62,7 +62,7 @@ class GetAccessToken
         }
 
         $user = $this->userRepository->ofId($authorizationCode->userId()->toString());
-        $signingKey = $this->signingKeyRepository->first();
+        $signingKey = $this->signingKeyRepository->ofId($client->signingKeyId());
 
         $token = $this->jwtToken->execute($user, $signingKey);
 

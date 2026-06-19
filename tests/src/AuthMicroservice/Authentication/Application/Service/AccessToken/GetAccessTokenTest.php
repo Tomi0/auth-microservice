@@ -26,10 +26,6 @@ use Tests\TestCase;
 class GetAccessTokenTest extends TestCase
 {
     /**
-     * @var ClientInMemoryRepository
-     */
-    private ClientRepository $clientRepository;
-    /**
      * @var AuthorizationCodeInMemoryRepository
      */
     private AuthorizationCodeRepository $authorizationCodeRepository;
@@ -42,21 +38,24 @@ class GetAccessTokenTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->clientRepository = $this->app->make(ClientRepository::class);
         $this->authorizationCodeRepository = $this->app->make(AuthorizationCodeRepository::class);
         $this->userRepository = $this->app->make(UserRepository::class);
 
         /** @var User $user */
         $user = entity(User::class)->make();
+        /** @var SigningKey $signingKey */
+        $signingKey = entity(SigningKey::class)->make();
         $this->clientSecret = 'secret123';
         $this->client = entity(Client::class)->make([
             'clientSecret' => Hash::make($this->clientSecret),
+            'signingKeyId' => $signingKey->id(),
         ]);
         $this->authorizationCode = entity(AuthorizationCode::class)->make([
             'clientId' => $this->client->id(),
             'userId' => $user->id(),
         ]);
 
+        $this->signingKeyRepository->persist($signingKey);
         $this->clientRepository->persist($this->client);
         $this->authorizationCodeRepository->persist($this->authorizationCode);
         $this->userRepository->persist($user);
@@ -64,15 +63,12 @@ class GetAccessTokenTest extends TestCase
         $generateJwt = $this->mock(GenerateJwtToken::class, function (MockInterface $mock) {
             $mock->shouldReceive('execute')->andReturn('jwt-token');
         });
-        $signingKeyRepository = $this->mock(SigningKeyRepository::class, function (MockInterface $mock) {
-            $mock->shouldReceive('first')->andReturn(entity(SigningKey::class)->make());
-        });
 
         $this->getAccessToken = $this->app->makeWith(GetAccessToken::class, [
             'clientRepository' => $this->clientRepository,
             'authorizationCodeRepository' => $this->authorizationCodeRepository,
             'userRepository' => $this->userRepository,
-            'signingKeyRepository' => $signingKeyRepository,
+            'signingKeyRepository' => $this->signingKeyRepository,
             'jwtToken' => $generateJwt,
         ]);
     }

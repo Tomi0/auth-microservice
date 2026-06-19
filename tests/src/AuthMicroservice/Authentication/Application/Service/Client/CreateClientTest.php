@@ -7,6 +7,8 @@ use Authentication\Application\Service\Client\CreateClient;
 use Authentication\Application\Service\Client\CreateClientRequest;
 use Authentication\Domain\Model\Client\Client;
 use Authentication\Domain\Model\Client\ClientRepository;
+use Authentication\Domain\Model\SigningKey\SigningKeyCreated;
+use Authentication\Domain\Model\SigningKey\SigningKeyRepository;
 use Authentication\Domain\Service\User\CheckPasswordHash;
 use Authentication\Domain\Service\User\EncodePassword;
 use Authentication\Infrastructure\Laravel\Domain\Model\Client\ClientInMemoryRepository;
@@ -15,18 +17,17 @@ use Tests\TestCase;
 
 class CreateClientTest extends TestCase
 {
-    private ClientInMemoryRepository $clientRepository;
     private CreateClient $createClient;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->clientRepository = $this->app->make(ClientRepository::class);
         $this->createClient = new CreateClient(
             $this->clientRepository,
             $this->app->make(RandomStringGenerator::class),
             $this->app->make(EncodePassword::class),
+            $this->signingKeyRepository,
         );
     }
 
@@ -40,16 +41,16 @@ class CreateClientTest extends TestCase
         $this->assertIsString($result);
     }
 
-    public function testThereIsOneClientInRepository(): void
+    public function testThereIsMoreClientInRepository(): void
     {
-        $this->assertCount(0, $this->clientRepository->clients);
+        $this->assertCount(1, $this->clientRepository->clients);
 
         $this->createClient->handle(new CreateClientRequest(
             'Test Client',
             'https://example.com/callback'
         ));
 
-        $this->assertCount(1, $this->clientRepository->clients);
+        $this->assertCount(2, $this->clientRepository->clients);
     }
 
     public function testNameIsSaved(): void
@@ -60,7 +61,7 @@ class CreateClientTest extends TestCase
         ));
 
         /** @var Client $client */
-        $client = $this->clientRepository->clients[0];
+        $client = $this->clientRepository->clients[count($this->clientRepository->clients) - 1];
         $this->assertEquals('Test Client-' . $client->id(), $client->name());
     }
 
@@ -71,7 +72,7 @@ class CreateClientTest extends TestCase
             'https://example.com/callback'
         ));
 
-        $client = $this->clientRepository->clients[0];
+        $client = $this->clientRepository->clients[count($this->clientRepository->clients) - 1];
         $this->assertEquals('https://example.com/callback', $client->redirectUrl());
     }
 
@@ -83,7 +84,7 @@ class CreateClientTest extends TestCase
         ));
 
         /** @var Client $client */
-        $client = $this->clientRepository->clients[0];
+        $client = $this->clientRepository->clients[count($this->clientRepository->clients) - 1];
         $this->assertNotEmpty($clientSecret);
         $this->assertNotEquals($clientSecret, $client->clientSecret());
 
@@ -95,7 +96,7 @@ class CreateClientTest extends TestCase
 
     public function testFireUserCreated(): void
     {
-        $this->assertEventPublished(ClientCreated::class);
+        $this->assertEventsPublished([SigningKeyCreated::class, ClientCreated::class]);
 
         $this->createClient->handle(new CreateClientRequest(
             'Test Client',
