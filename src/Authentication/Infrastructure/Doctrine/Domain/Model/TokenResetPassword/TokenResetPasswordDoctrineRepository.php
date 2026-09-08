@@ -6,9 +6,15 @@ use Authentication\Domain\Model\TokenResetPassword\TokenResetPassword;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordNotFoundException;
 use Authentication\Domain\Model\TokenResetPassword\TokenResetPasswordRepository;
 use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\Uuid;
 
 class TokenResetPasswordDoctrineRepository extends EntityRepository implements TokenResetPasswordRepository
 {
+
+    public function nextId(): string
+    {
+        return Uuid::uuid4()->toString();
+    }
 
     public function persist(TokenResetPassword $tokenResetPassword): void
     {

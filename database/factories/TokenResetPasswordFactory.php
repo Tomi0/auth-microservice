@@ -6,7 +6,7 @@ use Ramsey\Uuid\Uuid;
 
 $factory->define(TokenResetPassword::class, function(Faker\Generator $faker) {
     return [
-        'id' => Uuid::uuid4(),
+        'id' => Uuid::uuid4()->toString(),
         'email' => $faker->email(),
         'token' => Str::random(),
         'createdAt' => new DateTime(),

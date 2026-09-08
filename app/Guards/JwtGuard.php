@@ -10,7 +10,6 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\UnencryptedToken;
-use Ramsey\Uuid\UuidInterface;
 
 class JwtGuard implements Guard
 {
@@ -65,7 +64,7 @@ class JwtGuard implements Guard
         return $this->user ?? null;
     }
 
-    public function id(): UuidInterface|null
+    public function id(): string|null
     {
         return isset($this->user) ? $this->user->id() : null;
     }

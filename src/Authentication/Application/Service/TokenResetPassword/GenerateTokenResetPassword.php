@@ -35,7 +35,11 @@ class GenerateTokenResetPassword
             $tokenResetPassword = $this->tokenResetPasswordRepository->ofEmail($generateTokenResetPasswordRequest->email);
             $tokenResetPassword->changeToken($this->randomStringGenerator->execute());
         } catch (TokenResetPasswordNotFoundException) {
-            $tokenResetPassword = new TokenResetPassword($user, $this->randomStringGenerator->execute());
+            $tokenResetPassword = new TokenResetPassword(
+                $this->tokenResetPasswordRepository->nextId(),
+                $user,
+                $this->randomStringGenerator->execute()
+            );
         }
 
         $this->tokenResetPasswordRepository->persist($tokenResetPassword);

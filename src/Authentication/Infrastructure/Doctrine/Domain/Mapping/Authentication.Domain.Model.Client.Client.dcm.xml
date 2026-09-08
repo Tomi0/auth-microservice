@@ -5,7 +5,7 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <entity name="Authentication\Domain\Model\Client\Client" table="client" repository-class="AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\Client\ClientDoctrineRepository">
 
-        <id name="id" column="id" type="uuid">
+        <id name="id" column="id" type="guid">
             <generator strategy="NONE"/>
         </id>
 

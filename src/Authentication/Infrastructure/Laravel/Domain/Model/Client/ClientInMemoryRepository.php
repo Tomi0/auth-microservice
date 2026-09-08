@@ -6,7 +6,6 @@ use Authentication\Domain\Model\Client\Client;
 use Authentication\Domain\Model\Client\ClientNotFoundException;
 use Authentication\Domain\Model\Client\ClientRepository;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 class ClientInMemoryRepository implements ClientRepository
 {
@@ -30,8 +29,8 @@ class ClientInMemoryRepository implements ClientRepository
         $this->clients[] = $client;
     }
 
-    public function nextId(): UuidInterface
+    public function nextId(): string
     {
-        return Uuid::uuid4();
+        return Uuid::uuid4()->toString();
     }
 }

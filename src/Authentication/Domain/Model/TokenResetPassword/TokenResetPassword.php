@@ -4,22 +4,20 @@ namespace Authentication\Domain\Model\TokenResetPassword;
 
 use Authentication\Domain\Model\User\User;
 use DateTime;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Shared\Domain\Service\EventPublisher;
 use UnexpectedValueException;
 
 class TokenResetPassword
 {
-    private UuidInterface $id;
+    private string $id;
     private string $email;
     private string $token;
     private DateTime $createdAt;
     private DateTime $updatedAt;
 
-    public function __construct(User $user, string $token)
+    public function __construct(string $id, User $user, string $token)
     {
-        $this->id = Uuid::uuid4();
+        $this->id = $id;
         $actualDate = new DateTime();
         $this->email = $user->email();
         $this->changeToken($token);
@@ -32,7 +30,7 @@ class TokenResetPassword
         );
     }
 
-    public function id(): UuidInterface
+    public function id(): string
     {
         return $this->id;
     }

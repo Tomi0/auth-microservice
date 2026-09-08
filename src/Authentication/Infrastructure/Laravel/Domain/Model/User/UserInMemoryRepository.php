@@ -6,7 +6,6 @@ use Authentication\Domain\Model\User\User;
 use Authentication\Domain\Model\User\UserNotFoundException;
 use Authentication\Domain\Model\User\UserRepository;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 class UserInMemoryRepository implements UserRepository
 {
@@ -32,9 +31,8 @@ class UserInMemoryRepository implements UserRepository
 
     public function ofId(string $userId): User
     {
-        $userId = Uuid::fromString($userId);
         foreach ($this->users as $user) {
-            if ($userId->equals($user->id())) {
+            if ($user->id() === $userId) {
                 return $user;
             }
         }
@@ -55,8 +53,8 @@ class UserInMemoryRepository implements UserRepository
         return $this->users;
     }
 
-    public function nextId(): UuidInterface
+    public function nextId(): string
     {
-        return Uuid::uuid4();
+        return Uuid::uuid4()->toString();
     }
 }

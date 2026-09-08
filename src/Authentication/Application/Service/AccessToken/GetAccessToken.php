@@ -61,7 +61,7 @@ class GetAccessToken
             throw new InvalidAuthorizationCodeException('Authorization code does not belong to the client');
         }
 
-        $user = $this->userRepository->ofId($authorizationCode->userId()->toString());
+        $user = $this->userRepository->ofId($authorizationCode->userId());
         $signingKey = $this->signingKeyRepository->ofId($client->signingKeyId());
 
         $token = $this->jwtToken->execute($user, $signingKey);
