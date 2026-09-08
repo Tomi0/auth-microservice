@@ -6,12 +6,12 @@
 
     <entity name="Authentication\Domain\Model\AuthorizationCode\AuthorizationCode" table="authorization_code" repository-class="AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\AuthorizationCode\AuthorizationCodeDoctrineRepository">
 
-        <id name="id" column="id" type="uuid">
+        <id name="id" column="id" type="guid">
             <generator strategy="NONE"/>
         </id>
 
-        <field name="clientId" column="client_id" type="uuid"/>
-        <field name="userId" column="user_id" type="uuid"/>
+        <field name="clientId" column="client_id" type="guid"/>
+        <field name="userId" column="user_id" type="guid"/>
         <field name="code" column="code" type="string"/>
         <field name="expiresAt" column="expires_at" type="datetime_immutable"/>
         <field name="createdAt" type="datetime_immutable" column="created_at"/>

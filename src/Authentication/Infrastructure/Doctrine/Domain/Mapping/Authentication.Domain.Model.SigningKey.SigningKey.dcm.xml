@@ -6,7 +6,7 @@
     <entity name="Authentication\Domain\Model\SigningKey\SigningKey"
             table="signing_key"
             repository-class="AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\SigningKey\SigningKeyDoctrineRepository">
-        <id name="id" column="id" type="uuid">
+        <id name="id" column="id" type="guid">
             <generator strategy="NONE"/>
         </id>
 

@@ -4,12 +4,11 @@ namespace Authentication\Domain\Model\User;
 
 use DateTime;
 use JsonSerializable;
-use Ramsey\Uuid\UuidInterface;
 use Shared\Domain\Service\EventPublisher;
 
 class User implements JsonSerializable
 {
-    private UuidInterface $id;
+    private string $id;
     private string $fullName;
     private string $email;
     private string $password;
@@ -17,7 +16,7 @@ class User implements JsonSerializable
     private DateTime $createdAt;
     private DateTime $updatedAt;
 
-    public function __construct(UuidInterface $id, string $fullName, string $email, string $password)
+    public function __construct(string $id, string $fullName, string $email, string $password)
     {
         $this->id = $id;
         $this->fullName = $fullName;
@@ -32,7 +31,7 @@ class User implements JsonSerializable
         );
     }
 
-    public function id(): UuidInterface
+    public function id(): string
     {
         return $this->id;
     }

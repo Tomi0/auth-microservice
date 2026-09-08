@@ -6,7 +6,6 @@ use Authentication\Domain\Model\AuthorizationCode\AuthorizationCode;
 use Authentication\Domain\Model\AuthorizationCode\AuthorizationCodeRepository;
 use Authentication\Domain\Model\AuthorizationCode\InvalidAuthorizationCodeException;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 class AuthorizationCodeInMemoryRepository implements AuthorizationCodeRepository
 {
@@ -15,9 +14,9 @@ class AuthorizationCodeInMemoryRepository implements AuthorizationCodeRepository
      */
     private array $authorizationCodes = [];
 
-    public function nextId(): UuidInterface
+    public function nextId(): string
     {
-        return Uuid::uuid4();
+        return Uuid::uuid4()->toString();
     }
 
     public function persist(AuthorizationCode $authorizationCode): void

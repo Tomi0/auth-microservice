@@ -2,8 +2,6 @@
 
 namespace Authentication\Domain\Model\Client;
 
-use Ramsey\Uuid\UuidInterface;
-
 interface ClientRepository
 {
     /**
@@ -13,5 +11,5 @@ interface ClientRepository
 
     public function persist(Client $client): void;
 
-    public function nextId(): UuidInterface;
+    public function nextId(): string;
 }

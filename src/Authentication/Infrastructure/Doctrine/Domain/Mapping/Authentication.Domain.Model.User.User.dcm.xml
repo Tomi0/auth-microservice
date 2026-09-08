@@ -6,7 +6,7 @@
 
     <entity name="Authentication\Domain\Model\User\User" table="user" repository-class="AuthMicroservice\Authentication\Infrastructure\Doctrine\Domain\Model\User\UserDoctrineRepository">
 
-        <id name="id" column="id" type="uuid">
+        <id name="id" column="id" type="guid">
             <generator strategy="NONE"/>
         </id>
 

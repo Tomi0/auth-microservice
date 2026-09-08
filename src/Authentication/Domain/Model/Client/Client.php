@@ -5,12 +5,11 @@ namespace Authentication\Domain\Model\Client;
 use Authentication\Application\Service\Client\ClientCreated;
 use Authentication\Domain\Service\User\CheckPasswordHash;
 use DateTime;
-use Ramsey\Uuid\UuidInterface;
 use Shared\Domain\Service\EventPublisher;
 
 class Client
 {
-    private UuidInterface $id;
+    private string $id;
     private string $name;
     private string $clientSecret;
     private string $redirectUrl;
@@ -18,14 +17,14 @@ class Client
     private DateTime $createdAt;
     private DateTime $updatedAt;
 
-    public function __construct(UuidInterface $id, string $name, string $clientSecret, string $redirectUrl, string $signingKeyId)
+    public function __construct(string $id, string $name, string $clientSecret, string $redirectUrl, string $signingKeyId)
     {
         $this->id = $id;
         $this->redirectUrl = $redirectUrl;
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
         $this->clientSecret = $clientSecret;
-        $this->name = $name . '-' . $id->toString();
+        $this->name = $name . '-' . $id;
         $this->signingKeyId = $signingKeyId;
 
         EventPublisher::instance()->publish(
@@ -33,7 +32,7 @@ class Client
         );
     }
 
-    public function id(): UuidInterface
+    public function id(): string
     {
         return $this->id;
     }

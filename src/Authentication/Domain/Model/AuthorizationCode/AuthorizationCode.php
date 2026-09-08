@@ -6,19 +6,18 @@ use Authentication\Domain\Model\Client\Client;
 use DateTimeImmutable;
 use DateTimeInterface;
 use JsonSerializable;
-use Ramsey\Uuid\UuidInterface;
 
 class AuthorizationCode implements JsonSerializable
 {
-    private UuidInterface $id;
-    private UuidInterface $clientId;
-    private UuidInterface $userId;
+    private string $id;
+    private string $clientId;
+    private string $userId;
     private string $code;
     private DateTimeImmutable $expiresAt;
     private DateTimeImmutable $createdAt;
     private DateTimeImmutable $updatedAt;
 
-    public function __construct(UuidInterface $id, UuidInterface $clientId, UuidInterface $userId, string $code, DateTimeImmutable $expiresAt)
+    public function __construct(string $id, string $clientId, string $userId, string $code, DateTimeImmutable $expiresAt)
     {
         $this->id = $id;
         $this->clientId = $clientId;
@@ -32,20 +31,20 @@ class AuthorizationCode implements JsonSerializable
 
     public function belongsToClient(Client $client): bool
     {
-        return $this->clientId->equals($client->id());
+        return $this->clientId === $client->id();
     }
 
-    public function id(): UuidInterface
+    public function id(): string
     {
         return $this->id;
     }
 
-    public function clientId(): UuidInterface
+    public function clientId(): string
     {
         return $this->clientId;
     }
 
-    public function userId(): UuidInterface
+    public function userId(): string
     {
         return $this->userId;
     }
@@ -73,9 +72,9 @@ class AuthorizationCode implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->id->toString(),
-            'clientId' => $this->clientId->toString(),
-            'userId' => $this->userId->toString(),
+            'id' => $this->id,
+            'clientId' => $this->clientId,
+            'userId' => $this->userId,
             'code' => $this->code,
             'expiresAt' => $this->expiresAt->format(DateTimeInterface::ATOM),
             'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),

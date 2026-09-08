@@ -7,7 +7,6 @@ use Authentication\Domain\Model\Client\ClientNotFoundException;
 use Authentication\Domain\Model\Client\ClientRepository;
 use Doctrine\ORM\EntityRepository;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 class ClientDoctrineRepository extends EntityRepository implements ClientRepository
 {
@@ -32,8 +31,8 @@ class ClientDoctrineRepository extends EntityRepository implements ClientReposit
         $em->flush();
     }
 
-    public function nextId(): UuidInterface
+    public function nextId(): string
     {
-        return Uuid::uuid4();
+        return Uuid::uuid4()->toString();
     }
 }

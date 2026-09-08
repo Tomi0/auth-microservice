@@ -38,7 +38,7 @@ class AccessToken implements JsonSerializable
         return [
             'type' => $this->type,
             'token' => $this->token,
-            'userId' => $this->user->id()->toString(),
+            'userId' => $this->user->id(),
         ];
     }
 }

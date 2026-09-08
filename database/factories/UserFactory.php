@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Hash;
 
 $factory->define(User::class, function(Faker\Generator $faker) {
     return [
-        'id' => \Ramsey\Uuid\Uuid::uuid4(),
+        'id' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
         'fullName' => $faker->name(),
         'email' => $faker->email(),
         'password' => Hash::make($faker->password()),

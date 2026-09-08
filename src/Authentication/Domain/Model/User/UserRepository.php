@@ -2,11 +2,9 @@
 
 namespace Authentication\Domain\Model\User;
 
-use Ramsey\Uuid\UuidInterface;
-
 interface UserRepository
 {
-    public function nextId(): UuidInterface;
+    public function nextId(): string;
 
     public function persist(User $user): void;
 

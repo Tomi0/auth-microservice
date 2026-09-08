@@ -5,6 +5,8 @@ namespace Authentication\Domain\Model\TokenResetPassword;
 interface TokenResetPasswordRepository
 {
 
+    public function nextId(): string;
+
     public function persist(TokenResetPassword $tokenResetPassword): void;
 
     /**
