@@ -10,13 +10,13 @@ FROM php:8.3-fpm
 
 COPY --from=composer:2.5.7 /usr/bin/composer /usr/bin/composer
 
-RUN apt-get update && apt-get install -y git \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y git \
     libonig-dev \
     libzip-dev \
     zip \
     nginx
 
-RUN docker-php-ext-install pdo_mysql mbstring zip opcache
+RUN docker-php-ext-install -j"$(nproc)" pdo_mysql mbstring zip opcache
 
 RUN useradd auth-microservice -m -s /bin/bash
 
@@ -36,6 +36,8 @@ COPY ./docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 RUN cd /var/www/api && /usr/bin/composer install --optimize-autoloader --no-dev
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+COPY docker/php/session-upload-progress.ini "$PHP_INI_DIR/conf.d/session-upload-progress.ini"
 
 RUN chown auth-microservice:auth-microservice -R /var/www
 
